@@ -1,0 +1,167 @@
+#!/usr/bin/env python
+
+# THIS FILE IS PART OF THE CYLC SUITE ENGINE.
+# Copyright (C) 2008-2018 NIWA
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+"""cylc get-host-metric [HOST] [OPTIONS]
+
+   Get metrics for a specific HOST, or default 'localhost', in the form of
+   a JSON structure with top-level keys as requested via the options:
+
+   1. --load
+      1, 5 and 15 minute load averages (as keys) from the 'uptime' command.
+   2. --memory
+      Total free RAM memory, in kilobytes, from the 'free -k' command.
+   3. --disk-space=PATH / --disk-space=PATH1,PATH2,PATH3 (etc)
+      Available disk space from the 'df -Pk' command, in kilobytes, for one
+      or more valid PATHs within the filesystem of HOST. Multiple PATH options
+      can be specified via a comma-delimited list, each becoming a key under
+      the top-level disk space key.
+
+   If no options are specified, --load and --memory are invoked by default
+   (as unlike --disk-space they require no specification)."""
+
+
+import sys
+import os
+import re
+from subprocess import Popen, PIPE, CalledProcessError
+import json
+
+# import cylc.flags
+# from cylc.option_parsers import CylcOptionParser as COP
+
+# Test by running 'python bin/hs_command.py && uptime && free && df -Pk'
+PATHS_LIST = [r'/dev/mapper/vgdesktop-tmp']  # Example, option parser TODO.
+LOAD_TEMPLATES = ['uptime', (1, 5, 15), r'load average:\s(.+)$',
+                  r',\s', r'(\d+\.?\d+)', r'\d+\.?\d+']
+MEMORY_TEMPLATES = ['free -k', r'Mem:\s+(.+)', r'\d+\s+\d+\s+(\d+)']
+DISK_TEMPLATES = ['df -Pk', r'\s+(.+)', r'\d+\.?\d+\s+\d+\.?\d+\s+(\d+\.?\d+)']
+
+
+def main():
+    """ parser = COP(__doc__, prep=True)
+
+    parser.add_option(
+        "--load", "-l",
+        help="1, 5 and 15 minute load averages from the 'uptime' command",
+        action="store_true", default=True, dest="inline")
+
+    parser.add_option(
+        "--memory", "-m",
+        help="Total free RAM memory, in KB, from the 'free -k' command.",
+        action="store_true", default=True, dest="cleanup")
+
+    parser.add_option(
+        "--disk-space", "-d",
+        help="Available disk space, in KB, from the 'df -Pk' command",
+        action="store_true", default=False, dest="geditor")
+
+    (options, args) = parser.parse_args() """
+
+    print get_host_metrics()
+    sys.exit()
+
+
+def run_command_string(command_str):
+    """ Run a command string in the shell & return the stdout as a string
+        if the command was successful, else return None. """
+    process = Popen(command_str, shell=True, stdin=open(os.devnull),
+                    stdout=PIPE, stderr=PIPE)
+    stdoutput = process.communicate()[0]
+    process.wait()
+    return_code = process.returncode
+    if return_code != 0:
+        raise CalledProcessError(command_str, return_code)
+        process.terminate()
+    else:
+        return str(stdoutput)
+
+
+def extract_pattern(data_pattern, raw_string):
+    """ Return the full group of a regular expression search on a string,
+        or None if no matches are found. """
+    first_match = re.search(data_pattern, raw_string)
+    if first_match:
+        return first_match.group(1)
+
+
+def process_load():
+    """ Return a dictionary with load values from 'uptime' as floats under
+        string keys (1, 5, 15) giving the time in minutes measured over. """
+    cmd, av_times, first_patt, partition, group, non_group = LOAD_TEMPLATES
+    av_dict = {}
+    pattern_template = '%s' + partition + '%s' + partition + '%s'
+    all_data = extract_pattern(first_patt, run_command_string(cmd))
+    for index, time in enumerate(av_times):
+        order_template = [non_group] * 3
+        order_template[index] = group
+        second_patt = pattern_template % tuple(order_template)
+        av_result_str = extract_pattern(re.compile(second_patt), all_data)
+        try:
+            av_dict[str(time) + ' min'] = float(av_result_str)
+        except TypeError:
+            av_dict[str(time) + ' min'] = av_result_str
+    return av_dict
+
+
+def process_memory():
+    """ Return free memory from the 'free -k' command as an integer. """
+    cmd, first_patt, second_patt = MEMORY_TEMPLATES
+    all_memory_data = extract_pattern(first_patt, run_command_string(cmd))
+    free_memory_str = extract_pattern(second_patt, all_memory_data)
+    try:
+        free_memory = int(free_memory_str)
+    except TypeError:
+        free_memory = free_memory_str
+    return free_memory
+
+
+def process_disk(paths_list):
+    """ Return a dictionary with available disk space from 'df -Pk' for
+        specified paths as float values under associated path string keys. """
+    cmd, partial_first_patt, second_patt = DISK_TEMPLATES
+    cmd_output = run_command_string(cmd)
+    path_dict = {}
+    for path in paths_list:
+        first_patt = path + partial_first_patt
+        all_path_data = extract_pattern(first_patt, cmd_output)
+        free_space_str = extract_pattern(second_patt, all_path_data)
+        try:
+            path_dict[path] = int(free_space_str)
+        except TypeError:
+            path_dict[path] = free_space_str
+    return path_dict
+
+
+def get_host_metrics(host=None):
+    """ Return a JSON structure containing load, memory & disk space
+        data for a specified host. """
+    if host is None:
+        host = 'localhost'
+    # TODO: code to go to specified host, not just localhost.
+    metrics = ('load', 'memory', 'disk-space')
+    processing = (process_load(), process_memory(), process_disk(PATHS_LIST))
+    HOST_METRIC = dict(zip(metrics, processing))
+    return json.dumps(HOST_METRIC, indent=4)
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as exc:
+        # if cylc.flags.debug:
+        #    raise
+        sys.exit(str(exc))
