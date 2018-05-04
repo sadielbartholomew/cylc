@@ -1,0 +1,188 @@
+#!/usr/bin/env python
+
+# THIS FILE IS PART OF THE CYLC SUITE ENGINE.
+# Copyright (C) 2008-2018 NIWA
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+"""cylc get-host-metric [OPTIONS]
+
+   Get metrics for localhost, in the form of a JSON structure with
+   top-level keys as requested via the OPTIONS:
+
+   1. --load
+      1, 5 and 15 minute load averages (as keys) from the 'uptime' command.
+   2. --memory
+      Total free RAM memory, in kilobytes, from the 'free -k' command.
+   3. --disk-space=PATH / --disk-space=PATH1,PATH2,PATH3 (etc)
+      Available disk space from the 'df -Pk' command, in kilobytes, for one
+      or more valid PATHs within the filesystem of localhost. Multiple PATH
+      options can be specified via a comma-delimited list, each becoming a
+      key under the top-level disk space key.
+
+   If no options are specified, --load and --memory are invoked by default.
+
+   Note: designed as a light-weight command for localhost; to run on a remote
+         host, run after accessing the remote via existing functionality."""
+
+
+import sys
+if '--use-ssh' in sys.argv[1:]:
+    sys.argv.remove('--use-ssh')
+    from cylc.remote import remrun
+    if remrun():
+        sys.exit(0)
+
+import os
+import re
+from subprocess import Popen, PIPE, CalledProcessError
+import json
+
+import cylc.flags
+from cylc.option_parsers import CylcOptionParser as COP
+
+
+LOAD_TEMPLATES = ['uptime', (1, 5, 15), r'load average:\s(.+)\n',
+                  r',\s', r'(\d+\.?\d+)', r'\d+\.?\d+']
+MEMORY_TEMPLATES = ['free -k', r'Mem:\s+(.+)\n', r'\d+\s+\d+\s+(\d+)\s+']
+DISK_TEMPLATES = ['df -Pk', r'Mounted on\n\S+\s+(.+)\n',
+                  r'\d+\s+\d+\s+(\d+)\s+']
+
+
+def main():
+    parser = COP(__doc__, comms=True, noforce=True, argdoc=[])
+
+    parser.add_option(
+        "--load", "-l",
+        help="1, 5 and 15 minute load averages from the 'uptime' command",
+        action="store_true", default=False, dest="load")
+
+    parser.add_option(
+        "--memory", "-m",
+        help="Total free RAM memory, in KB, from the 'free -k' command.",
+        action="store_true", default=False, dest="memory")
+
+    parser.add_option(
+        "--disk-space",
+        help="Available disk space, in KB, from the 'df -Pk' command",
+        action="store", default=None, dest="disk")
+
+    options, args = parser.parse_args()
+    print get_host_metric(options.load, options.memory, options.disk)
+
+    sys.exit()
+
+
+def run_command_string(command_str):
+    """ Run a command string in a local shell & return the stdout as a string
+        if the command was successful, else raise CalledProcessError. """
+    # Inputs to process are internal only, so 'shell=True' is safe here.
+    process = Popen(command_str, shell=True, stdin=open(os.devnull),
+                    stdout=PIPE, stderr=PIPE)
+    stdoutput = process.communicate()[0]
+    process.wait()
+    return_code = process.returncode
+    if return_code != 0:
+        raise CalledProcessError(return_code, command_str)
+        process.terminate()
+    else:
+        return str(stdoutput)
+
+
+def extract_pattern(data_pattern, raw_string):
+    """ Return the first parenthesized subgroup of a regular expression search
+        on a string, else if no """
+    try:
+        first_match = re.search(data_pattern, raw_string)
+        return first_match.group(1)
+    except (re.error, AttributeError, IndexError):
+        print "No group(1) for 're.search' using '%s'" % data_pattern
+
+
+def process_load():
+    """ Return a dictionary with load values from 'uptime' as floats under
+        string keys (1, 5, 15) giving the time in minutes measured over. """
+    cmd, av_times, first_patt, partition, group, non_group = LOAD_TEMPLATES
+    av_dict = {}
+    pattern_template = '%s' + partition + '%s' + partition + '%s' + r'$'
+    all_data = extract_pattern(first_patt, run_command_string(cmd))
+    for index, time in enumerate(av_times):
+        order_template = [non_group] * 3
+        order_template[index] = group
+        second_patt = pattern_template % tuple(order_template)
+        av_result_str = extract_pattern(second_patt, all_data)
+        try:
+            av_dict[str(time) + ' min'] = float(av_result_str)
+        except TypeError:
+            av_dict[str(time) + ' min'] = av_result_str
+    return av_dict
+
+
+def process_memory():
+    """ Return free memory from the 'free -k' command as an integer. """
+    cmd, first_patt, second_patt = MEMORY_TEMPLATES
+    all_memory_data = extract_pattern(first_patt,
+                                      run_command_string(cmd))
+    free_memory_str = extract_pattern(second_patt, all_memory_data)
+    try:
+        return int(free_memory_str)
+    except TypeError:
+        return free_memory_str
+
+
+def process_disk(paths_list):
+    """ Return a dictionary with available disk space from 'df -Pk' for
+        specified paths as float values under associated path string keys. """
+    partial_cmd, first_patt, second_patt = DISK_TEMPLATES
+    path_dict = {}
+    for path in paths_list:
+        # Invoke 'df' for each path/file separately; safer for extracting the
+        # correct data; not as efficient but the command is not intensive.
+        cmd_output = run_command_string(partial_cmd + ' ' + path)
+        all_path_data = extract_pattern(first_patt, cmd_output)
+        free_space_str = extract_pattern(second_patt, all_path_data)
+        if free_space_str:
+            try:
+                path_dict[path] = int(free_space_str)
+            except TypeError:
+                path_dict[path] = free_space_str
+    return path_dict
+
+
+def get_host_metric(inc_load, inc_memory, disk_paths):
+    """ Return a JSON structure containing load, memory & disk space
+        data, according to options specified, for localhost. """
+    HOST_METRIC = {}
+
+    if disk_paths:
+        paths_list = disk_paths.split(',')
+        # Filter out empty string from possible option spec trailing comma.
+        paths_list = [path for path in paths_list if path]
+        HOST_METRIC['disk-space'] = process_disk(paths_list)
+    # Load & memory provided as default, but disk space could be wanted
+    # singly so can't just do this via the option parser defaults.
+    if inc_load or all([not inc_load, not inc_memory, not disk_paths]):
+        HOST_METRIC['load'] = process_load()
+    if inc_memory or all([not inc_load, not inc_memory, not disk_paths]):
+        HOST_METRIC['memory'] = process_memory()
+
+    return json.dumps(HOST_METRIC, indent=4)
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as exc:
+        if cylc.flags.debug:
+            raise
+        sys.exit(str(exc))
