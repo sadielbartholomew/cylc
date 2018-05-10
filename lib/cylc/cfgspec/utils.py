@@ -125,3 +125,27 @@ def coerce_xtrig(value, keys, _):
                 kwargs[key.strip()] = coerce_type(val)
 
     return SuiteFuncContext(label, fname, args, kwargs, seconds)
+
+
+def coerce_range_list(values):
+    """Construct a list of integers from X to Y inclusive from the format
+       'X .. Y', returning the list object or None if an error is caught."""
+    list_format = r'\s*(\d+)\s\.\.\s(\d+)\s*$'
+    matches = re.match(list_format, values)
+    if not matches:
+        print "Cannot extract start and end integers."
+        return
+    try:
+        list_start, list_end = matches.group(1, 2)
+        startpoint = int(list_start)
+        # Range function has non-inclusive end-point so must add 1.
+        endpoint = int(list_end) + 1
+        if startpoint >= endpoint:
+            raise Exception("X must be smaller than Y in 'X .. Y' format.")
+            return
+    except (AttributeError, TypeError):
+        print "Cannot extract start and end integers."
+        return
+
+    processed_list = range(startpoint, endpoint)
+    return processed_list
