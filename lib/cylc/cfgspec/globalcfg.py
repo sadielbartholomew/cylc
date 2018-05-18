@@ -283,33 +283,18 @@ SPEC = {
             'rank': vdr(
                 vtype='string',
                 options=["random", "load:1", "load:5", "load:15", "memory",
-                         "disk space:path"],
+                         "disk-space"],
                 default="random"),
-            'thresholds': vdr(
-                vtype='string',
-                options=["load:1", "load:5", "load:15", "memory",
-                         "disk space:path"], default=[]),
+            'thresholds': vdr(vtype='string', default=None),
         },
     },
 }
-
-
-def range_list_create(length):
-    """ Return a converter to convert a start/base integer X to a 'range list'
-        string, format 'X .. Y', given the provision of a deprecated length."""
-    try:
-        range_list = lambda x: '%s .. %s' % (x, int(x) + int(length))
-    except ValueError:
-        return
-    return converter(range_list, "Format as range list")
 
 
 def upg(cfg, descr):
     """Upgrader."""
     add_bin_dir = converter(lambda x: x + '/bin', "Added + '/bin' to path")
     use_ssh = converter(lambda x: "ssh", "set to 'ssh'")
-    ports_list = range_list_create(
-        cfg['communication']['maximum number of ports'])
 
     u = upgrader(cfg, descr)
     u.deprecate(
@@ -425,13 +410,14 @@ def upg(cfg, descr):
     # Assuming version for merge of associated PR is 7.7.0; TODO verify this.
     u.deprecate(
         '7.7.0',
-        ['communication', 'maximum number of ports'],
-        ['suite servers', 'run ports'])
-    u.deprecate(
-        '7.7.0',
         ['communication', 'base port'],
         ['suite servers', 'run ports'],
-        ports_list)
+        converter(lambda x: '%s .. %s' % (
+            x, int(x) + int(cfg['communication']['maximum number of ports'])),
+            "Format as range list"))
+    u.obsolete(
+        '7.7.0',
+        ['communication', 'maximum number of ports'])
     u.deprecate(
         '7.7.0',
         ['suite host scanning'],

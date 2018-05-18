@@ -48,7 +48,6 @@ for FILE in "${TEST_NAME_BASE}-get-host-metric-memory.stdout" \
     "${TEST_NAME_BASE}-get-host-metric-m.stdout"
 do
     sed -i 's/\(\s\+\)\([0-9]\+\)\(\s*\n*\)/\11000000\3/g' "${FILE}"
-# 's/\s+\([0-9]+)\s?\n?/1000000/g' "${FILE}"
     cmp_json_ok "${FILE}" "${FILE}" <<__OUTPUT_FORMAT__
 {
     "memory": 1000000

@@ -162,6 +162,17 @@ def parse_commandline(is_restart):
         help="Specify the suite source.",
         metavar="SOURCE", action="store", dest="source")
 
+    parser.add_option(
+        "--host-select",
+        help="Enable host selection functionality.",
+        action="store_true", default=False, dest="host_select")
+
+    # Just inverse to --host-select, but have separate option for transparency.
+    parser.add_option(
+        "--no-host-select",
+        help="Disable host selection functionality.",
+        action="store_true", default=False, dest="no_host_select")
+
     options, args = parser.parse_args()
 
     if not is_restart and options.warm and len(args) < 2:

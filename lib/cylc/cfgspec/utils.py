@@ -133,8 +133,7 @@ def coerce_range_list(values):
     list_format = r'\s*(\d+)\s\.\.\s(\d+)\s*$'
     matches = re.match(list_format, values)
     if not matches:
-        print "Cannot extract start and end integers."
-        return
+        raise Exception("Cannot extract start and end integers.")
     try:
         list_start, list_end = matches.group(1, 2)
         startpoint = int(list_start)
@@ -142,10 +141,9 @@ def coerce_range_list(values):
         endpoint = int(list_end) + 1
         if startpoint >= endpoint:
             raise Exception("X must be smaller than Y in 'X .. Y' format.")
-            return
     except (AttributeError, TypeError):
         print "Cannot extract start and end integers."
-        return
+        raise
 
     processed_list = range(startpoint, endpoint)
     return processed_list
