@@ -32,11 +32,9 @@ do
     sed -i 's/\(\s\+\)\([0-9]\+\.[0-9]\+\)\(\s*\n*,*\)/\10.10\3/g' "${FILE}"
     cmp_json_ok "${FILE}" "${FILE}" <<__OUTPUT_FORMAT__
 {
-    "load": {
-        "5 min": 0.10, 
-        "15 min": 0.10, 
-        "1 min": 0.10
-    }
+    "load:5": 0.10,
+    "load:1": 0.10,
+    "load:15": 0.10
 }
 __OUTPUT_FORMAT__
 done
@@ -63,33 +61,29 @@ sed -i 's/\(\s\+\)\([0-9]\+\)\(\s*\n*\)/\11000000\3/g' \
 cmp_json_ok "${TEST_NAME_BASE}-get-host-metric-disk-one.stdout" \
 "${TEST_NAME_BASE}-get-host-metric-disk-one.stdout" <<__OUTPUT_FORMAT__
 {
-    "disk-space": {
-        "/": 1000000
-    }
+    "disk-space:/": 1000000
 }
 __OUTPUT_FORMAT__
 
 # Disk space option, with multiple paths specified correctly.
+
 run_ok "${TEST_NAME_BASE}-get-host-metric-disk-mult" cylc get-host-metric \
---disk-space=/,~
+--disk-space=/,/  # Host only has root mount dir for certain; as such can only
+                  # specify this safely across envs. Just check multiple paths
+                  # are accepted, though they combine -> only one key:value.
 sed -i 's/\(\s\+\)\([0-9]\+\)\(\s*\n*,*\)/\11000000\3/g' \
     "${TEST_NAME_BASE}-get-host-metric-disk-mult.stdout"
 cmp_json_ok "${TEST_NAME_BASE}-get-host-metric-disk-mult.stdout" \
 "${TEST_NAME_BASE}-get-host-metric-disk-mult.stdout" <<__OUTPUT_FORMAT__
 {
-    "disk-space": {
-        "/": 1000000, 
-        "~": 1000000
-    }
+    "disk-space:/": 1000000
 }
 __OUTPUT_FORMAT__
 
 # Disk space option, including a bad path.
 run_fail "${TEST_NAME_BASE}-get-host-metric-disk-bad" cylc get-host-metric \
 --disk-space=nonsense
-cmp_ok "${TEST_NAME_BASE}-get-host-metric-disk-bad.stderr" - << __ERR_OUT__
-Command 'df -Pk nonsense' returned non-zero exit status 1
-__ERR_OUT__
+grep_ok "subprocess\.CalledProcessError: Command '\['df', '-Pk', 'nonsense'\]' returned non-zero exit status 1" "${TEST_NAME_BASE}-get-host-metric-disk-bad.stderr"
 #-------------------------------------------------------------------------------
 # Test the various options in combination. Use '0.10' and '1000000' as
 # examples in correct format as cannot test for exact values.
@@ -103,11 +97,9 @@ sed -i 's/\(\s\+\)\([0-9]\+\.[0-9]\+\)\(\s*\n*,*\)/\10.10\3/g' \
 cmp_json_ok "${TEST_NAME_BASE}-get-host-metric-no-opts.stdout" \
 "${TEST_NAME_BASE}-get-host-metric-no-opts.stdout" <<__OUTPUT_FORMAT__
 {
-    "load": {
-        "5 min": 0.10, 
-        "15 min": 0.10, 
-        "1 min": 0.10
-    }, 
+    "load:5": 0.10,
+    "load:1": 0.10,
+    "load:15": 0.10,
     "memory": 1000000
 }
 __OUTPUT_FORMAT__
@@ -124,15 +116,11 @@ do
     sed -i 's/\(\s\+\)\([0-9]\+\.[0-9]\+\)\(\s*\n*,*\)/\10.10\3/g' "${FILE}"
     cmp_json_ok "${FILE}" "${FILE}" <<__OUTPUT_FORMAT__
 {
-    "disk-space": {
-        "/": 1000000
-    }, 
-    "load": {
-        "5 min": 0.10, 
-        "15 min": 0.10, 
-        "1 min": 0.10
-    }, 
-    "memory": 1000000
+    "memory": 1000000, 
+    "load:5": 0.10000000000000001, 
+    "load:15": 0.10000000000000001, 
+    "load:1": 0.10000000000000001, 
+    "disk-space:/": 1000000
 }
 __OUTPUT_FORMAT__
 done

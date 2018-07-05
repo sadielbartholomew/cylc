@@ -17,10 +17,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Common logic for "cylc run" and "cylc restart" CLI."""
 
+import os
 import sys
+from subprocess import Popen
 
 from cylc.option_parsers import CylcOptionParser as COP
 from cylc.scheduler import Scheduler
+from cylc.remote import HostAppointer, remrun, construct_ssh_cmd
 
 RUN_DOC = r"""cylc [control] run|start [OPTIONS] ARGS
 
@@ -61,6 +64,21 @@ START_POINT_ARG_DOC = (
 def main(is_restart=False):
     """CLI main."""
     options, args = parse_commandline(is_restart)
+
+    # Check whether a run host is explicitly specified, else select one.
+    if not options.host:
+        host = HostAppointer().appoint_host()
+        if is_restart:
+            base_cmd = ["restart"] + sys.argv[1:]
+        else:
+            base_cmd = ["run"] + sys.argv[1:]
+        # State host as relative localhost to prevent recursive host selection.
+        cmd = base_cmd.append("--host=localhost")
+        Popen(construct_ssh_cmd(base_cmd, host=host), stdin=open(os.devnull))
+        sys.exit(0)
+    elif remrun():
+        sys.exit(0)
+
     scheduler = Scheduler(is_restart, options, args)
     scheduler.start()
 
@@ -161,17 +179,6 @@ def parse_commandline(is_restart):
         "--source", "-S",
         help="Specify the suite source.",
         metavar="SOURCE", action="store", dest="source")
-
-    parser.add_option(
-        "--host-select",
-        help="Enable host selection functionality.",
-        action="store_true", default=False, dest="host_select")
-
-    # Just inverse to --host-select, but have separate option for transparency.
-    parser.add_option(
-        "--no-host-select",
-        help="Disable host selection functionality.",
-        action="store_true", default=False, dest="no_host_select")
 
     options, args = parser.parse_args()
 

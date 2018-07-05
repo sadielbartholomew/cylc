@@ -407,23 +407,22 @@ def upg(cfg, descr):
         '7.6.0',
         ['hosts', '__MANY__', 'local tail command template'],
         ['hosts', '__MANY__', 'tail command template'])
-    # Assuming version for merge of associated PR is 7.7.0; TODO verify this.
     u.deprecate(
-        '7.7.0',
+        '7.8.0',
         ['communication', 'base port'],
         ['suite servers', 'run ports'],
         converter(lambda x: '%s .. %s' % (
             x, int(x) + int(cfg['communication']['maximum number of ports'])),
             "Format as range list"))
     u.obsolete(
-        '7.7.0',
+        '7.8.0',
         ['communication', 'maximum number of ports'])
     u.deprecate(
-        '7.7.0',
+        '7.8.0',
         ['suite host scanning'],
         ['suite servers'])
     u.deprecate(
-        '7.7.0',
+        '7.8.0',
         ['suite servers', 'hosts'],
         ['suite servers', 'scan hosts'])
     u.upgrade()

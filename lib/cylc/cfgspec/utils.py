@@ -128,22 +128,24 @@ def coerce_xtrig(value, keys, _):
 
 
 def coerce_range_list(values):
-    """Construct a list of integers from X to Y inclusive from the format
-       'X .. Y', returning the list object or None if an error is caught."""
+    """Convert valid 'X .. Y' string to list of integers from X to Y inclusive.
+
+       Return the list object or None if input is invalid 'X .. Y' format."""
     list_format = r'\s*(\d+)\s\.\.\s(\d+)\s*$'
     matches = re.match(list_format, values)
+    core_err_msg = "Cannot extract start and end integers from '%s'" % values
     if not matches:
-        raise Exception("Cannot extract start and end integers.")
+        raise ValueError(core_err_msg)
     try:
         list_start, list_end = matches.group(1, 2)
         startpoint = int(list_start)
         # Range function has non-inclusive end-point so must add 1.
         endpoint = int(list_end) + 1
         if startpoint >= endpoint:
-            raise Exception("X must be smaller than Y in 'X .. Y' format.")
+            raise ValueError("%s >= %s but 'X .. Y' format requires X < Y." %
+                             (startpoint, endpoint))
     except (AttributeError, TypeError):
-        print "Cannot extract start and end integers."
-        raise
+        raise ValueError(core_err_msg)
 
     processed_list = range(startpoint, endpoint)
     return processed_list
