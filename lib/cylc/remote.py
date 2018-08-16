@@ -21,13 +21,14 @@ import os
 import sys
 import shlex
 import signal
+import unittest
+import json
+import socket
 from time import sleep
 from pipes import quote
 from posix import WIFSIGNALED
 from random import shuffle, choice
-import unittest
-import json
-import socket
+from multiprocessing import Pool
 
 # CODACY ISSUE:
 #   Consider possible security implications associated with Popen module.
@@ -353,6 +354,7 @@ class HostAppointer(object):
 
     def __init__(self):
         self.use_disk_path = "/"
+        self.max_processes = 5
 
         try:
             self.HOSTS = glbl_cfg().get(['suite servers', 'run hosts'])
@@ -446,36 +448,22 @@ class HostAppointer(object):
     def _remove_bad_hosts(self, cmd_with_opts, mock_stats=False):
         """Return dictionary of 'good' hosts with their metric stats.
 
-           Run 'get-host-metrics' on each run host & store extracted stats for
-           'good' hosts only. Ignore 'bad' hosts whereby either metric data
-           cannot be accessed from the command or at least one metric value
-           does not pass a specified threshold."""
+           Run 'get-host-metrics' on each run host in parallel & store
+           extracted stats for 'good' hosts only. Ignore 'bad' hosts whereby
+           either metric data cannot be accessed from the command or at least
+           one metric value does not pass a specified threshold."""
         host_stats = {}
         cmd = cmd_with_opts.split()
         if mock_stats:  # Create fake data for unittest purposes (only).
             host_stats = dict(mock_stats)  # Prevent mutable object issues.
         else:
-            for host in self.HOSTS:
-                host_alias = host
-                try:
-                    host_fqdn = get_fqdn_by_host(host)
-                    if host_fqdn == get_fqdn_by_host('localhost'):
-                        host_alias = None
-                except socket.gaierror:
-                    sys.stderr.write("Invalid host '%s'." % host)
-                    continue  # no such host: don't consider for 'good' hosts.
-                process = remote_cylc_cmd(cmd, capture=True, host=host_alias)
-                metric = process.communicate()[0]
-                process.wait()
-                ret_code = process.returncode
-                if ret_code:
-                    # Can't access data => designate as 'bad' host & ignore;
-                    # don't raise an exception, just print to error log.
-                    sys.stderr.write("Can't obtain metric data from host " +
-                                     "'%s'; return code '%s' from '%s'\n" % (
-                                         host, ret_code, cmd_with_opts))
-                else:
-                    host_stats[host] = json.loads(metric)
+            hosts = list(self.HOSTS)  # copy for safety.
+            processes = min(len(hosts), self.max_processes)
+            ordered_results = process_pool(processes, _process_host_unpack,
+                                           zip(hosts, len(hosts) * [cmd]))
+            proc_hosts = dict(zip(hosts, ordered_results))
+            host_stats = [dict(host, metr) for host, metr in
+                          proc_hosts.items() if metr is not None]
 
         bad_hosts = []  # Get errors if alter dict during iteration. Use list.
         for host in host_stats:
@@ -870,5 +858,43 @@ class TestHostAppointer(unittest.TestCase):
                 )
 
 
+def _process_host(host, cmd):
+    """Run 'get-host-metrics' on a host and return the extracted metric.
+
+       NB: this must lie outside HostAppointer for multiprocessing to work."""
+    host_alias = host
+    try:
+        host_fqdn = get_fqdn_by_host(host)
+        if host_fqdn == get_fqdn_by_host('localhost'):
+            host_alias = None
+    except socket.gaierror:
+        # no such host: don't consider for 'good' hosts, i.e. 'pass'.
+        sys.stderr.write("Invalid host '%s'." % host)
+    process = remote_cylc_cmd(cmd, capture=True, host=host_alias)
+    metric = process.communicate()[0]
+    process.wait()
+    ret_code = process.returncode
+    if ret_code:
+        # Can't access data => designate as 'bad' host & ignore ('pass');
+        # don't raise an exception, just print to error log.
+        sys.stderr.write("Can't obtain metric data from host " +
+                         "'%s'; return code '%s' from '%s'\n" % (
+                host, ret_code, cmd))
+    else:
+        return json.loads(metric)
+
+
+def _process_host_unpack(args):
+    """Enable multiple argument pass to multiprocess Pool for _process_host."""
+    return _process_host(*args)
+
+
 if __name__ == "__main__":
+
+    def process_pool(number_processes, function, *args):
+        """Generic muliprocessing Pool, which must lie within main()."""
+        proc_poll = Pool(number_processes)
+        result = proc_poll.map(function, *args)
+        return result
+
     unittest.main()

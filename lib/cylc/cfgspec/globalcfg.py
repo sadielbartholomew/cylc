@@ -276,9 +276,9 @@ SPEC = {
 
     'suite servers': {
         'run hosts': vdr(vtype='string_list', default=["localhost"]),
-        'run ports': vdr(vtype='range_list', default="43001 .. 43100"),
+        'run ports': vdr(vtype='range_list', default=range(43001, 43101)),
         'scan hosts': vdr(vtype='string_list', default=["localhost"]),
-        'scan ports': vdr(vtype='range_list', default="43001 .. 43100"),
+        'scan ports': vdr(vtype='range_list', default=range(43001, 43101)),
         'run host select': {
             'rank': vdr(
                 vtype='string',
@@ -412,7 +412,8 @@ def upg(cfg, descr):
         ['communication', 'base port'],
         ['suite servers', 'run ports'],
         converter(lambda x: '%s .. %s' % (
-            x, int(x) + int(cfg['communication']['maximum number of ports'])),
+            int(x),
+            int(x) + int(cfg['communication']['maximum number of ports'])),
             "Format as range list"))
     u.obsolete(
         '7.8.0',
