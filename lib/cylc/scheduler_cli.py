@@ -24,8 +24,7 @@ from subprocess import Popen
 from cylc.option_parsers import CylcOptionParser as COP
 from cylc.scheduler import Scheduler
 from cylc.hostuserutil import is_remote_host
-from cylc.remote import (
-    HostAppointer, remrun, construct_ssh_cmd, run_ssh_cmd)
+from cylc.remote import HostAppointer, remrun, construct_ssh_cmd
 
 RUN_DOC = r"""cylc [control] run|start [OPTIONS] ARGS
 
@@ -78,8 +77,7 @@ def main(is_restart=False):
             # State as relative localhost to prevent recursive host selection.
             base_cmd.append("--host=localhost")
             cmd = construct_ssh_cmd(base_cmd, host=host)
-            proc = Popen(
-                construct_ssh_cmd(base_cmd, host=host), stdin=open(os.devnull))
+            proc = Popen(cmd, stdin=open(os.devnull))
             res = proc.wait()
             sys.exit(res)
     elif remrun():

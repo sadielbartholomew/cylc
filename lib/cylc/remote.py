@@ -34,7 +34,7 @@ from multiprocessing import Pool
 #   Consider possible security implications associated with Popen module.
 # REASON IGNORED:
 #   Subprocess is needed, but we use it with security in mind.
-from subprocess import Popen, PIPE, CalledProcessError
+from subprocess import Popen, PIPE
 
 import cylc.flags
 from cylc.cfgspec.glbl_cfg import glbl_cfg
@@ -56,7 +56,7 @@ def get_proc_ancestors():
 
 
 def watch_and_kill(proc):
-    """ Kill proc if my PPID (etc.) changed - e.g. ssh connection dropped."""
+    """Kill proc if my PPID (etc.) changed - e.g. ssh connection dropped."""
     gpa = get_proc_ancestors()
     while True:
         sleep(0.5)
@@ -91,8 +91,8 @@ def run_ssh_cmd(command, stdin=None, capture_process=False,
         * If capture_process=True, the Popen object if created successfully.
         * Else True if the remote command is executed successfully, or
           if unsuccessful and capture_status=True the remote command exit code.
-        * Otherwise exit with an error message."""
-
+        * Otherwise exit with an error message.
+    """
     # CODACY ISSUE:
     #   subprocess call - check for execution of untrusted input.
     # REASON IGNORED:
@@ -232,7 +232,8 @@ def remote_cylc_cmd(
 
     Return:
         If capture=True, return the Popen object if created successfully.
-        Otherwise, return the exit code of the remote command."""
+        Otherwise, return the exit code of the remote command.
+    """
     command = construct_ssh_cmd(
         cmd, user=user, host=host, set_stdin=stdin,
         ssh_login_shell=ssh_login_shell, ssh_cylc=ssh_cylc)
@@ -255,7 +256,6 @@ class RemoteRunner(object):
 
     To ensure that users are aware of remote re-invocation info is always
     printed, but to stderr so as not to interfere with results.
-
     """
 
     def __init__(self, argv=None):
@@ -295,7 +295,8 @@ class RemoteRunner(object):
         """Execute command on remote host.
 
         Returns False if remote re-invocation is not needed, True if it is
-        needed and executes successfully otherwise aborts."""
+        needed and executes successfully otherwise aborts.
+        """
         if not self.is_remote:
             return False
 
@@ -324,11 +325,12 @@ class RemoteRunner(object):
 class EmptyHostList(Exception):
     """Exception to be raised if there are no valid run hosts.
 
-       Raise if, from the global configuration settings, no hosts are listed
-       for potential appointment to run suites (as 'run hosts') or none
-       satisfy requirements to pass 'run host select' specifications.
+    Raise if, from the global configuration settings, no hosts are listed
+    for potential appointment to run suites (as 'run hosts') or none
+    satisfy requirements to pass 'run host select' specifications.
 
-       Print message with the current state of relevant settings for info."""
+    Print message with the current state of relevant settings for info.
+    """
 
     def __str__(self):
         msg = "No hosts currently compatible with this global configuration:\n"
@@ -345,9 +347,9 @@ class EmptyHostList(Exception):
 class HostAppointer(object):
     """Appoint the most suitable host to run a suite on.
 
-       Determine the one host most suitable to (re-)run a suite on from all
-       'run hosts' given the 'run host selection' ranking & threshold options
-       as specified (else taken as default) in the global configuration.
+    Determine the one host most suitable to (re-)run a suite on from all
+    'run hosts' given the 'run host selection' ranking & threshold options
+    as specified (else taken as default) in the global configuration.
     """
 
     CMD_BASE = "get-host-metrics"  # 'cylc' prepended by remote_cylc_cmd.
@@ -356,53 +358,40 @@ class HostAppointer(object):
         self.use_disk_path = "/"
         self.max_processes = 5
 
-        try:
-            self.HOSTS = glbl_cfg().get(['suite servers', 'run hosts'])
-            self.RANK_METHOD = glbl_cfg().get(
-                ['suite servers', 'run host select', 'rank'])
-            self.THRESHOLDS = glbl_cfg().get(
-                ['suite servers', 'run host select', 'thresholds'])
-        except KeyError:  # Catch for unittest which updates these internally.
-            self.HOSTS = []
-            self.RANK_METHOD = 'random'
-            self.THRESHOLDS = None
-
-        self.PARSED_THRESHOLDS = self.parse_thresholds(self.THRESHOLDS)
+        self.hosts = glbl_cfg().get(['suite servers', 'run hosts'])
+        self.rank_method = glbl_cfg().get(
+            ['suite servers', 'run host select', 'rank'])
+        self.parsed_thresholds = self.parse_thresholds(glbl_cfg().get(
+            ['suite servers', 'run host select', 'thresholds']))
 
     @staticmethod
     def parse_thresholds(raw_thresholds_spec):
         """Parse raw 'thresholds' global configuration option to dict."""
         if not raw_thresholds_spec:
             return {}
+
         valid_thresholds = {}
+        error_msg = "Invalid suite host threshold component: '%s'"
         for threshold in raw_thresholds_spec.split(';'):
-            threshold = threshold.strip()
             try:
-                measure, cutoff = threshold.split(' ')
-            except (AttributeError, ValueError):
-                raise AttributeError(
-                    "Invalid threshold component '%s'." % threshold)
-            try:
+                measure, cutoff = threshold.strip().split()
                 if measure.startswith("load"):
-                    cutoff = float(cutoff)
+                    valid_thresholds[measure] = float(cutoff)
                 elif measure == "memory" or measure.startswith("disk-space"):
-                    cutoff = int(cutoff)
+                    valid_thresholds[measure] = int(cutoff)
                 else:
-                    raise AttributeError("Invalid threshold measure '%s'." %
-                                         measure)
+                    raise ValueError(error_msg % cutoff)
             except ValueError:
-                raise ValueError(
-                    "Threshold value '%s' of wrong type." % cutoff)
-            else:
-                valid_thresholds[measure] = cutoff
+                raise ValueError(error_msg % threshold)
         return valid_thresholds
 
     @staticmethod
     def selection_complete(host_list):
         """Check for and address a list (of hosts) with length zero or one.
 
-           Check length of a list (of hosts); for zero items raise an error,
-           for one return that item, else (for multiple items) return False."""
+        Check length of a list (of hosts); for zero items raise an error,
+        for one return that item, else (for multiple items) return False.
+        """
         if len(host_list) == 0:
             raise EmptyHostList()
         elif len(host_list) == 1:
@@ -413,14 +402,15 @@ class HostAppointer(object):
     def _trivial_choice(self, host_list, ignore_if_thresholds_prov=False):
         """Address run host configuration that can be dealt with trivially.
 
-           If thresholds are not provided or set to be ignored, test if
-           'host_list' has length zero or one, else if the ranking method is
-           random; if so return an exception or host selected appropriately."""
-        if ignore_if_thresholds_prov and self.PARSED_THRESHOLDS:
+        If thresholds are not provided or set to be ignored, test if
+        'host_list' has length zero or one, else if the ranking method is
+        random; if so return an exception or host selected appropriately.
+        """
+        if ignore_if_thresholds_prov and self.parsed_thresholds:
             return False
         if self.selection_complete(host_list):
             return self.selection_complete(host_list)
-        elif self.RANK_METHOD == 'random':
+        elif self.rank_method == 'random':
             return choice(host_list)
         else:
             return False
@@ -428,11 +418,11 @@ class HostAppointer(object):
     def _process_get_host_metrics_cmd(self):
         """Return 'get_host_metrics' command to run with only required options.
 
-           Return the command string to run 'cylc get host metric' with only
-           the required options given rank method and thresholds specified."""
-
+        Return the command string to run 'cylc get host metric' with only
+        the required options given rank method and thresholds specified.
+        """
         # Convert config keys to associated command options. Ignore 'random'.
-        considerations = [self.RANK_METHOD] + self.PARSED_THRESHOLDS.keys()
+        considerations = [self.rank_method] + self.parsed_thresholds.keys()
         opts = set()
         for spec in considerations:
             if spec.startswith("load"):
@@ -457,13 +447,13 @@ class HostAppointer(object):
         if mock_stats:  # Create fake data for unittest purposes (only).
             host_stats = dict(mock_stats)  # Prevent mutable object issues.
         else:
-            if not self.HOSTS:
+            if not self.hosts:
                 return {}
-            proc_pool = Pool(min(len(self.HOSTS), self.max_processes))
+            proc_pool = Pool(min(len(self.hosts), self.max_processes))
             host_stats = dict(zip(
-                self.HOSTS,
+                self.hosts,
                 proc_pool.map(get_host_metrics,
-                              zip(self.HOSTS, [cmd] * len(self.HOSTS)))
+                              zip(self.hosts, [cmd] * len(self.hosts)))
             ))
 
         for host, data in dict(host_stats).items():
@@ -471,7 +461,7 @@ class HostAppointer(object):
                 # No results for host (command failed) -> skip.
                 host_stats.pop(host)
                 continue
-            for measure, cutoff in self.PARSED_THRESHOLDS.items():
+            for measure, cutoff in self.parsed_thresholds.items():
                 datum = data[measure]
                 # Cutoff is a minimum or maximum depending on measure context.
                 if ((datum > cutoff and measure.startswith("load")) or
@@ -485,19 +475,19 @@ class HostAppointer(object):
     def _rank_good_hosts(self, all_host_stats):
         """Rank, by specified method, 'good' hosts to return the most suitable.
 
-           Take a dictionary of hosts considered 'good' with the corresponding
-           metric data, and rank them via the method specified in the global
-           configuration, returning the lowest-ranked (taken as best) host."""
-
+        Take a dictionary of hosts considered 'good' with the corresponding
+        metric data, and rank them via the method specified in the global
+        configuration, returning the lowest-ranked (taken as best) host.
+        """
         # Convert all dict values from full metrics structures to single
         # metric data values corresponding to the rank method to rank with.
-        hosts_with_vals_to_rank = dict((host, metric[self.RANK_METHOD]) for
+        hosts_with_vals_to_rank = dict((host, metric[self.rank_method]) for
                                        host, metric in all_host_stats.items())
 
         # Rank new dict by value and return list of hosts (only) in rank order.
         sort_asc_hosts = sorted(
             hosts_with_vals_to_rank, key=hosts_with_vals_to_rank.get)
-        if self.RANK_METHOD in ("memory", "disk-space:" + self.use_disk_path):
+        if self.rank_method in ("memory", "disk-space:" + self.use_disk_path):
             # Want 'most free' i.e. highest => final host in asc. list.
             return sort_asc_hosts[-1]
         else:  # A load av. is only poss. left; 'random' dealt with earlier.
@@ -505,10 +495,9 @@ class HostAppointer(object):
 
     def appoint_host(self, override_stats=False):
         """Appoint the most suitable host to (re-)run a suite on."""
-
         # Check if immediately 'trivial': no thresholds and zero or one hosts.
         initial_check = self._trivial_choice(
-            self.HOSTS, ignore_if_thresholds_prov=True)
+            self.hosts, ignore_if_thresholds_prov=True)
         if initial_check:
             return initial_check
 
@@ -522,6 +511,7 @@ class HostAppointer(object):
 
         return self._rank_good_hosts(good_host_stats)
 
+
 def get_host_metrics((host, cmd)):
     """Wrapper for the `cylc get-host-metric` command.
 
@@ -529,7 +519,7 @@ def get_host_metrics((host, cmd)):
     """
     try:
         host_fqdn = get_fqdn_by_host(host)
-        if host_fqdn == get_fqdn_by_host('localhost'):
+        if host_fqdn == get_fqdn_by_host(None):
             host = None
     except socket.gaierror:
         # No such host.
@@ -558,10 +548,11 @@ class TestHostAppointer(unittest.TestCase):
     def create_custom_metric(self, disk_int, mem_int, load_floats):
         """Non-test method to create and return a dummy metric for testing.
 
-           Return a structure in the format of 'get_host_metric' output
-           containing fake data. 'disk_int' and 'mem_int' should be integers
-           and 'load_floats' a list of three floats. Use 'None' instead to not
-           add the associated top-level key to metric."""
+        Return a structure in the format of 'get_host_metric' output
+        containing fake data. 'disk_int' and 'mem_int' should be integers
+        and 'load_floats' a list of three floats. Use 'None' instead to not
+        add the associated top-level key to metric.
+        """
         metric = {}
         if disk_int is not None:  # Distinguish None from '0', value to insert.
             metric.update({'disk-space:' + self.app.use_disk_path: disk_int})
@@ -580,10 +571,11 @@ class TestHostAppointer(unittest.TestCase):
     def create_mock_hosts(self, N_hosts, initial_values, increments, load_var):
         """Non-test method to create list of tuples of mock hosts and metrics.
 
-           For mock hosts, 'N_hosts' in number, create associated metrics with
-           data values that are incremented to create known data variation. The
-           list is shuffled to remove ordering by sequence position; name label
-           numbers (lower for lower values) indicate the data ordering."""
+        For mock hosts, 'N_hosts' in number, create associated metrics with
+        data values that are incremented to create known data variation. The
+        list is shuffled to remove ordering by sequence position; name label
+        numbers (lower for lower values) indicate the data ordering.
+        """
         mock_host_data = []
         for label in range(1, N_hosts + 1):
             val = []
@@ -604,21 +596,21 @@ class TestHostAppointer(unittest.TestCase):
         """Non-test method to edit global config input to HostAppointer()."""
         if set_hosts is None:
             set_hosts = []
-        self.app.HOSTS = set_hosts
-        self.app.RANK_METHOD = set_rank_method
-        self.app.PARSED_THRESHOLDS = self.app.parse_thresholds(set_thresholds)
+        self.app.hosts = set_hosts
+        self.app.rank_method = set_rank_method
+        self.app.parsed_thresholds = self.app.parse_thresholds(set_thresholds)
 
     def setup_test_rank_good_hosts(self, num, init, incr, var):
         """Non-test method to setup routine tests for '_rank_good_hosts'.
 
-           Note:
-           * Host list input as arg so not reading from 'self.app.HOSTS' =>
-             only 'set_rank_method' arg to 'mock_global_config' is relevant.
-           * RANK_METHOD 'random' dealt with before this method is called;
-             '_rank_good_hosts' not written to cater for it, so not tested.
-           * Mock set {HOST_X} created so that lower X host has lower data
-             values (assuming positive 'incr') so for X = {1, ..., N} HOST_1
-             or HOST_N is always 'best', depending on rank method context.
+        Note:
+            * Host list input as arg so not reading from 'self.app.hosts' =>
+              only 'set_rank_method' arg to 'mock_global_config' is relevant.
+            * rank_method 'random' dealt with before this method is called;
+              '_rank_good_hosts' not written to cater for it, so not tested.
+            * Mock set {HOST_X} created so that lower X host has lower data
+              values (assuming positive 'incr') so for X = {1, ..., N} HOST_1
+              or HOST_N is always 'best', depending on rank method context.
         """
         self.mock_global_config(set_rank_method='memory')
         self.assertEqual(
@@ -659,7 +651,7 @@ class TestHostAppointer(unittest.TestCase):
             }
         )
         self.assertRaises(
-            AttributeError,
+            ValueError,
             self.app.parse_thresholds,
             "memory 300000; gibberish 1.0"
         )
@@ -670,7 +662,7 @@ class TestHostAppointer(unittest.TestCase):
         )
         # Note lack of semi-colon separator.
         self.assertRaises(
-            AttributeError,
+            ValueError,
             self.app.parse_thresholds,
             "disk-space:/ 888 memory 300000"
         )
@@ -685,7 +677,7 @@ class TestHostAppointer(unittest.TestCase):
             ('HOST_1', 'HOST_2', 'HOST_3')
         )
 
-        # Case of defaults except with RANK_METHOD as anything but 'random';
+        # Case of defaults except with rank_method as anything but 'random';
         # really tests 'selection_complete' method (via '_trivial_choice').
         self.mock_global_config(set_rank_method='memory')
         self.assertEqual(
@@ -737,7 +729,7 @@ class TestHostAppointer(unittest.TestCase):
         self.mock_global_config(
             set_rank_method='memory',
             set_thresholds='disk-space:/ 1000; memory 1000; load:15 1.0')
-        # self.PARSED_THRESHOLDS etc dict => unordered keys: opts order varies;
+        # self.parsed_thresholds etc dict => unordered keys: opts order varies;
         # instead of cataloging all combos or importing itertools, test split.
         self.assertEqual(
             set(self.app._process_get_host_metrics_cmd().split()),
@@ -747,19 +739,20 @@ class TestHostAppointer(unittest.TestCase):
     def test_remove_bad_hosts(self):
         """Test the '_remove_bad_hosts' method.
 
-           Test using 'localhost' only since remote host functionality is
-           contained only inside remote_cylc_cmd() so is outside of the scope
-           of HostAppointer."""
+        Test using 'localhost' only since remote host functionality is
+        contained only inside remote_cylc_cmd() so is outside of the scope
+        of HostAppointer.
+        """
         self.mock_global_config(set_hosts=['localhost'])
         self.failUnless(
             self.app._remove_bad_hosts(
                 self.app.CMD_BASE).get('localhost', False)
         )
         # Test 'localhost' true identifier is treated properly too.
-        self.mock_global_config(set_hosts=[get_fqdn_by_host('localhost')])
+        self.mock_global_config(set_hosts=[get_fqdn_by_host(None)])
         self.failUnless(
             self.app._remove_bad_hosts(
-                self.app.CMD_BASE).get(get_fqdn_by_host('localhost'), False)
+                self.app.CMD_BASE).get(get_fqdn_by_host(None), False)
         )
 
         self.mock_global_config(set_hosts=['localhost', 'FAKE_HOST'])
@@ -770,8 +763,8 @@ class TestHostAppointer(unittest.TestCase):
                 self.app.CMD_BASE).get('localhost', False)
         )
         self.failUnless(
-            not self.app._remove_bad_hosts(
-                self.app.CMD_BASE).get('FAKE_HOST', False)
+            self.app._remove_bad_hosts(
+                self.app.CMD_BASE).get('FAKE_HOST', True)
         )
         self.mock_global_config(set_hosts=['localhost'])  # see above RE stderr
         self.assertEqual(
@@ -824,16 +817,15 @@ class TestHostAppointer(unittest.TestCase):
     def test_appoint_host(self):
         """Test the 'appoint_host' method.
 
-           This method calls all other methods in the class directly or
-           indirectly, hence this is essentially a full-class test. The
-           following phase space is covered:
+        This method calls all other methods in the class directly or
+        indirectly, hence this is essentially a full-class test. The
+        following phase space is covered:
 
-               1. Number of hosts: none, one or multiple.
-               2. Rank method: random, load (use just 5 min average case),
-                               memory or disk space.
-               3. Thresholds: without or with, including all measures.
+            1. Number of hosts: none, one or multiple.
+            2. Rank method: random, load (use just 5 min average case),
+                            memory or disk space.
+            3. Thresholds: without or with, including all measures.
         """
-
         # Define phase space.
         hosts_space = ([], ['HOST_1'],
                        ['HOST_1', 'HOST_2', 'HOST_3', 'HOST_4', 'HOST_5'])
