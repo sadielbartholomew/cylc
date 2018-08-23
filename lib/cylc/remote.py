@@ -206,7 +206,8 @@ def construct_ssh_cmd(raw_cmd, user=None, host=None, forward_x11=False,
         if cylc.flags.debug or os.getenv('CYLC_DEBUG') in ["True", "true"]:
             command.append(r'--debug')
     if cylc.flags.debug:
-        sys.stderr.write(' '.join(quote(c) for c in command) + '\n')
+        sys.stderr.write("INFO: ran the command '%s' on host '%s'\n" % (
+            ' '.join(quote(c) for c in command), host))
 
     return command
 
@@ -311,6 +312,8 @@ class RemoteRunner(object):
             # above: args quoted to avoid interpretation by the shell,
             # e.g. for match patterns such as '.*' on the command line.
 
+        # State as relative localhost to prevent recursive host selection.
+        cmd.append("--host=localhost")
         command = construct_ssh_cmd(
             cmd, user=self.owner, host=self.host, forward_x11=forward_x11,
             ssh_login_shell=self.ssh_login_shell, ssh_cylc=self.ssh_cylc,
@@ -331,16 +334,16 @@ class EmptyHostList(Exception):
 
     Print message with the current state of relevant settings for info.
     """
-
     def __str__(self):
-        msg = "No hosts currently compatible with this global configuration:\n"
+        msg = ("\nERROR: No hosts currently compatible with this global "
+               "configuration:")
         suite_server_cfg_items = (['run hosts'], ['run host select', 'rank'],
                                   ['run host select', 'thresholds'])
         for cfg_end_ref in suite_server_cfg_items:
-            cfg_full_ref = cfg_end_ref.insert(0, 'suite servers')
+            cfg_end_ref.insert(0, 'suite servers')
             # Add 2-space indentation for clarity in distinction of items.
-            msg = '\n  '.join([msg, cfg_item[-1] + ':',
-                               '  ' + glbl_cfg().get(cfg_full_ref)])
+            msg = '\n  '.join([msg, ' -> '.join(cfg_end_ref) + ':',
+                               '  ' + str(glbl_cfg().get(cfg_end_ref))])
         return msg
 
 
@@ -354,9 +357,11 @@ class HostAppointer(object):
 
     CMD_BASE = "get-host-metrics"  # 'cylc' prepended by remote_cylc_cmd.
 
-    def __init__(self):
+    def __init__(self, is_debug, is_verbose):
         self.use_disk_path = "/"
         self.max_processes = 5
+        self.is_debug = is_debug
+        self.is_verbose = is_verbose
 
         self.hosts = glbl_cfg().get(['suite servers', 'run hosts'])
         self.rank_method = glbl_cfg().get(
@@ -385,15 +390,17 @@ class HostAppointer(object):
                 raise ValueError(error_msg % threshold)
         return valid_thresholds
 
-    @staticmethod
-    def selection_complete(host_list):
+    def selection_complete(self, host_list):
         """Check for and address a list (of hosts) with length zero or one.
 
         Check length of a list (of hosts); for zero items raise an error,
         for one return that item, else (for multiple items) return False.
         """
         if len(host_list) == 0:
-            raise EmptyHostList()
+            if self.is_debug or self.is_verbose:
+                raise EmptyHostList()
+            else:
+                sys.exit(str(EmptyHostList()))
         elif len(host_list) == 1:
             return host_list[0]
         else:
@@ -438,10 +445,10 @@ class HostAppointer(object):
     def _remove_bad_hosts(self, cmd_with_opts, mock_stats=False):
         """Return dictionary of 'good' hosts with their metric stats.
 
-        Run 'get-host-metrics' on each run host in parallel & store
-        extracted stats for 'good' hosts only. Ignore 'bad' hosts whereby
-        either metric data cannot be accessed from the command or at least
-        one metric value does not pass a specified threshold.
+        Run 'get-host-metrics' on each run host in parallel & store extracted
+        stats for hosts, else an empty JSON structure. Filter out 'bad' hosts
+        whereby either metric data cannot be accessed from the command or at
+        least one metric value does not pass a specified threshold.
         """
         cmd = cmd_with_opts.split()
         if mock_stats:  # Create fake data for unittest purposes (only).
@@ -450,10 +457,12 @@ class HostAppointer(object):
             if not self.hosts:
                 return {}
             proc_pool = Pool(min(len(self.hosts), self.max_processes))
+            be_verbose = self.is_debug or self.is_verbose
             host_stats = dict(zip(
                 self.hosts,
                 proc_pool.map(get_host_metrics,
-                              zip(self.hosts, [cmd] * len(self.hosts)))
+                              zip(self.hosts, [cmd] * len(self.hosts),
+                                  [be_verbose] * len(self.hosts)))
             ))
 
         for host, data in dict(host_stats).items():
@@ -468,6 +477,14 @@ class HostAppointer(object):
                     (datum < cutoff and (
                         measure == "memory" or
                         measure.startswith("disk-space")))):
+                    # Alert user that threshold has not been met.
+                    if self.is_debug or self.is_verbose:
+                        sys.stderr.write((
+                            "WARNING: host '%s' did not pass %s threshold "
+                            "(%s %s threshold %s)\n" % (
+                                host, measure, datum,
+                                ">" if measure.startswith("load") else "<",
+                                cutoff)))
                     host_stats.pop(host)
                     break
         return host_stats
@@ -483,15 +500,27 @@ class HostAppointer(object):
         # metric data values corresponding to the rank method to rank with.
         hosts_with_vals_to_rank = dict((host, metric[self.rank_method]) for
                                        host, metric in all_host_stats.items())
+        if self.is_debug or self.is_verbose:
+            print "INFO: host %s values extracted are:" % self.rank_method
+            for host, value in hosts_with_vals_to_rank.items():
+                print "  " + host + ": " + str(value)
 
-        # Rank new dict by value and return list of hosts (only) in rank order.
+        # Sort new dict by value to return ascending-value ordered host list.
         sort_asc_hosts = sorted(
             hosts_with_vals_to_rank, key=hosts_with_vals_to_rank.get)
+        base_msg = ("INFO: good (metric-returning) hosts were ranked in the "
+                    "following order, from most to least suitable: ")
         if self.rank_method in ("memory", "disk-space:" + self.use_disk_path):
-            # Want 'most free' i.e. highest => final host in asc. list.
+            # Want 'most free' i.e. highest => reverse asc. list for ranking.
+            if self.is_debug or self.is_verbose:
+                sys.stderr.write(
+                    base_msg + ', '.join(sort_asc_hosts[::-1]) + '.\n')
             return sort_asc_hosts[-1]
         else:  # A load av. is only poss. left; 'random' dealt with earlier.
-            return sort_asc_hosts[0]  # Want lowest => first host in asc. list.
+            # Want lowest => ranking given by asc. list.
+            if self.is_debug or self.is_verbose:
+                sys.stderr.write(base_msg + ', '.join(sort_asc_hosts) + '.\n')
+            return sort_asc_hosts[0]
 
     def appoint_host(self, override_stats=False):
         """Appoint the most suitable host to (re-)run a suite on."""
@@ -512,29 +541,31 @@ class HostAppointer(object):
         return self._rank_good_hosts(good_host_stats)
 
 
-def get_host_metrics((host, cmd)):
+def get_host_metrics((host, cmd, be_verbose)):
     """Wrapper for the `cylc get-host-metric` command.
 
-    NOTE: multiprocessing.Pool.map does not work
+    NOTE: multiprocessing.Pool.map does not work.
     """
     try:
         host_fqdn = get_fqdn_by_host(host)
         if host_fqdn == get_fqdn_by_host(None):
             host = None
     except socket.gaierror:
-        # No such host.
-        sys.stderr.write("Invalid host '%s'." % host)
-        return
+        if be_verbose:
+            # No such host.
+            sys.stderr.write("WARNING: no such host '%s'; excluding as "
+                             "possible run host & continuing.\n" % host)
+        return {}  # Use valid JSON; take empty to mean no metric returned.
 
-    process = Popen(construct_ssh_cmd(cmd, host=host), stdin=open(os.devnull),
-                    stdout=PIPE, stderr=PIPE)
+    process = Popen(construct_ssh_cmd(
+        cmd, host=host), stdin=open(os.devnull), stdout=PIPE, stderr=PIPE)
     if process.wait():
-        # Command failed.
-        sys.stderr.write((
-            "Can't obtain metric data from host '%s'; return code '%s' "
-            "from '%s'\n" % (host, process.returncode, cmd)))
-        return
-
+        if be_verbose:
+            # Command failed.
+            sys.stderr.write((
+                "WARNING: can't obtain metric data from host '%s'; return "
+                "code '%s' from '%s'\n" % (host, process.returncode, cmd)))
+        return {}  # See previous return.
     return json.loads(process.communicate()[0])
 
 
@@ -542,8 +573,8 @@ class TestHostAppointer(unittest.TestCase):
     """Unit tests for the HostAppointer class."""
 
     def setUp(self):
-        """Create variables and templates to use in tests."""
-        self.app = HostAppointer()
+        """Create HostAppointer class instance to test."""
+        self.app = HostAppointer(is_debug=False, is_verbose=False)
 
     def create_custom_metric(self, disk_int, mem_int, load_floats):
         """Non-test method to create and return a dummy metric for testing.
@@ -689,7 +720,7 @@ class TestHostAppointer(unittest.TestCase):
             'HOST_1'
         )
         self.assertRaises(
-            EmptyHostList,
+            SystemExit,
             self.app._trivial_choice, []
         )
 
@@ -836,8 +867,8 @@ class TestHostAppointer(unittest.TestCase):
         # Enumerate all (24) correct results required to test equality with.
         # Correct results deduced individually based on mock host set. Note
         # only HOST_2 and HOST_3 pass all thresholds for thresholds_space[1].
-        correct_results = (8 * [EmptyHostList] +
-                           4 * ['HOST_1', EmptyHostList] +
+        correct_results = (8 * [SystemExit] +
+                           4 * ['HOST_1', SystemExit] +
                            ['HOST_X', 'HOST_Y', 'HOST_1', 'HOST_2', 'HOST_5',
                             'HOST_3', 'HOST_5', 'HOST_3'])
 

@@ -25,6 +25,8 @@ from cylc.option_parsers import CylcOptionParser as COP
 from cylc.scheduler import Scheduler
 from cylc.hostuserutil import is_remote_host
 from cylc.remote import HostAppointer, remrun, construct_ssh_cmd
+from cylc.suite_srv_files_mgr import (
+    SuiteSrvFilesManager, SuiteServiceFileError)
 
 RUN_DOC = r"""cylc [control] run|start [OPTIONS] ARGS
 
@@ -66,9 +68,16 @@ def main(is_restart=False):
     """CLI main."""
     options, args = parse_commandline(is_restart)
 
+    # Check suite is not already running before start of host selection.
+    try:
+        SuiteSrvFilesManager().detect_old_contact_file(args[0])
+    except SuiteServiceFileError as exc:
+        sys.exit(exc)
+
     # Check whether a run host is explicitly specified, else select one.
     if not options.host:
-        host = HostAppointer().appoint_host()
+        host = HostAppointer(
+            is_debug=options.debug, is_verbose=options.verbose).appoint_host()
         if is_remote_host(host):
             if is_restart:
                 base_cmd = ["restart"] + sys.argv[1:]
@@ -76,8 +85,8 @@ def main(is_restart=False):
                 base_cmd = ["run"] + sys.argv[1:]
             # State as relative localhost to prevent recursive host selection.
             base_cmd.append("--host=localhost")
-            cmd = construct_ssh_cmd(base_cmd, host=host)
-            proc = Popen(cmd, stdin=open(os.devnull))
+            proc = Popen(
+                construct_ssh_cmd(base_cmd, host=host), stdin=open(os.devnull))
             res = proc.wait()
             sys.exit(res)
     elif remrun():
