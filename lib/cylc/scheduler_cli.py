@@ -193,6 +193,13 @@ def parse_commandline(is_restart):
         help="Specify the suite source.",
         metavar="SOURCE", action="store", dest="source")
 
+    # Override standard parser option for specific help description.
+    parser.add_option(
+        "--host",
+        help="Specify the host on which to start-up the suite. Without this "
+        "set a host will be selected using the 'suite servers' global config.",
+        metavar="HOST", action="store", dest="host")
+
     options, args = parser.parse_args()
 
     if not is_restart and options.warm and len(args) < 2:

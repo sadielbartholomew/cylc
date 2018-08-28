@@ -777,7 +777,9 @@ class TestHostAppointer(unittest.TestCase):
         self.mock_global_config(set_hosts=['localhost'])
         self.failUnless(
             self.app._remove_bad_hosts(
-                self.app.CMD_BASE).get('localhost', False)
+                self.app.CMD_BASE).get('localhost', False) or
+            self.app._remove_bad_hosts(
+                self.app.CMD_BASE).get(get_fqdn_by_host(None), False)
         )
         # Test 'localhost' true identifier is treated properly too.
         self.mock_global_config(set_hosts=[get_fqdn_by_host(None)])

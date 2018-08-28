@@ -48,7 +48,7 @@ from subprocess import Popen, PIPE, CalledProcessError
 import json
 
 import cylc.flags
-from cylc.option_parsers import CylcOptionParser as COP
+from cylc.option_parsers import OptionParser
 
 
 """Templates for extracting desired metric data via regular expression.
@@ -89,7 +89,7 @@ DISK_TEMPLATES = ['df -Pk', re.compile(
 
 
 def main():
-    parser = COP(__doc__, comms=True, noforce=True, argdoc=[])
+    parser = OptionParser(__doc__)
 
     parser.add_option(
         "--load", "-l",
@@ -108,6 +108,7 @@ def main():
         action="store", default=None, dest="disk")
 
     options, args = parser.parse_args()
+
     print get_host_metric(options.load, options.memory, options.disk)
 
     sys.exit()

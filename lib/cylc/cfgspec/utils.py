@@ -91,7 +91,7 @@ def convert_range_list(values, keys):
     except ValueError:
         ValueError(core_err_msg)
     if startpoint >= endpoint:
-        raise ValueError("%s >= %s but 'X .. Y' format requires X < Y." %
+        raise ValueError("%s >= %s but 'X .. Y' format requires X <= Y." %
                          (startpoint, endpoint - 1))
     return range(startpoint, endpoint)
 
