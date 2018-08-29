@@ -825,54 +825,53 @@ suitability.
 \item {\em default:} \lstinline=random=
 \item {\em options:}
     \begin{myitemize}
-    \item {\bf random} - rank for suitability and select a host at random
-    \item {\bf load:1} - rank for suitability and select the host with the
-lowest load average over 1 minute, in KB, (as given by the
-\lstinline=uptime= command)
+    \item {\bf random} - shuffle the hosts to select a host at random
+    \item {\bf load:1} - rank and select for the lowest load average over 1 minute (as given by the \lstinline=uptime= command)
     \item {\bf load:5} - as for \lstinline=load:1= above, but over 5 minutes
     \item {\bf load:15} - as for \lstinline=load:1= above, but over 15 minutes
-    \item {\bf memory} - rank for suitability and select the host with the
-highest usable memory, in KB, as specified under \lstinline=/proc/meminfo=
-    \item {\bf disk-space:PATH} - rank for suitability and select the host
-with the highest free disk space for a given mount directory path
-\lstinline=PATH=, in KB, as given by the \lstinline=df= command, where
-multiple paths may be specified individually i.e. via
-\lstinline=disk-space:PATH_1= and \lstinline=disk-space:PATH_2=, etc.
+    \item {\bf memory} - rank and select for the highest usable memory i.e.
+      free memory plus memory in the buffer cache ('buffers') and in the
+      page cache ('cache'), as specified under \lstinline=/proc/meminfo=
+    \item {\bf disk-space:PATH} - rank and select for the highest free disk
+      space for a given mount directory path \lstinline=PATH= as given by
+      the \lstinline=df= command, where multiple paths may be specified
+      individually i.e. via \lstinline=disk-space:PATH_1= and
+      \lstinline=disk-space:PATH_2=, etc.
     \end{myitemize}
 \item {\em default:} (none)
 \end{myitemize}
 
 \paragraph[thresholds]{[suite servers] \textrightarrow [[run host select]] \textrightarrow thresholds}
 
-A list of metric measure and associated numeric value specifications
-against which all configured run hosts are compared; if for a given allowed
-host the extracted value of {\em any} of the provided measures does not
-meet the cutoff provided by the corresponding numeric value, which is a
-minimum or a maximum requirement depending on the measure context, the host
-is excluded from the list of run hosts to undergo ranking i.e. excluded as a
-potential run host. Usable memory (\lstinline=memory=) and free disk space
+A list of thresholds i.e. cutoff values which run hosts must meet in order
+to be considered as a possible run host. Each threshold is a minimum or a
+maximum requirement depending on the context of the measure; usable
+memory (\lstinline=memory=) and free disk space
 (\lstinline=disk-space:PATH=) threshold values set a {\em minimum} value,
 which must be exceeded, whereas load average (\lstinline=load:1=,
 \lstinline=load:5= and \lstinline=load:15=) threshold values set a
-{\em maximum}, which must not be.
+{\em maximum}, which must not be. Failure to meet a threshold results in
+exclusion from the list of hosts that undergo ranking to
+determine the best host which becomes the run host.
 
 \begin{myitemize}
 \item {\em type:} string in format
-\lstinline=<MEASURE_1> <CUTOFF_1>; ... ;<MEASURE_n> <CUTOFF_n>= (etc),
+\lstinline=MEASURE_1 CUTOFF_1; ... ;MEASURE_n CUTOFF_n= (etc),
 where each \lstinline=MEASURE_N= is one of the options below (note
-these corespond to all the rank methods accepted under the rank setting
+these correspond to all the rank methods accepted under the rank setting
 except for \lstinline=random= which does not make sense as a threshold
 measure). Spaces delimit corresponding measures and their values, while
 semi-colons (optionally with subsequent spaces) delimit each measure-value
 pair.
 \item {\em options:}
     \begin{myitemize}
-    \item {\bf load:1} - load average over 1 minute, in KB, (as given by
+    \item {\bf load:1} - load average over 1 minute (as given by
 the \lstinline=uptime= command)
     \item {\bf load:5} - as for \lstinline=load:1= above, but over 5 minutes
     \item {\bf load:15} - as for \lstinline=load:1= above, but over 15 minutes
-    \item {\bf memory} - usable memory, in KB, as specified under
-\lstinline=/proc/meminfo=
+    \item {\bf memory} - usable memory i.e. free memory plus memory in the
+      buffer cache ('buffers') and in the page cache ('cache'), in KB, as
+      specified under \lstinline=/proc/meminfo=
     \item {\bf disk-space:PATH} - free disk space for a given mount
 directory path \lstinline=PATH=, in KB, as given by the \lstinline=df=
 command, where multiple paths may be specified individually i.e. via

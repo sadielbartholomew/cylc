@@ -159,7 +159,7 @@ def process_load():
 
 
 def process_memory():
-    """Return dict with integer value of usable memory from '/proc/memory'."""
+    """Return dict with integer usable memory value from '/proc/meminfo'."""
     cmd, patt = MEMORY_TEMPLATES
     mem_tuple = extract_pattern(patt, run_command_string(cmd))
     # Sum free, buffer and cache memory values (free plus/minus buffer/cache).
