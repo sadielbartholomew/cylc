@@ -1,4 +1,5 @@
 Command Reference
 =================
 
-[auto-gen here.]
+.. todo::
+   auto-gen command reference here.

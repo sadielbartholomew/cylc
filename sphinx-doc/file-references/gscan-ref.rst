@@ -1,53 +1,51 @@
-Gscan ref
-=========
+.. _GscanRCReference:
 
-\section{Gscan GUI (cylc gscan) Config File Reference}
-\label{GscanRCReference}
-
-\lstset{language=bash}
+Gscan GUI (cylc gscan) Config File Reference
+============================================
 
 This section defines all legal items and values for the gscan config
-file which should be located in \lstinline=$HOME/.cylc/gscan.rc=. Some items
+file which should be located in ``$HOME/.cylc/gscan.rc``. Some items
 also affect the gpanel panel app.
 
 The main menubar can be hidden to maximise the display area. Its visibility
-can be toggled via the mouse right-click menu, or by typing Alt-m. When
+can be toggled via the mouse right-click menu, or by typing ``Alt-m``. When
 visible, the main View menu allows you to change properties such as the columns
 that are displayed, which hosts to scan for running suites, and the task state
 icon theme.
 
 At startup, the task state icon theme and icon size are taken from the gcylc
-config file \lstinline=$HOME/.cylc/gcylc.rc=.
+config file ``$HOME/.cylc/gcylc.rc``.
 
-\subsection{Top Level Items}
+Top Level Items
+---------------
 
-\subsubsection{activate on startup}
+activate on startup
+^^^^^^^^^^^^^^^^^^^
 
-Set whether \lstinline=cylc gpanel= will activate automatically when the gui is
+Set whether ``cylc gpanel`` will activate automatically when the GUI is
 loaded or not.
 
-\begin{myitemize}
-    \item {\em type:} boolean (True or False)
-\item {\em legal values:} ``True'', ``False''
-\item {\em default:} ``False''
-\item {\em example:} \lstinline@activate on startup = True@
-\end{myitemize}
+- *type*: boolean (True or False)
+- *legal values*: ``True``, ``False``
+- *default*: ``False``
+- *example*: ``activate on startup = True``
 
-\subsubsection{columns}
 
-Set the columns to display when the \lstinline=cylc gscan= GUI starts. This can
+columns
+^^^^^^^
+
+Set the columns to display when the ``cylc gscan`` GUI starts. This can
 be changed later with the View menu.  The order in which the columns are
 specified here does not affect the display order.
 
-\begin{myitemize}
-\item {\em type:} string (a list of one or more view names)
-\item {\em legal values:} ``host'', ``owner'', ``status'', ``suite'',
-  ``title'', ``updated''
-\item {\em default:} ``status'', ``suite''
-\item {\em example:} \lstinline@columns = suite, title, status@
-\end{myitemize}
+- *type*: string (a list of one or more view names)
+- *legal values*: ``host``, ``owner``, ``status``, ``suite``,
+  ``title``, ``updated``
+- *default*: ``status``, ``suite``
+- *example*: ``columns = suite, title, status``
 
-\subsubsection{suite listing update interval}
+suite listing update interval
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Set the time interval between refreshing the suite listing (by file system or
 port range scan).
@@ -61,13 +59,13 @@ update interval. Increasing this setting will make gscan friendlier to the
 network and/or the file system, but gscan may appear out of sync if there are
 many start up or shut down of suites between the intervals.
 
-\begin{myitemize}
-\item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
-\lstinline=PT10S=, 10 seconds, or \lstinline=PT1M=, 1 minute).
-\item {\em default: PT1M}
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g. ``PT10S``,
+  10 seconds, or ``PT1M``, 1 minute).
+- *default*: PT1M
 
-\subsubsection{suite status update interval}
+
+suite status update interval
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Set the time interval between calls to known running suites (suites that are
 known via the latest suite listing) for data updates.
@@ -76,31 +74,29 @@ Increasing this setting will reduce the network traffic and hits on the suite
 processes. However, gscan may appear out of sync with what may be happening
 in very busy suites.
 
-\begin{myitemize}
-\item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
-\lstinline=PT10S=, 10 seconds, or \lstinline=PT1M=, 1 minute).
-\item {\em default: PT15S}
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g. ``PT10S``,
+  10 seconds, or ``PT1M``, 1 minute).
+- *default*: PT15S
 
-\subsubsection{window size}
 
-Sets the size in pixels of the \lstinline=cylc gscan= GUI window at startup.
+window size
+^^^^^^^^^^^
 
-\begin{myitemize}
-    \item {\em type:} integer list: x, y
-    \item {\em legal values:} positive integers
-    \item {\em default:} 300, 200
-    \item {\em example:} \lstinline@window size = 1000, 700@
-\end{myitemize}
+Sets the size in pixels of the ``cylc gscan`` GUI window at startup.
 
-\subsubsection{hide main menubar}
+- *type*: integer list: x, y
+- *legal values*: positive integers
+- *default*: 300, 200
+- *example*: ``window size = 1000, 700``
 
-Hide the main menubar of the \lstinline=cylc gscan= GUI window at startup. By
+
+hide main menubar
+^^^^^^^^^^^^^^^^^
+
+Hide the main menubar of the ``cylc gscan`` GUI window at startup. By
 default, the menubar is not hidden. Either way, you can toggle its
-visibility with Alt-m or via the right-click menu.
+visibility with ``Alt-m`` or via the right-click menu.
 
-\begin{myitemize}
-  \item {\em type:} boolean (True or False)
-    \item {\em default:} False
-    \item {\em example:} \lstinline@hide main menubar = True@
-\end{myitemize}
+- *type*: boolean (True or False)
+- *default*: False
+- *example*: ``hide main menubar = True``

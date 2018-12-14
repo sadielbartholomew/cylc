@@ -1,5 +1,5 @@
-INSTALL Ref
-===========
+Cylc INSTALL File
+=================
 
-[auto-gen via:]
-\lstinputlisting{../../../INSTALL.md}
+.. todo::
+   auto-gen INSTALL.md as in orig '\lstinputlisting{../../../INSTALL.md}'

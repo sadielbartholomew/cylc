@@ -1,5 +1,5 @@
-README Ref
-==========
+Cylc README File
+================
 
-[auto-gen via:]
-\lstinputlisting{../../../README.md}
+.. todo::
+   auto-gen README.md as in orig '\lstinputlisting{../../../README.md}'
