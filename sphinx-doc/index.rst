@@ -47,37 +47,40 @@ Contents:
    :maxdepth: 4
 
    introduction
+
    installation
-   background/terminology
-   background/workflows-overview
 
-   tutorials/cug-tutorial
-   tutorials/rosedocs-tutorial
+   background/background-master.rst
+   background/terminology.rst
+   background/workflows-overview.rst
 
-   user-guide/main-user-guide
-   user-guide/remote-job-management
+   tutorials/tutorials-master.rst
+   tutorials/cug-tutorial.rst
+   tutorials/rosedocs-tutorial.rst
+  
+   user-guide/user-guide-master.rst
+   user-guide/main-user-guide.rst
+   user-guide/remote-job-management.rst
 
-   file-references/suiterc-ref
-   file-references/site-user-config-ref
-   file-references/gcylc-ref
-   file-references/gscan-ref
-   file-references/readme-ref
-   file-references/install-ref
+   suite-design-guide/suite-design-guide-master.rst
+
+   file-references/file-references-master.rst
+   file-references/suiterc-ref.rst
+   file-references/site-user-config-ref.rst
+   file-references/gcylc-ref.rst
+   file-references/gscan-ref.rst
+   file-references/install-ref.rst
+   file-references/readme-ref.rst
+
    command-reference
 
-   suite-design-guide/design-introduction.rst
-   suite-design-guide/style-guidelines.rst
-   suite-design-guide/basic-principles.rst
-   suite-design-guide/efficiency-and-maintainability.rst
-   suite-design-guide/portable-suites.rst
-   suite-design-guide/roadmap.rst
-
-   misc/comms-method
-   misc/cylc-6-mig-ref
-   misc/dev-history-major-changes
-   misc/known-issues
-   misc/licensing
-   misc/links
+   miscellaneous/miscellaneous-master.rst
+   miscellaneous/licensing.rst
+   miscellaneous/links.rst
+   miscellaneous/known-issues.rst
+   miscellaneous/dev-history-major-changes.rst
+   miscellaneous/cylc-6-mig-ref.rst
+   miscellaneous/comms-method.rst
 
 --------
 
