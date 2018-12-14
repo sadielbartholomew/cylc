@@ -48,8 +48,8 @@ Contents:
 
    introduction
    installation
-   background/workflows-overview
    background/terminology
+   background/workflows-overview
 
    tutorials/cug-tutorial
    tutorials/rosedocs-tutorial
