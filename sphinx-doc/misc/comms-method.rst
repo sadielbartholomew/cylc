@@ -1,10 +1,9 @@
-Comms Method
-============
+.. _Communication:
 
-\section{Communication Method}
-\label{Communication}
+Communication Method
+====================
 
-Cylc suite server programs and clients (commands, cylc gui, task messaging)
+Cylc suite server programs and clients (commands, cylc GUI, task messaging)
 communicate via particular ports using the HTTPS protocol, secured
 by HTTP Digest Authentication using the suite's 20-random-character
 private passphrase and private SSL certificate.
