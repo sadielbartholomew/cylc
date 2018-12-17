@@ -50,37 +50,19 @@ Contents:
 
    installation
 
-   background/background-master.rst
-   background/terminology.rst
-   background/workflows-overview.rst
+   background/background-master
 
-   tutorials/tutorials-master.rst
-   tutorials/cug-tutorial.rst
-   tutorials/rosedocs-tutorial.rst
+   tutorial
   
-   user-guide/user-guide-master.rst
-   user-guide/main-user-guide.rst
-   user-guide/remote-job-management.rst
+   user-guide/user-guide-master
 
-   suite-design-guide/suite-design-guide-master.rst
+   suite-design-guide/suite-design-guide-master
 
-   file-references/file-references-master.rst
-   file-references/suiterc-ref.rst
-   file-references/site-user-config-ref.rst
-   file-references/gcylc-ref.rst
-   file-references/gscan-ref.rst
-   file-references/install-ref.rst
-   file-references/readme-ref.rst
+   file-references/file-references-master
 
    command-reference
 
-   miscellaneous/miscellaneous-master.rst
-   miscellaneous/licensing.rst
-   miscellaneous/links.rst
-   miscellaneous/known-issues.rst
-   miscellaneous/dev-history-major-changes.rst
-   miscellaneous/cylc-6-mig-ref.rst
-   miscellaneous/comms-method.rst
+   miscellaneous/miscellaneous-master
 
 --------
 

@@ -562,7 +562,7 @@ Cylc Review. It displays suite information in web pages, as shown in
 
 .. _fig-review-screenshot:
 
-.. figure:: ../graphics/png/orig/cylc-review-screenshot.png
+.. figure:: graphics/png/orig/cylc-review-screenshot.png
     :align: center
     :figclass: align-center
 
@@ -1104,15 +1104,15 @@ It should look like :ref:`Figure X <fig-tut-hello-multi>` (with the
 
 .. _fig-tut-hello-multi:
 
-.. figure:: ../graphics/png/orig/tut-hello-multi-1.png
+.. figure:: graphics/png/orig/tut-hello-multi-1.png
     :align: center
     :figclass: align-center
 
-.. figure:: ../graphics/png/orig/tut-hello-multi-2.png
+.. figure:: graphics/png/orig/tut-hello-multi-2.png
     :align: center
     :figclass: align-center
 
-.. figure:: ../graphics/png/orig/tut-hello-multi-3.png
+.. figure:: graphics/png/orig/tut-hello-multi-3.png
     :align: center
     :figclass: align-center
 
@@ -1207,7 +1207,7 @@ points (or indefinitely if no final cycle point is given), as shown in
 
 .. _fig-tut-one:
 
-.. figure:: ../graphics/png/orig/tut-one.png
+.. figure:: graphics/png/orig/tut-one.png
     :align: center
     :figclass: align-center
 
@@ -1298,7 +1298,7 @@ cycling graph sections together.
 
 .. _fig-tut-two:
 
-.. figure:: ../graphics/png/orig/tut-two.png
+.. figure:: graphics/png/orig/tut-two.png
     :align: center
     :figclass: align-center
 
@@ -1407,7 +1407,7 @@ actually look like:
 
 .. _fig-tut-three:
 
-.. figure:: ../graphics/png/orig/tut-three.png
+.. figure:: graphics/png/orig/tut-three.png
     :align: center
     :figclass: align-center
 
@@ -1445,7 +1445,7 @@ ADD-IN: ../../../etc/examples/tutorial/cycling/integer/suite.rc
 
 .. _fig-tut-int:
 
-.. figure:: ../graphics/png/orig/tut-cyc-int.png
+.. figure:: graphics/png/orig/tut-cyc-int.png
     :align: center
     :figclass: align-center
 

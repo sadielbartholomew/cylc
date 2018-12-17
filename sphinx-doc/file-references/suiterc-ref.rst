@@ -1,111 +1,129 @@
-Suite.rc Ref
-============
+.. _SuiteRCReference:
 
-\section{Suite.rc Reference}
-\label{SuiteRCReference}
+Suite.rc Reference
+==================
 
-\lstset{language=bash}
+.. todo:
+   refs:
 
 This appendix defines all legal suite configuration items.
 Embedded Jinja2 code (see~\ref{Jinja2}) must process to a valid
 raw suite.rc file. See also~\ref{SuiteRCFile} for a descriptive
 overview of suite.rc files, including syntax (\ref{Syntax}).
 
-\subsection{Top Level Items}
+
+Top Level Items
+---------------
 
 The only top level configuration items at present are the suite title
 and description.
 
 
-\subsection{[meta]}
+[meta]
+------
 
 Section containing metadata items for this suite. Several items
 (title, description, URL) are pre-defined and are used by the GUI. Others can be 
 user-defined and passed to suite event handlers to be interpreted according to your 
-needs. For example, the value of a ``suite-priority'' item could determine how an event 
+needs. For example, the value of a "suite-priority" item could determine how an event 
 handler responds to failure events.
 
 
-\subsubsection[title]{ [meta] \textrightarrow title}
+[meta] ``->`` title
+^^^^^^^^^^^^^^^^^^^
 
-A single line description of the suite. It is displayed in the GUI ``Open Another Suite''
+A single line description of the suite. It is displayed in the GUI "Open Another Suite"
 window and can be retrieved at run time with the
-\lstinline=cylc show= command.
+``cylc show`` command.
 
-\begin{myitemize}
-\item {\em type:} single line string
-\item {\em default:} (none)
-\end{myitemize}
+- *type*: single line string
+- *default*: (none)
 
-\subsubsection[description]{ [meta] \textrightarrow description}
+
+[meta] ``->`` description
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A multi-line description of the suite. It can be retrieved at run time with the
-\lstinline=cylc show= command.
+``cylc show`` command.
 
-\begin{myitemize}
-\item {\em type:} multi-line string
-\item {\em default:} (none)
-\end{myitemize}
+- *type*: multi-line string
+- *default*: (none)
 
-\subsubsection[URL]{ [meta] \textrightarrow URL}
-\label{SuiteURL}
+
+.. _SuiteURL:
+
+[meta] ``->`` URL
+^^^^^^^^^^^^^^^^^
+
+.. todo:
+   refs:
 
 A web URL to suite documentation.  If present it can be browsed with the
-\lstinline=cylc doc= command, or from the gcylc Suite menu. The string
-template \lstinline=%(suite_name)s= will be replaced with the actual suite
+``cylc doc`` command, or from the gcylc Suite menu. The string
+template ``%(suite_name)s`` will be replaced with the actual suite
 name. See also task URLs (\ref{TaskURL}).
 
-\begin{myitemize}
-\item {\em type:} string (URL)
-\item {\em default:} (none)
-\item {\em example:} \lstinline=http://my-site.com/suites/%(suite_name)s/index.html=
-\end{myitemize}
+- *type*: string (URL)
+- *default*: (none)
+- *example*: ``http://my-site.com/suites/%(suite_name)s/index.html``
 
-\subsubsection{group}{ [meta] \textrightarrow group}
+
+[meta] ``->`` group
+^^^^^^^^^^^^^^^^^^^
 
 A group name for a suite. In the gscan GUI, suites with the same group name can
-be collapsed into a single state summary when the ``group'' column is displayed.
+be collapsed into a single state summary when the "group" column is displayed.
 
-\begin{myitemize}
-\item {\em type:} single line string
-\item {\em default:} (none)
-\end{myitemize}
+- *type*: single line string
+- *default*: (none)
 
-\subsubsection[\_\_MANY\_\_]{ [meta] \textrightarrow \_\_MANY\_\_}
+
+[meta] ``->`` \_\_MANY\_\_
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Replace \_\_MANY\_\_ with any user-defined metadata item. These, like title, URL, etc. can be passed
-to suite event handlers to be interpreted according to your needs. For example, ``suite-priority''.
+to suite event handlers to be interpreted according to your needs. For example, "suite-priority".
 
-\begin{myitemize}
-\item {\em type:} String or integer
-\item {\em default:} (none)
-\item {\em example:}
-    \begin{lstlisting}
-[meta]
-    suite-priority = high
-    \end{lstlisting}
-\end{myitemize}
+- *type*: String or integer
+- *default*: (none)
+- *example*:
+
+.. todo::
+   cylc lang.
+
+.. code-block:: none
+
+   [meta]
+       suite-priority = high
 
 
-\subsection{[cylc]}
+[cylc]
+------
 
 This section is for configuration that is not specifically task-related.
 
-\subsubsection[required run mode]{ [cylc] \textrightarrow required run mode}
+
+[cylc] ``->`` required run mode
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If this item is set cylc will abort if the suite is not started in the
 specified mode. This can be used for demo suites that have to be
 run in simulation mode, for example, because they have been taken out of
 their normal operational context; or to prevent accidental submission of
 expensive real tasks during suite development.
-\begin{myitemize}
-    \item {\em type:} string
-    \item {\em legal values:} live, dummy, dummy-local, simulation
-    \item {\em default:} None
-\end{myitemize}
 
-\subsubsection[UTC mode]{ [cylc] \textrightarrow UTC mode}
-\label{UTC-mode}
+- *type*: string
+- *legal values*: live, dummy, dummy-local, simulation
+- *default*: None
+
+
+.. _UTC-mode:
+
+[cylc] ``->`` UTC mode
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo:
+   refs:
 
 Cylc runs off the suite host's system clock by default. This item allows
 you to run the suite in UTC even if the system clock is set to local time.
@@ -114,212 +132,236 @@ their cycle point date-time plus offset; other time values used, reported, or
 logged by the suite server program will usually also be in UTC. The default for
 this can be set at the site level (see ~\ref{SiteUTCMode}).
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False, unless overridden at site level.
-\end{myitemize}
+- *type*: boolean
+- *default*: False, unless overridden at site level.
 
-\subsubsection[cycle point format]{ [cylc] \textrightarrow cycle point format}
-\label{cycle-point-format}
+
+.. _cycle-point-format:
+
+[cylc] ``->`` cycle point format
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo:
+   refs:
 
 To just alter the timezone used in the date-time cycle point format, see
 \ref{cycle-point-time-zone}. To just alter the number of expanded year digits
 (for years below 0 or above 9999), see
 \ref{cycle-point-num-expanded-year-digits}.
 
-Cylc usually uses a \lstinline=CCYYMMDDThhmmZ= (\lstinline=Z= in the special
-case of UTC) or \lstinline=CCYYMMDDThhmm+hhmm= format (\lstinline=+= standing
-for \lstinline=+= or \lstinline=-= here) for writing down date-time cycle
+Cylc usually uses a ``CCYYMMDDThhmmZ`` (``Z`` in the special
+case of UTC) or ``CCYYMMDDThhmm+hhmm`` format (``+`` standing
+for ``+`` or ``-`` here) for writing down date-time cycle
 points, which follows one of the basic formats outlined in the ISO 8601
 standard. For example, a cycle point on the 3rd of February 2001 at 4:50 in
 the morning, UTC (+0000 timezone), would be written
-\lstinline=20010203T0450Z=. Similarly, for the the 3rd of February 2001 at
+``20010203T0450Z``. Similarly, for the the 3rd of February 2001 at
 4:50 in the morning, +1300 timezone, cylc would write
-\lstinline=20010203T0450+1300=.
+``20010203T0450+1300``.
 
 You may use the isodatetime library's syntax to write dates and times in ISO
-8601 formats - \lstinline=CC= for century, \lstinline=YY= for decade and
-decadal year, \lstinline=+X= for expanded year digits and their positive or
+8601 formats - ``CC`` for century, ``YY`` for decade and
+decadal year, ``+X`` for expanded year digits and their positive or
 negative sign, thereafter following the ISO 8601 standard example notation
-except for fractional digits, which are represented as \lstinline=,ii= for
-\lstinline=hh=, \lstinline=,nn= for \lstinline=mm=, etc. For example, to write
+except for fractional digits, which are represented as ``,ii`` for
+``hh``, ``,nn`` for ``mm``, etc. For example, to write
 date-times as week dates with fractional hours, set cycle point format to
-\lstinline=CCYYWwwDThh,iiZ= e.g.\  \lstinline=1987W041T08,5Z= for 08:30 UTC on
+``CCYYWwwDThh,iiZ`` e.g.  ``1987W041T08,5Z`` for 08:30 UTC on
 Monday on the fourth ISO week of 1987.
 
 You can also use a subset of the strptime/strftime POSIX standard - supported
-tokens are \lstinline=%F=, \lstinline=%H=, \lstinline=%M=, \lstinline=%S=,
-\lstinline=%Y=, \lstinline=%d=, \lstinline=%j=, \lstinline=%m=,
-\lstinline=%s=, \lstinline=%z=.
+tokens are ``%F``, ``%H``, ``%M``, ``%S``,
+``%Y``, ``%d``, ``%j``, ``%m``,
+``%s``, ``%z``.
 
 The ISO8601 extended date-time format can be used
-(\lstinline=%Y-%m-%dT%H:%M=) but
-note that the `-' and `:' characters end up in job log directory paths.
+(``%Y-%m-%dT%H:%M``) but
+note that the "-" and ":" characters end up in job log directory paths.
 
 The pre cylc-6 legacy 10-digit date-time format YYYYMMDDHH is not ISO8601
 compliant and can no longer be used as the cycle point format. For job
 scripts that still require the old format, use the
-\lstinline=cylc cyclepoint= utility to translate the ISO8601 cycle point
+``cylc cyclepoint`` utility to translate the ISO8601 cycle point
 inside job scripts, e.g.:
 
-\lstset{language=suiterc}
-\begin{lstlisting}
-[runtime]
-   [[root]]
-      [[[environment]]]
-         CYCLE_TIME = $(cylc cyclepoint --template=%Y%m%d%H)
-\end{lstlisting}
+.. todo::
+   cylc lang.
 
-\subsubsection[cycle point num expanded year digits]{ [cylc] \textrightarrow
-cycle point num expanded year digits}
-\label{cycle-point-num-expanded-year-digits}
+.. code-block:: none
+
+   [runtime]
+       [[root]]
+           [[[environment]]]
+               CYCLE_TIME = $(cylc cyclepoint --template=%Y%m%d%H)
+
+
+.. _cycle-point-num-expanded-year-digits:
+
+[cylc] ``->`` cycle point num expanded year digits
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For years below 0 or above 9999, the ISO 8601 standard specifies that an
 extra number of year digits and a sign should be used. This extra number needs
 to be written down somewhere (here).
 
 For example, if this extra number is set to 2, 00Z on the 1st of January in
-the year 10040 will be represented as \lstinline=+0100400101T0000Z= (2 extra
+the year 10040 will be represented as ``+0100400101T0000Z`` (2 extra
 year digits used). With this number set to 3, 06Z on the 4th of May 1985 would
-be written as \lstinline=+00019850504T0600Z=.
+be written as ``+00019850504T0600Z``.
 
 This number defaults to 0 (no sign or extra digits used).
 
-\subsubsection[cycle point time zone]{ [cylc] \textrightarrow
-cycle point time zone}
-\label{cycle-point-time-zone}
+
+.. _cycle-point-time-zone:
+
+[cylc] ``->`` cycle point time zone
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 If you set UTC mode to True (\ref{UTC-mode}) then this will default to
-\lstinline=Z=. If you use a custom cycle point format
+``Z``. If you use a custom cycle point format
 (\ref{cycle-point-format}), you should specify the timezone choice (or null
 timezone choice) here as well.
 
 You may set your own time zone choice here, which will be used for all
 date-time cycle point dumping. Time zones should be expressed as ISO 8601 time
-zone offsets from UTC, such as \lstinline=+13=, \lstinline=+1300=,
-\lstinline=-0500= or \lstinline=+0645=, with \lstinline=Z= representing the
-special \lstinline=+0000= case. Cycle points will be converted to the time
+zone offsets from UTC, such as ``+13``, ``+1300``,
+``-0500`` or ``+0645``, with ``Z`` representing the
+special ``+0000`` case. Cycle points will be converted to the time
 zone you give and will be represented with this string at the end.
 
-Cycle points that are input without time zones (e.g.\ as an initial cycle
+Cycle points that are input without time zones (e.g. as an initial cycle
 point
 setting) will use this time zone if set. If this isn't set (and UTC mode is
 also not set), then they will default to the current local time zone.
 
 Note that the ISO standard also allows writing the hour and minute separated
-by a ":" (e.g.\ \lstinline=+13:00=) - however, this is not recommended, given
+by a ":" (e.g. ``+13:00``) - however, this is not recommended, given
 that the time zone is used as part of task output filenames.
 
-\subsubsection[abort if any task fails]{[cylc] \textrightarrow abort if any task fails}
+
+[cylc] ``->`` abort if any task fails
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Cylc does not normally abort if tasks fail, but if this item is turned
 on it will abort with exit status 1 if any task fails.
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False
-\end{myitemize}
+- *type*: boolean
+- *default*: False
 
-\subsubsection[health check interval]{[cylc] \textrightarrow health check interval}
-\label{health-check-interval}
+
+.. _health-check-interval:
+
+[cylc] ``->`` health check interval
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Specify the time interval on which a running cylc suite will check that its run
 directory exists and that its contact file contains the expected information.
 If not, the suite will shut itself down automatically.
 
-\begin{myitemize}
-    \item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
- \lstinline=PT5M=, 5 minutes (note: by contrast, \lstinline=P5M= means 5
- months, so remember the \lstinline=T=!)).
-    \item {\em default:} PT10M
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g. 
+  ``PT5M``, 5 minutes (note: by contrast, ``P5M`` means 5
+  months, so remember the ``T``!)).
+- *default*: PT10M
 
-\subsubsection[task event mail interval]{[cylc] \textrightarrow task event mail interval}
-\label{task-event-mail-interval}
+
+.. _task-event-mail-interval:
+
+[cylc] ``->`` task event mail interval
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Group together all the task event mail notifications into a single email within
 a given interval. This is useful to prevent flooding users' mail boxes when
 many task events occur within a short period of time.
 
-\begin{myitemize}
-  \item {\em type:} ISO 8601 duration/interval representation (e.g.\ \lstinline=PT10S=, 10 seconds, or \lstinline=PT1M=, 1 minute).
-  \item {\em default: PT5M}
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g. ``PT10S``, 10 seconds,
+  or ``PT1M``, 1 minute).
+- *default*: PT5M
 
-\subsubsection[disable automatic shutdown]{[cylc] \textrightarrow disable automatic shutdown}
 
-This has the same effect as the \lstinline{--no-auto-shutdown} flag for
+[cylc] ``->`` disable automatic shutdown
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This has the same effect as the ``--no-auto-shutdown`` flag for
 the suite run commands: it prevents the suite server program from shutting down
 normally when all tasks have finished (a suite timeout can still be used to
 stop the daemon after a period of inactivity, however).  This option can
 make it easier to re-trigger tasks manually near the end of a suite run,
 during suite development and debugging.
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False
-\end{myitemize}
+- *type*: boolean
+- *default*: False
 
-\subsubsection[log resolved dependencies]{[cylc] \textrightarrow log resolved dependencies}
+
+[cylc] ``->`` log resolved dependencies
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If this is turned on cylc will write the resolved dependencies of each
 task to the suite log as it becomes ready to run (a list of the IDs of
 the tasks that actually satisfied its prerequisites at run time). Mainly
 used for cylc testing and development.
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False
-\end{myitemize}
+- *type*: boolean
+- *default*: False
 
-\subsubsection[{[[}parameters{]]}]{[cylc] \textrightarrow [[parameters]]}
 
-Define parameter values here for use in expanding {\em parameterized tasks} -
+[cylc] ``->`` [[parameters]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
+
+Define parameter values here for use in expanding *parameterized tasks* -
 see Section~\ref{Parameterized Tasks}.
-\begin{myitemize}
-    \item {\em type:} list of strings, or an integer range
-        \lstinline=LOWER..UPPER..STEP= (two dots, inclusive bounds, STEP optional)
-    \item {\em default:} (none)
-    \item {\em examples:}
-        \begin{myitemize}
-            \item \lstinline@run = control, test1, test2@
-            \item \lstinline@mem = 1..5@  (equivalent to \lstinline@1, 2, 3, 4, 5@).
-            \item \lstinline@mem = -11..-7..2@  (equivalent to \lstinline@-11, -9, -7@).
-        \end{myitemize}
-\end{myitemize}
 
-\subsubsection[{[[}parameter templates{]]}]{[cylc] \textrightarrow [[parameter templates]]}
-\label{RefParameterTemplates}
+- *type*: list of strings, or an integer range
+  ``LOWER..UPPER..STEP`` (two dots, inclusive bounds, "STEP" optional)
+- *default*: (none)
+- *examples*:
+  - ``run = control, test1, test2``
+  - ``mem = 1..5``  (equivalent to ``1, 2, 3, 4, 5``).
+  - ``mem = -11..-7..2``  (equivalent to ``-11, -9, -7``).
+
+
+.. _RefParameterTemplates:
+
+[cylc] ``->`` [[parameter templates]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 Parameterized task names (see previous item, and Section~\ref{Parameterized
 Tasks}) are expanded, for each parameter value, using string templates.  You
 can assign templates to parameter names here, to override the default templates.
 
-\begin{myitemize}
-    \item {\em type:} a Python-style string template
-    \item {\em default} for integer parameters \lstinline=p=:
-        \lstinline=_p%(p)0Nd= \\
-        where N is the number of digits of the maximum integer value,
-        e.g.\ \lstinline=foo<run>= becomes \lstinline=foo_run3= for
-            \lstinline@run@ value \lstinline@3@.
-    \item {\em default} for non-integer parameters \lstinline=p=:
-        \lstinline=_%(p)s= \\
-        e.g.\ \lstinline=foo<run>= becomes \lstinline=foo_top= for
-            \lstinline@run@ value \lstinline@top@.
-    \item {\em example:} \lstinline@run = -R%(run)s@ \\
-            e.g.\ \lstinline=foo<run>= becomes \lstinline=foo-R3= for
-            \lstinline@run@ value \lstinline@3@.
-\end{myitemize}
+- *type*: a Python-style string template
+- *default} for integer parameters* ``p``:
+  ``_p%(p)0Nd``
+  where ``N`` is the number of digits of the maximum integer value,
+  e.g. ``foo<run>`` becomes ``foo_run3`` for ``run`` value ``3``.
+- *default for non-integer parameters* ``p``:
+  ``_%(p)s`` e.g. ``foo<run>`` becomes ``foo_top`` for
+  ``run`` value ``top``.
+- *example*: ``run = -R%(run)s`` e.g. ``foo<run>`` becomes ``foo-R3`` for
+  ``run`` value ``3``.
 
-Note that the values of a parameter named \lstinline=p= are substituted for
-\lstinline=%(p)s=.
-In \lstinline=_run%(run)s= the first ``run'' is a string literal, and the second
+Note that the values of a parameter named ``p`` are substituted for ``%(p)s``.
+In ``_run%(run)s`` the first "run" is a string literal, and the second
 gets substituted with each value of the parameter.
 
-\subsubsection[{[[}events{]]}]{[cylc] \textrightarrow [[events]]}
-\label{SuiteEventHandling}
 
-Cylc has internal ``hooks'' to which you can attach handlers that are
+.. _SuiteEventHandling:
+
+[cylc] ``->`` [[events]]
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
+
+Cylc has internal "hooks" to which you can attach handlers that are
 called by the suite server program whenever certain events occur. This section
 configures suite event hooks; see~\ref{TaskEventHandling} for
 task event hooks.
@@ -327,7 +369,7 @@ task event hooks.
 Event handler commands can send an email or an SMS, call a pager, intervene in
 the operation of their own suite, or whatever.
 They can be held in the suite bin directory, otherwise it is up to you
-to ensure their location is in \lstinline=$PATH= (in the shell in which
+to ensure their location is in ``$PATH`` (in the shell in which
 cylc runs, on the suite host). The commands should require
 very little resource to run and should return quickly.
 
@@ -336,173 +378,183 @@ line templates.
 
 A command line template may have any or all of these patterns which will be
 substituted with actual values:
-\begin{myitemize}
-    \item \%(event)s: event name (see below)
-    \item \%(suite)s: suite name
-    \item \%(suite\_url)s: suite URL
-    \item \%(message)s: event message, if any
-    \item any suite [meta] item, e.g.:
-    \begin{myitemize}
-      \item \%(title)s: suite title
-      \item \%(importance)s: example custom suite metadata
-    \end{myitemize}
-\end{myitemize}
+
+- \%(event)s: event name (see below)
+- \%(suite)s: suite name
+- \%(suite\_url)s: suite URL
+- \%(message)s: event message, if any
+- any suite [meta] item, e.g.:
+  - \%(title)s: suite title
+  - \%(importance)s: example custom suite metadata
 
 Otherwise the command line will be called with the following default
 arguments:
-\begin{lstlisting}
-<suite-event-handler> %(event)s %(suite)s %(message)s
-\end{lstlisting}
 
-{\em Note: substitution patterns should not be quoted in the template strings.
-This is done automatically where required.}
+.. code-block:: none
+
+   <suite-event-handler> %(event)s %(suite)s %(message)s
+
+
+*Note: substitution patterns should not be quoted in the template strings.
+This is done automatically where required.*
 
 Additional information can be passed to event handlers via
-[cylc] \textrightarrow [[environment]].
+[cylc] ``->`` [[environment]].
 
-\paragraph[EVENT handler]{[cylc] \textrightarrow [[events]] \textrightarrow EVENT handler}
+
+[cylc] ``->`` [[events]] ``->`` EVENT handler
+"""""""""""""""""""""""""""""""""""""""""""""
 
 A comma-separated list of one or more event handlers to call when one of the
 following EVENTs occurs:
-\begin{myitemize}
-    \item {\bf startup}  - the suite has started running
-    \item {\bf shutdown} - the suite is shutting down
-    \item {\bf timeout}  - the suite has timed out
-    \item {\bf stalled} - the suite has stalled
-    \item {\bf inactivity} - the suite is inactive
-\end{myitemize}
+
+- **startup**  - the suite has started running
+- **shutdown** - the suite is shutting down
+- **timeout**  - the suite has timed out
+- **stalled** - the suite has stalled
+- **inactivity** - the suite is inactive
+
+.. todo::
+   refs:
 
 Default values for these can be set at the site level via the siterc file
 (see ~\ref{SiteCylcHooks}).
 
 Item details:
-\begin{myitemize}
-    \item {\em type:} string (event handler script name)
-    \item {\em default:} None, unless defined at the site level.
-    \item {\em example:} \lstinline@startup handler = my-handler.sh@
-\end{myitemize}
 
-\paragraph[handlers]{[cylc] \textrightarrow [[[events]]] \textrightarrow handlers}
+- *type*: string (event handler script name)
+- *default*: None, unless defined at the site level.
+- *example*: ``startup handler = my-handler.sh``
+
+
+[cylc] ``->`` [[[events]]] ``->`` handlers
+""""""""""""""""""""""""""""""""""""""""""
 
 Specify the general event handlers as a list of command lines or command line
 templates.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of strings (event handler command line or command line templates).
-    \item {\em default:} (none)
-    \item {\em example:} \lstinline@handlers = my-handler.sh@
-\end{myitemize}
+- *type*: Comma-separated list of strings (event handler command line or
+  command line templates).
+- *default*: (none)
+- *example*: ``handlers = my-handler.sh``
 
-\paragraph[handler events]{[cylc] \textrightarrow [[events]] \textrightarrow handler events}
+
+[cylc] ``->`` [[events]] ``->`` handler events
+""""""""""""""""""""""""""""""""""""""""""""""
 
 Specify the events for which the general event handlers should be invoked.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of events
-    \item {\em default:} (none)
-    \item {\em example:} \lstinline@handler events = timeout, shutdown@
-\end{myitemize}
+- *type*: Comma-separated list of events
+- *default*: (none)
+- *example*: ``handler events = timeout, shutdown``
 
-\paragraph[mail events]{[cylc] \textrightarrow [[events]] \textrightarrow mail events}
+
+[cylc] ``->`` [[events]] ``->`` mail events
+"""""""""""""""""""""""""""""""""""""""""""
 
 Specify the suite events for which notification emails should be sent.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of events
-    \item {\em default:} (none)
-    \item {\em example:} \lstinline@mail events = startup, shutdown, timeout@
-\end{myitemize}
+- *type*: Comma-separated list of events
+- *default*: (none)
+- *example*: ``mail events = startup, shutdown, timeout``
 
-\paragraph[mail footer]{[cylc] \textrightarrow [[events]] \textrightarrow mail footer}
+
+[cylc] ``->`` [[events]] ``->`` mail footer
+"""""""""""""""""""""""""""""""""""""""""""
 
 Specify a string or string template to insert to footers of notification emails
 for both suite events and task events.
 
 A template string may have any or all of these patterns which will be
 substituted with actual values:
-\begin{myitemize}
-    \item \%(host)s: suite host name
-    \item \%(port)s: suite port number
-    \item \%(owner)s: suite owner name
-    \item \%(suite)s: suite name
-\end{myitemize}
 
-\begin{myitemize}
-    \item {\em type:} 
-    \item {\em default:} (none)
-    \item {\em example:} \lstinline@mail footer = see: http://localhost/%(owner)s/notes-on/%(suite)s/@
-\end{myitemize}
+- \%(host)s: suite host name
+- \%(port)s: suite port number
+- \%(owner)s: suite owner name
+- \%(suite)s: suite name
 
-\paragraph[mail from]{[cylc] \textrightarrow [[events]] \textrightarrow mail from}
+- *type*: 
+- *default*: (none)
+- *example*: ``mail footer = see: http://localhost/%(owner)s/notes-on/%(suite)s/``
 
-Specify an alternate \lstinline=from:= email address for suite event notifications.
 
-\begin{myitemize}
-    \item {\em type:} string
-    \item {\em default:} None, (notifications@HOSTNAME)
-    \item {\em example:} \lstinline|mail from = no-reply@your-org|
-\end{myitemize}
+[cylc] ``->`` [[events]] ``->`` mail from
+"""""""""""""""""""""""""""""""""""""""""
 
-\paragraph[mail smtp]{[cylc] \textrightarrow [[events]] \textrightarrow mail smtp}
+Specify an alternate ``from:`` email address for suite event notifications.
+
+- *type*: string
+- *default*: None, (notifications@HOSTNAME)
+- *example*: ``mail from = no-reply@your-org``
+
+
+[cylc] ``->`` [[events]] ``->`` mail smtp
+"""""""""""""""""""""""""""""""""""""""""
 
 Specify the SMTP server for sending suite event email notifications.
 
-\begin{myitemize}
-    \item {\em type:} string
-    \item {\em default:} None, (localhost:25)
-    \item {\em example:} \lstinline@mail smtp = smtp.yourorg@
-\end{myitemize}
+- *type*: string
+- *default*: None, (localhost:25)
+- *example*: ``mail smtp = smtp.yourorg``
 
-\paragraph[mail to]{[cylc] \textrightarrow [[events]] \textrightarrow mail to}
+
+[cylc] ``->`` [[events]] ``->`` mail to
+"""""""""""""""""""""""""""""""""""""""
 
 A list of email addresses to send suite event notifications. The list can be
-anything accepted by the \lstinline=mail= command.
+anything accepted by the ``mail`` command.
 
-\begin{myitemize}
-    \item {\em type:} string
-    \item {\em default:} None, (USER@HOSTNAME)
-    \item {\em example:} \lstinline@mail to = your.colleague@
-\end{myitemize}
+- *type*: string
+- *default*: None, (USER@HOSTNAME)
+- *example*: ``mail to = your.colleague``
 
-\paragraph[timeout]{[cylc] \textrightarrow [[events]] \textrightarrow timeout}
+
+[cylc] ``->`` [[events]] ``->`` timeout
+"""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 If a timeout is set and the timeout event is handled, the timeout event
 handler(s) will be called if the suite stays in a stalled state for some period
 of time. The timer is set initially at suite start up. It is possible to set a
 default for this at the site level (see ~\ref{SiteCylcHooks}).
 
-\begin{myitemize}
-    \item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
- \lstinline=PT5S=, 5 seconds, \lstinline=PT1S=, 1 second) - minimum 0 seconds.
-    \item {\em default:} (none), unless set at the site level.
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g. 
+  ``PT5S``, 5 seconds, ``PT1S``, 1 second) - minimum 0 seconds.
+- *default*: (none), unless set at the site level.
 
-\paragraph[inactivity]{[cylc] \textrightarrow [[events]] \textrightarrow inactivity}
+
+[cylc] ``->`` [[events]] ``->`` inactivity
+""""""""""""""""""""""""""""""""""""""""""
 
 If inactivity is set and the inactivity event is handled, the inactivity event
 handler(s) will be called if there is no activity in the suite for some period
 of time. The timer is set initially at suite start up. It is possible to set a
 default for this at the site level (see ~\ref{SiteCylcHooks}).
 
-\begin{myitemize}
-    \item {\em type:} ISO 8601 duration/interval representation (e.g.\  
- \lstinline=PT5S=, 5 seconds, \lstinline=PT1S=, 1 second) - minimum 0 seconds.
-    \item {\em default:} (none), unless set at the site level.
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g.  
+  ``PT5S``, 5 seconds, ``PT1S``, 1 second) - minimum 0 seconds.
+- *default*: (none), unless set at the site level.
 
-\paragraph[reset timer]{[cylc] \textrightarrow [[events]] \textrightarrow reset timer}
 
-If \lstinline=True= (the default) the suite timer will continually reset
+[cylc] ``->`` [[events]] ``->`` reset timer
+"""""""""""""""""""""""""""""""""""""""""""
+
+If ``True`` (the default) the suite timer will continually reset
 after any task changes state, so you can time out after some interval
 since the last activity occured rather than on absolute suite execution
 time.
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} True
-\end{myitemize}
+- *type*: boolean
+- *default*: True
 
-\paragraph[abort on stalled]{[cylc] \textrightarrow [[events]] \textrightarrow abort on stalled}
+
+[cylc] ``->`` [[events]] ``->`` abort on stalled
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 If this is set to True it will cause the suite to abort with error status
 if it stalls. A suite is considered "stalled" if there are no active,
@@ -510,663 +562,792 @@ queued or submitting tasks or tasks waiting for clock triggers to be met. It is
 possible to set a default for this at the site level
 (see ~\ref{SiteCylcHooks}).
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False, unless set at the site level.
-\end{myitemize}
+- *type*: boolean
+- *default*: False, unless set at the site level.
 
-\paragraph[abort on timeout]{[cylc] \textrightarrow [[events]] \textrightarrow abort on timeout}
+
+[cylc] ``->`` [[events]] ``->`` abort on timeout
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 If a suite timer is set (above) this will cause the suite to abort with
 error status if the suite times out while still running. It is possible to set
 a default for this at the site level (see ~\ref{SiteCylcHooks}).
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False, unless set at the site level.
-\end{myitemize}
+- *type*: boolean
+- *default*: False, unless set at the site level.
 
-\paragraph[abort on inactivity]{[cylc] \textrightarrow [[events]] \textrightarrow abort on inactivity}
+
+[cylc] ``->`` [[events]] ``->`` abort on inactivity
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 
 If a suite inactivity timer is set (above) this will cause the suite to abort
 with error status if the suite is inactive for some period while still running.
 It is possible to set a default for this at the site level
 (see ~\ref{SiteCylcHooks}).
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False, unless set at the site level.
-\end{myitemize}
+- *type*: boolean
+- *default*: False, unless set at the site level.
 
-\paragraph[abort if startup handler fails]{[cylc] \textrightarrow [[events]] \textrightarrow abort if EVENT handler fails}
+
+[cylc] ``->`` [[events]] ``->`` abort if EVENT handler fails
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Cylc does not normally care whether an event handler succeeds or fails,
 but if this is turned on the EVENT handler will be executed in the
 foreground (which will block the suite while it is running) and the
 suite will abort if the handler fails.
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False
-\end{myitemize}
+- *type*: boolean
+- *default*: False
 
-\subsubsection[{[[}environment{]]} ]{[cylc] \textrightarrow [[environment]]}
+
+[cylc] ``->`` [[environment]]
+"""""""""""""""""""""""""""""
 
 Environment variables defined in this section are passed to suite and
 task event handlers.
 
-\begin{myitemize}
-    \item These variables are not passed to tasks - use task runtime
-        variables for that. Similarly, task runtime variables are not
-        available to event handlers - which are executed by the suite server
-        program, (not by running tasks) in response to task events.
+- These variables are not passed to tasks - use task runtime
+  variables for that. Similarly, task runtime variables are not
+  available to event handlers - which are executed by the suite server
+  program, (not by running tasks) in response to task events.
+- Cylc-defined environment variables such as
+  ``$CYLC_SUITE_RUN_DIR`` are not passed to task event
+  handlers by default, but you can make them available by
+  extracting them to the cylc environment like this:
 
-    \item Cylc-defined environment variables such as
-        \lstinline=$CYLC_SUITE_RUN_DIR= are not passed to task event
-        handlers by default, but you can make them available by
-        extracting them to the cylc environment like this:
-\begin{lstlisting}
-[cylc]
-    [[environment]]
-        CYLC_SUITE_RUN_DIR = $CYLC_SUITE_RUN_DIR
-\end{lstlisting}
+.. todo::
+   cylc lang.
 
-    \item These variables - unlike task execution environment variables
-        which are written to job scripts and interpreted by the shell at
-        task run time - are not interpreted by the shell prior to use
-        so shell variable expansion expressions cannot be used here.
-\end{myitemize}
+.. code-block:: none
 
-\paragraph[\_\_VARIABLE\_\_ ]{[cylc] \textrightarrow [[environment]] \textrightarrow \_\_VARIABLE\_\_}
+   [cylc]
+       [[environment]]
+           CYLC_SUITE_RUN_DIR = $CYLC_SUITE_RUN_DIR
 
-Replace \_\_VARIABLE\_\_ with any number of environment variable
+- These variables - unlike task execution environment variables
+  which are written to job scripts and interpreted by the shell at
+  task run time - are not interpreted by the shell prior to use
+  so shell variable expansion expressions cannot be used here.
+
+
+[cylc] ``->`` [[environment]] ``->`` \_\_VARIABLE\_\_
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Replace ``\_\_VARIABLE\_\_`` with any number of environment variable
 assignment expressions.
 Values may refer to other local environment variables (order of
 definition is preserved) and are not evaluated or manipulated by
 cylc, so any variable assignment expression that is legal in the
 shell in which cylc is running can be used (but see the warning
 above on variable expansions, which will not be evaluated).
-White space around the `$=$' is allowed (as far as cylc's file
+White space around the ``=`` is allowed (as far as cylc's file
 parser is concerned these are just suite configuration items).
 
-\begin{myitemize}
-    \item {\em type:} string
-    \item {\em default:} (none)
-    \item {\em examples:}
-        \begin{myitemize}
-            \item \lstinline@FOO = $HOME/foo@
-        \end{myitemize}
-\end{myitemize}
+- *type*: string
+- *default*: (none)
+- *examples*: ``FOO = $HOME/foo``
 
 
-\subsubsection[{[[}reference test{]]}]{[cylc] \textrightarrow [[reference test]] }
-\label{ReferenceTestConfig}
+.. _ReferenceTestConfig:
+
+[cylc] ``->`` [[reference test]]
+""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 Reference tests are finite-duration suite runs that abort with non-zero
 exit status if cylc fails, if any task fails, if the suite times
 out, or if a shutdown event handler that (by default) compares the test
 run with a reference run reports failure. See~\ref{AutoRefTests}.
 
-\paragraph[suite shutdown event handler]{[cylc] \textrightarrow [[reference test]] \textrightarrow suite shutdown event handler}
+
+[cylc] ``->`` [[reference test]] ``->`` suite shutdown event handler
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 A shutdown event handler that should compare the test run with the
 reference run, exiting with zero exit status only if the test run
 verifies.
 
-\begin{myitemize}
-    \item {\em type:} string (event handler command name or path)
-    \item {\em default:} \lstinline=cylc hook check-triggering=
-\end{myitemize}
-As for any event handler, the full path can be ommited if the script is
-located somewhere in \lstinline=$PATH= or in the suite bin directory.
+- *type*: string (event handler command name or path)
+- *default*: ``cylc hook check-triggering``
 
-\paragraph[required run mode]{[cylc] \textrightarrow [[reference test]] \textrightarrow required run mode}
+As for any event handler, the full path can be ommited if the script is
+located somewhere in ``$PATH`` or in the suite bin directory.
+
+
+[cylc] ``->`` [[reference test]] ``->`` required run mode
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 If your reference test is only valid for a particular run mode, this
 setting will cause cylc to abort if a reference test is attempted
 in another run mode.
 
-\begin{myitemize}
-    \item {\em type:} string
-    \item {\em legal values:} live, dummy, dummy-local, simulation
-    \item {\em default:} None
-\end{myitemize}
+- *type*: string
+- *legal values*: live, dummy, dummy-local, simulation
+- *default*: None
 
-\paragraph[allow task failures]{[cylc] \textrightarrow [[reference test]] \textrightarrow allow task failures}
+
+[cylc] ``->`` [[reference test]] ``->`` allow task failures
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 A reference test run will abort immediately if any task fails, unless
-this item is set, or a list of {\em expected task failures} is provided
+this item is set, or a list of *expected task failures* is provided
 (below).
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False
-\end{myitemize}
+- *type*: boolean
+- *default*: False
 
-\paragraph[expected task failures]{[cylc] \textrightarrow [[reference test]] \textrightarrow expected task failures}
+
+[cylc] ``->`` [[reference test]] ``->`` expected task failures
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 A reference test run will abort immediately if any task fails, unless
-{\em allow task failures} is set (above) or the failed task is found
+*allow task failures* is set (above) or the failed task is found
 in a list IDs of tasks that are expected to fail.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of strings (task IDs: \lstinline=name.cycle_point=).
-    \item {\em default:} (none)
-    \item {\em example:} \lstinline=foo.20120808, bar.20120908=
-\end{myitemize}
+- *type*: Comma-separated list of strings (task IDs: ``name.cycle_point``).
+- *default*: (none)
+- *example*: ``foo.20120808, bar.20120908``
 
-\paragraph[live mode suite timeout]{[cylc] \textrightarrow [[reference test]] \textrightarrow live mode suite timeout}
+
+[cylc] ``->`` [[reference test]] ``->`` live mode suite timeout
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The timeout value, expressed as an ISO 8601 duration/interval, after which the
 test run should be aborted if it has not finished, in live mode. Test runs
 cannot be done in live mode unless you define a value for this item, because
 it is not possible to arrive at a sensible default for all suites.
 
-\begin{myitemize}
-    \item {\em type:} ISO 8601 duration/interval representation, e.g.\ 
-        \lstinline=PT5M= is 5 minutes (note: by contrast \lstinline=P5M= means 5
-         months, so remember the \lstinline=T=!).
-    \item {\em default:} PT1M (1 minute)
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation, e.g. 
+  ``PT5M`` is 5 minutes (note: by contrast ``P5M`` means 5
+  months, so remember the ``T``!).
+- *default*: PT1M (1 minute)
 
-\paragraph[simulation mode suite timeout]{[cylc] \textrightarrow [[reference test]] \textrightarrow simulation mode suite timeout}
+
+[cylc] ``->`` [[reference test]] ``->`` simulation mode suite timeout
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The timeout value in minutes after which the test run should be aborted
 if it has not finished, in simulation mode. Test runs cannot be done in
 simulation mode unless you define a value for this item, because it is
 not possible to arrive at a sensible default for all suites.
 
-\begin{myitemize}
-    \item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
- \lstinline=PT5M=, 5 minutes (note: by contrast, \lstinline=P5M= means 5
- months, so remember the \lstinline=T=!)).
-    \item {\em default:} PT1M (1 minute)
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g. 
+  ``PT5M``, 5 minutes (note: by contrast, ``P5M`` means 5
+  months, so remember the ``T``!)).
+- *default*: PT1M (1 minute)
 
-\paragraph[dummy mode suite timeout]{[cylc] \textrightarrow [[reference test]] \textrightarrow dummy mode suite timeout}
+
+[cylc] ``->`` [[reference test]] ``->`` dummy mode suite timeout
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The timeout value, expressed as an ISO 8601 duration/interval, after which the
 test run should be aborted if it has not finished, in dummy mode.  Test runs
 cannot be done in dummy mode unless you define a value for this item, because
 it is not possible to arrive at a sensible default for all suites.
 
-\begin{myitemize}
-    \item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
- \lstinline=PT5M=, 5 minutes (note: by contrast, \lstinline=P5M= means 5
- months, so remember the \lstinline=T=!)).
-    \item {\em default:} PT1M (1 minute)
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g. 
+  ``PT5M``, 5 minutes (note: by contrast, ``P5M`` means 5
+  months, so remember the ``T``!)).
+- *default*: PT1M (1 minute)
 
-\subsubsection[{[[}authentication{]]}]{[cylc] \textrightarrow [[authentication]] }
-\label{SuiteAuth}
+
+.. _SuiteAuth:
+
+[cylc] ``->`` [[authentication]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 Authentication of client programs with suite server programs can be set in the
 global site/user config files and overridden here if necessary.
 See~\ref{GlobalAuth} for more information.
 
-\paragraph[public]{[cylc] \textrightarrow [[authentication]] \textrightarrow public}
 
-The client privilege level granted for public access - i.e.\ no suite passphrase
+[cylc] ``->`` [[authentication]] ``->`` public
+""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
+
+The client privilege level granted for public access - i.e. no suite passphrase
 required.  See~\ref{GlobalAuth} for legal values.
 
-\subsubsection[{[[}simulation{]]} ]{[cylc] \textrightarrow [[simulation]]}
 
-Suite-level configuration for the {\em simulation} and {\em dummy} run modes
+[cylc] ``->`` [[simulation]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Suite-level configuration for the *simulation* and *dummy* run modes
 described in Section~\ref{SimulationMode}.
 
-\paragraph[disable suite event handlers]{[cylc] \textrightarrow [[simulation]] \textrightarrow disable suite event handlers}
 
-If this is set to \lstinline=True= configured suite event handlers will not be
+[cylc] ``->`` [[simulation]] ``->`` disable suite event handlers
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+If this is set to ``True`` configured suite event handlers will not be
 called in simulation or dummy modes.
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} \lstinline=True=
-\end{myitemize}
+- *type*: boolean
+- *default*: ``True``
 
-\subsection{[scheduling]}
+
+[scheduling]
+------------
 
 This section allows cylc to determine when tasks are ready to run.
 
-\subsubsection[cycling]{ [scheduling] \textrightarrow cycling mode }
-\label{cycling-mode}
+
+.. _cycling-mode:
+
+[scheduling] ``->`` cycling mode
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Cylc runs using the proleptic Gregorian calendar by default. This item allows
 you to either run the suite using the 360 day calendar (12 months of 30 days
 in a year) or using integer cycling. It also supports use of the 365 (never a
 leap year) and 366 (always a leap year) calendars.
 
-\begin{myitemize}
-    \item {\em type:} string
-    \item {\em legal values:} gregorian, 360day, 365day, 366day, integer
-    \item {\em default:} gregorian
+- *type*: string
+- *legal values*: gregorian, 360day, 365day, 366day, integer
+- *default*: gregorian
 
-\end{myitemize}
 
-\subsubsection[initial cycle point]{[scheduling] \textrightarrow initial cycle point}
-\label{initial cycle point}
+.. _initial cycle point:
+
+[scheduling] ``->`` initial cycle point
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In a cold start each cycling task (unless specifically excluded under
-[special tasks]) will be loaded into the suite with this cycle point,
+``[special tasks]``) will be loaded into the suite with this cycle point,
 or with the closest subsequent valid cycle point for the task.  This item can
 be overridden on the command line or in the gcylc suite start panel.
+
+.. todo::
+   refs:
 
 In date-time cycling, if you do not provide time zone information for this,
 it will be assumed to be local time, or in UTC if~\ref{UTC-mode} is set, or in
 the time zone determined by \ref{cycle-point-time-zone} if that is set.
 
-\begin{myitemize}
-    \item {\em type:} ISO 8601 date-time point representation (e.g.\ 
- \lstinline=CCYYMMDDThhmm=, 19951231T0630) or ``now''.
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: ISO 8601 date-time point representation (e.g. 
+  ``CCYYMMDDThhmm``, 19951231T0630) or "now".
+- *default*: (none)
 
-The string ``now'' converts to the current date-time on the suite host (adjusted
+.. todo::
+   refs:
+
+The string "now" converts to the current date-time on the suite host (adjusted
 to UTC if the suite is in UTC mode but the host is not) to minute resolution.
 Minutes (or hours, etc.) may be ignored depending on your cycle point format
 (\ref{cycle-point-format}).
 
-\subsubsection[final cycle point]{[scheduling] \textrightarrow final cycle point}
+
+[scheduling] ``->`` final cycle point
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Cycling tasks are held once they pass the final cycle point, if one is
 specified. Once all tasks have achieved this state the suite will shut
 down. If this item is provided you can override it on the command line
 or in the gcylc suite start panel.
 
+.. todo::
+   refs:
+
 In date-time cycling, if you do not provide time zone information for this,
 it will be assumed to be local time, or in UTC if \ref{UTC-mode} is set, or in
 the \ref{cycle-point-time-zone} if that is set.
 
-\begin{myitemize}
-    \item {\em type:} ISO 8601 date-time point representation (e.g.\ 
- \lstinline=CCYYMMDDThhmm=, 19951231T1230) or ISO 8601 date-time offset
-    (e.g.\  +P1D+PT6H)
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: ISO 8601 date-time point representation (e.g. 
+  ``CCYYMMDDThhmm``, 19951231T1230) or ISO 8601 date-time offset
+  (e.g.  +P1D+PT6H)
+- *default*: (none)
 
-\subsubsection[initial cycle point constraints]{[scheduling] \textrightarrow initial cycle point constraints}
-\label{initial cycle point constraints}
+
+.. _initial cycle point constraints:
+
+[scheduling] ``->`` initial cycle point constraints
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In a cycling suite it is possible to restrict the initial cycle point by
 defining a list of truncated time points under the initial cycle point
 constraints.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of ISO 8601 truncated time point
-        representations (e.g.\  T00, T06, T-30).
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: Comma-separated list of ISO 8601 truncated time point
+  representations (e.g.  T00, T06, T-30).
+- *default*: (none)
 
-\subsubsection[final cycle point constraints]{[scheduling] \textrightarrow final cycle point constraints}
-\label{final cycle point constraints}
+
+.. _final cycle point constraints:
+
+[scheduling] ``->`` final cycle point constraints
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In a cycling suite it is possible to restrict the final cycle point by
 defining a list of truncated time points under the final cycle point
 constraints.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of ISO 8601 truncated time point
-        representations (e.g.\  T00, T06, T-30).
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: Comma-separated list of ISO 8601 truncated time point
+  representations (e.g. T00, T06, T-30).
+- *default*: (none)
 
-\subsubsection[hold after point]{[scheduling] \textrightarrow hold after point}
+
+[scheduling] ``->`` hold after point
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Cycling tasks are held once they pass the hold after cycle point, if one is
 specified. Unlike the final cycle point suite will not shut down once all tasks
 have passed this point. If this item is provided you can override it on the
 command line or in the gcylc suite start panel.
 
-\subsubsection[runahead limit]{[scheduling] \textrightarrow runahead limit}
-\label{runahead limit}
+
+.. _runahead limit:
+
+[scheduling] ``->`` runahead limit
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 Runahead limiting prevents the fastest tasks in a suite from getting too far
 ahead of the slowest ones, as documented in~\ref{RunaheadLimit}.
+
+.. todo::
+   refs:
 
 This config item specifies a hard limit as a cycle interval between the
 slowest and fastest tasks. It is deprecated in favour of the newer default
-limiting by \lstinline=max active cycle points= (\ref{max active cycle points}).
+limiting by ``max active cycle points`` (\ref{max active cycle points}).
 
-\begin{myitemize}
-    \item {\em type:} Cycle interval string e.g.\  \lstinline=PT12H=
-    for a 12 hour limit under ISO 8601 cycling.
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: Cycle interval string e.g. ``PT12H``
+  for a 12 hour limit under ISO 8601 cycling.
+- *default*: (none)
 
-\subsubsection[max active cycle points]{[scheduling] \textrightarrow
- max active cycle points}
-\label{max active cycle points}
+
+.. _max active cycle points:
+
+[scheduling] ``->`` max active cycle points
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 Runahead limiting prevents the fastest tasks in a suite from getting too far
 ahead of the slowest ones, as documented in~\ref{RunaheadLimit}.
 
-This config item supersedes the deprecated hard \lstinline=runahead limit=
-(\ref{runahead limit}). It allows up to \lstinline=N= (default 3) consecutive
+.. todo::
+   refs:
+
+This config item supersedes the deprecated hard ``runahead limit``
+(\ref{runahead limit}). It allows up to ``N`` (default 3) consecutive
 cycle points to be active at any time, adjusted up if necessary for
 any future triggering.
 
-\begin{myitemize}
-    \item {\em type:} integer
-    \item {\em default:} 3
-\end{myitemize}
+- *type*: integer
+- *default*: 3
 
-\subsubsection[spawn to max active cycle points]{[scheduling] \textrightarrow
- spawn to max active cycle points}
-\label{spawn to max active cycle points}
 
-Allows tasks to spawn out to \lstinline=max active cycle points=
+.. _spawn to max active cycle points:
+
+[scheduling] ``->`` spawn to max active cycle points
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
+
+Allows tasks to spawn out to ``max active cycle points``
 (\ref{max active cycle points}), removing restriction that a task has to have
 submitted before its successor can be spawned.
 
-{\em Important:} This should be used with care given the potential impact of
+*Important*: This should be used with care given the potential impact of
 additional task proxies both in terms of memory and cpu for the cylc daemon as
 well as overheads in rendering all the additional tasks in gcylc. Also, use
 of the setting may highlight any issues with suite design relying on the
 default behaviour where downstream tasks would otherwise be waiting on ones
-upstream submitting and the suite would have stalled e.g.\  a housekeeping task
+upstream submitting and the suite would have stalled e.g. a housekeeping task
 at a later cycle deleting an earlier cycle's data before that cycle has had
 chance to run where previously the task would not have been spawned until its
 predecessor had been submitted.
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False
-\end{myitemize}
+- *type*: boolean
+- *default*: False
 
-\subsubsection[{[[}queues{]]}]{[scheduling] \textrightarrow [[queues]]}
+
+[scheduling] ``->`` [[queues]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 Configuration of internal queues, by which the number of simultaneously
 active tasks (submitted or running) can be limited, per queue. By
-default a single queue called {\em default} is defined, with all tasks
+default a single queue called *default* is defined, with all tasks
 assigned to it and no limit. To use a single queue for the whole suite
-just set the limit on the {\em default} queue as required.
+just set the limit on the *default* queue as required.
 See also~\ref{InternalQueues}.
 
-\paragraph[{[[[}\_\_QUEUE\_\_{]]]}]{[scheduling] \textrightarrow [[queues]] \textrightarrow [[[\_\_QUEUE\_\_]]]}
+
+[scheduling] ``->`` [[queues]] ``->`` [[[\_\_QUEUE\_\_]]]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Section heading for configuration of a single queue. Replace
-\_\_QUEUE\_\_ with a queue name, and repeat the section as required.
+``\_\_QUEUE\_\_`` with a queue name, and repeat the section as required.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} ``default''
-\end{myitemize}
+- *type*: string
+- *default*: "default"
 
-\paragraph[limit]{[scheduling] \textrightarrow [[queues]] \textrightarrow [[[\_\_QUEUE\_\_]]] \textrightarrow limit}
+
+[scheduling] ``->`` [[queues]] ``->`` [[[\_\_QUEUE\_\_]]] ``->`` limit
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 The maximum number of active tasks allowed at any one time, for this queue.
-\begin{myitemize}
-\item {\em type:} integer
-\item {\em default:} 0 (i.e.\ no limit)
-\end{myitemize}
 
-\paragraph[members]{[scheduling] \textrightarrow [[queues]] \textrightarrow [[[\_\_QUEUE\_\_]]] \textrightarrow members}
+- *type*: integer
+- *default*: 0 (i.e. no limit)
+
+
+[scheduling] ``->`` [[queues]] ``->`` [[[\_\_QUEUE\_\_]]] ``->`` members
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 A list of member tasks, or task family names, to assign to this queue
 (assigned tasks will automatically be removed from the default queue).
-\begin{myitemize}
-\item {\em type:} Comma-separated list of strings (task or family names).
-\item {\em default:} none for user-defined queues; all tasks for the ``default'' queue
-\end{myitemize}
 
-\subsubsection[{[[}xtriggers{]]}]{[scheduling] \textrightarrow [[xtriggers]]}
+- *type*: Comma-separated list of strings (task or family names).
+- *default*: none for user-defined queues; all tasks for the "default" queue
 
-This section is for {\em External Trigger} function declarations -
+
+[scheduling] ``->`` [[xtriggers]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
+
+This section is for *External Trigger* function declarations -
 see~\ref{External Triggers}.
 
-\paragraph[\_\_MANY\_\_]{[scheduling] \textrightarrow [[xtriggers]] \textrightarrow \_\_MANY\_\_}
 
-Replace \_\_MANY\_\_ with any user-defined event trigger function
+[scheduling] ``->`` [[xtriggers]] ``->`` \_\_MANY\_\_
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Replace ``\_\_MANY\_\_`` with any user-defined event trigger function
 declarations and corresponding labels for use in the graph:
 
-\begin{myitemize}
-\item {\em type:} string: function signature followed by optional call interval
-\item {\em example:} \lstinline@trig_1 = my_trigger(arg1, arg2, kwarg1, kwarg2):PT10S@
-\end{myitemize}
+- *type*: string: function signature followed by optional call interval
+- *example*: ``trig_1 = my_trigger(arg1, arg2, kwarg1, kwarg2):PT10S``
+
+.. todo::
+   refs:
 
 (See~\ref{External Triggers} for details).
 
-\subsubsection[{[[}special tasks{]]}]{[scheduling] \textrightarrow [[special tasks]]}
+
+[scheduling] ``->`` [[special tasks]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This section is used to identify tasks with special behaviour. Family names can
 be used in special task lists as shorthand for listing all member tasks.
 
-\paragraph[clock-trigger]{[scheduling] \textrightarrow [[special tasks]] \textrightarrow clock-trigger}
 
-{\em NOTE: please read {\em External Triggers} (\ref{External Triggers}) before
-using the older clock triggers described in this section.} 
+[scheduling] ``->`` [[special tasks]] ``->`` clock-trigger
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
+
+*NOTE: please read External Triggers (\ref{External Triggers}) before
+using the older clock triggers described in this section.*
 
 Clock-trigger tasks (see~\ref{ClockTriggerTasks}) wait on a wall clock time
 specified as an offset from their own cycle point.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of task or family names with
-        associated date-time offsets expressed as ISO8601 interval strings,
-        positive or negative, e.g.\  \lstinline=PT1H= for 1 hour.  The offset
-        specification may be omitted to trigger right on the cycle point.
-    \item {\em default:} (none)
-    \item {\em example:}
-\begin{lstlisting}
-    clock-trigger = foo(PT1H30M), bar(PT1.5H), baz
-\end{lstlisting}
-\end{myitemize}
+- *type*: Comma-separated list of task or family names with
+  associated date-time offsets expressed as ISO8601 interval strings,
+  positive or negative, e.g. ``PT1H`` for 1 hour.  The offset
+  specification may be omitted to trigger right on the cycle point.
+- *default*: (none)
+- *example*:
 
-\paragraph[clock-expire]{[scheduling] \textrightarrow [[special tasks]] \textrightarrow clock-expire}
-\label{ClockExpireRef}
+  .. todo::
+     cylc lang.
 
-Clock-expire tasks enter the {\em expired} state and skip job submission if too
+  .. code-block:: none
+
+     clock-trigger = foo(PT1H30M), bar(PT1.5H), baz
+
+
+.. _ClockExpireRef:
+
+[scheduling] ``->`` [[special tasks]] ``->`` clock-expire
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
+
+Clock-expire tasks enter the ``expired`` state and skip job submission if too
 far behind the wall clock when they become ready to run.  The expiry time is
 specified as an offset from wall-clock time; typically it should be negative -
 see~\ref{ClockExpireTasks}.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of task or family names with
-        associated date-time offsets expressed as ISO8601 interval strings,
-        positive or negative, e.g.\  \lstinline=PT1H= for 1 hour.  The offset
-        may be omitted if it is zero.
-    \item {\em default:} (none)
-    \item {\em example:}
-\begin{lstlisting}
-    clock-expire = foo(-P1D)
-\end{lstlisting}
-\end{myitemize}
+- *type*: Comma-separated list of task or family names with
+  associated date-time offsets expressed as ISO8601 interval strings,
+  positive or negative, e.g. ``PT1H`` for 1 hour.  The offset
+  may be omitted if it is zero.
+- *default*: (none)
+- *example*:
 
-\paragraph[external-trigger]{[scheduling] \textrightarrow [[special tasks]] \textrightarrow external-trigger}
+  .. todo::
+     cylc lang.
 
-{\em NOTE: please read {\em External Triggers} (\ref{External Triggers}) before
-using the older mechanism described in this section.} 
+  .. code-block:: none
+
+     clock-expire = foo(-P1D)
+
+
+[scheduling] ``->`` [[special tasks]] ``->`` external-trigger
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
+
+*NOTE: please read External Triggers (\ref{External Triggers}) before
+using the older mechanism described in this section.*
+
+.. todo::
+   refs:
 
 Externally triggered tasks (see~\ref{Old-Style External Triggers}) wait on
-external events reported via the \lstinline=cylc ext-trigger= command. To
+external events reported via the ``cylc ext-trigger`` command. To
 constrain triggers to a specific cycle point, include
-\lstinline=$CYLC_TASK_CYCLE_POINT= in the trigger message string and pass the
-cycle point to the \lstinline=cylc ext-trigger= command.
+``$CYLC_TASK_CYCLE_POINT`` in the trigger message string and pass the
+cycle point to the ``cylc ext-trigger`` command.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of task names with associated
-        external trigger message strings.
-    \item {\em default:} (none)
-    \item {\em example:} (note the comma and line-continuation character)
-\begin{lstlisting}
-    external-trigger = get-satx("new sat-X data ready"), \
+- *type*: Comma-separated list of task names with associated
+  external trigger message strings.
+- *default*: (none)
+- *example*: (note the comma and line-continuation character)
+
+  .. todo::
+     cylc lang.
+
+  .. code-block:: none
+
+     external-trigger = get-satx("new sat-X data ready"),
                          get-saty("new sat-Y data ready for $CYLC_TASK_CYCLE_POINT")
-\end{lstlisting}
-\end{myitemize}
 
 
-\paragraph[sequential]{[scheduling] \textrightarrow [[special tasks]] \textrightarrow sequential}
+[scheduling] ``->`` [[special tasks]] ``->`` sequential
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 Sequential tasks automatically depend on their own previous-cycle instance.
 This declaration is deprecated in favour of explicit inter-cycle triggers -
 see~\ref{SequentialTasks}.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of task or family names.
-    \item {\em default:} (none)
-    \item {\em example:} \lstinline@sequential = foo, bar@
-\end{myitemize}
+- *type*: Comma-separated list of task or family names.
+- *default*: (none)
+- *example*: ``sequential = foo, bar``
 
-\paragraph[exclude at start-up]{[scheduling] \textrightarrow [[special tasks]] \textrightarrow exclude at start-up}
-\label{EASU}
+
+.. _EASU:
+
+[scheduling] ``->`` [[special tasks]] ``->`` exclude at start-up
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Any task listed here will be excluded from the initial task pool (this
-goes for suite restarts too). If an {\em inclusion} list is also
+goes for suite restarts too). If an *inclusion* list is also
 specified, the initial pool will contain only included tasks that have
 not been excluded. Excluded tasks can still be inserted at run time.
 Other tasks may still depend on excluded tasks if they have not been
 removed from the suite dependency graph, in which case some manual
 triggering, or insertion of excluded tasks, may be required.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of task or family names.
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: Comma-separated list of task or family names.
+- *default*: (none)
 
-\paragraph[include at start-up]{[scheduling] \textrightarrow [[special tasks]] \textrightarrow include at start-up}
-\label{IASU}
 
-If this list is not empty, any task {\em not} listed in it will be
+.. _IASU:
+
+[scheduling] ``->`` [[special tasks]] ``->`` include at start-up
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+If this list is not empty, any task *not* listed in it will be
 excluded from the initial task pool (this goes for suite restarts too).
-If an {\em exclusion} list is also specified, the initial pool will
+If an *exclusion* list is also specified, the initial pool will
 contain only included tasks that have not been excluded. Excluded tasks
 can still be inserted at run time. Other tasks may still depend on
 excluded tasks if they have not been removed from the suite dependency
 graph, in which case some manual triggering, or insertion of excluded
 tasks, may be required.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of task or family names.
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: Comma-separated list of task or family names.
+- *default*: (none)
 
-\subsubsection[{[[}dependencies{]]}]{[scheduling] \textrightarrow [[dependencies]]}
+
+[scheduling] ``->`` [[dependencies]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 The suite dependency graph is defined under this section.  You can plot
-the dependency graph as you work on it, with \lstinline=cylc graph= or
+the dependency graph as you work on it, with ``cylc graph`` or
 by right clicking on the suite in the db viewer.  See
 also~\ref{ConfiguringScheduling}.
 
-\paragraph[graph]{ [scheduling] \textrightarrow [[dependencies]] \textrightarrow graph }
+
+[scheduling] ``->`` [[dependencies]] ``->`` graph
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 The dependency graph for a completely non-cycling suites can go here.
 See also~\ref{GraphDescrip} below and~\ref{ConfiguringScheduling}, for graph
 string syntax.
-\begin{myitemize}
-    \item {\em type:} string
-    \item {\em example:} (see~\ref{GraphDescrip} below)
-\end{myitemize}
 
-\paragraph[{[[[}\_\_RECURRENCE\_\_{]]]}]{[scheduling] \textrightarrow [[dependencies]] \textrightarrow [[[\_\_RECURRENCE\_\_]]]}
+- *type*: string
+- *example*: (see~\ref{GraphDescrip} below)
 
-\_\_RECURRENCE\_\_ section headings define the sequence of cycle points for
+
+[scheduling] ``->`` [[dependencies]] ``->`` [[[\_\_RECURRENCE\_\_]]]
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+``\_\_RECURRENCE\_\_`` section headings define the sequence of cycle points for
 which the subsequent graph section is valid. These should be specified in
 our ISO 8601 derived sequence syntax, or similar for integer cycling:
-\begin{myitemize}
-    \item {\em examples:}
-        \begin{myitemize}
-            \item date-time cycling:
-                \lstinline@[[[T00,T06,T12,T18]]]@ or \lstinline@[[[PT6H]]]@
-            \item integer cycling (stepped by 2):
-                \lstinline@[[[P2]]]@
-        \end{myitemize}
-    \item {\em default:} (none)
-\end{myitemize}
+
+- *examples*:
+  - date-time cycling: ``[[[T00,T06,T12,T18]]]`` or ``[[[PT6H]]]``
+  - integer cycling (stepped by 2): ``[[[P2]]]``
+- *default*: (none)
+
+.. todo::
+   refs:
 
 See~\ref{GraphTypes} for more on recurrence expressions, and how multiple graph
 sections combine.
 
-\subparagraph[graph]{[scheduling] \textrightarrow [[dependencies]] \textrightarrow [[[\_\_RECURRENCE\_\_]]] \textrightarrow graph }
-\label{GraphDescrip}
+
+.. _GraphDescrip:
+
+[scheduling] ``->`` [[dependencies]] ``->`` [[[\_\_RECURRENCE\_\_]]] ``->`` graph
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. todo::
+   refs:
 
 The dependency graph for a given recurrence section goes here. Syntax examples
 follow; see also~\ref{ConfiguringScheduling} and~\ref{TriggerTypes}.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em examples:}
-  \begin{lstlisting}
-graph = """
-   foo => bar => baz & waz     # baz and waz both trigger off bar
-   foo[-P1D-PT6H] => bar       # bar triggers off foo[-P1D-PT6H]
-   baz:out1 => faz             # faz triggers off a message output of baz
-   X:start => Y                # Y triggers if X starts executing
-   X:fail => Y                 # Y triggers if X fails
-   foo[-PT6H]:fail => bar      # bar triggers if foo[-PT6H] fails
-   X => !Y                     # Y suicides if X succeeds
-   X | X:fail => Z             # Z triggers if X succeeds or fails
-   X:finish => Z               # Z triggers if X succeeds or fails
-   (A | B & C ) | D => foo     # general conditional triggers
-   foo:submit => bar           # bar triggers if foo is successfully submitted
-   foo:submit-fail => bar      # bar triggers if submission of foo fails
-   # comment
-   """
-  \end{lstlisting}
-\item {\em default:} (none)
-\end{myitemize}
+- *type*: string
+- *examples*:
 
-\subsection{[runtime]}
+  .. todo::
+     cylc lang.
+
+  .. code-block:: none
+
+     graph = """
+         foo => bar => baz & waz     # baz and waz both trigger off bar
+         foo[-P1D-PT6H] => bar       # bar triggers off foo[-P1D-PT6H]
+         baz:out1 => faz             # faz triggers off a message output of baz
+         X:start => Y                # Y triggers if X starts executing
+         X:fail => Y                 # Y triggers if X fails
+         foo[-PT6H]:fail => bar      # bar triggers if foo[-PT6H] fails
+         X => !Y                     # Y suicides if X succeeds
+         X | X:fail => Z             # Z triggers if X succeeds or fails
+         X:finish => Z               # Z triggers if X succeeds or fails
+         (A | B & C ) | D => foo     # general conditional triggers
+         foo:submit => bar           # bar triggers if foo is successfully submitted
+         foo:submit-fail => bar      # bar triggers if submission of foo fails
+         # comment
+     """
+
+- *default*: (none)
+
+
+[runtime]
+---------
+
+.. todo::
+   refs:
 
 This section is used to specify how, where, and what to execute when
 tasks are ready to run. Common
 configuration can be factored out in a multiple-inheritance hierarchy of
 runtime namespaces that culminates in the tasks of the suite. Order of
 precedence is determined by the C3 linearization algorithm as used to
-find the {\em method resolution order} in Python language class
+find the *method resolution order* in Python language class
 hiearchies. For details and examples see~\ref{NIORP}.
 
-\subsubsection[{[[}\_\_NAME\_\_{]]}]{[runtime] \textrightarrow [[\_\_NAME\_\_]]}
 
-Replace \_\_NAME\_\_ with a namespace name, or a comma-separated list of
+[runtime] ``->`` [[\_\_NAME\_\_]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Replace ``\_\_NAME\_\_`` with a namespace name, or a comma-separated list of
 names, and repeat as needed to define all tasks in the suite. Names may
 contain letters, digits, underscores, and hyphens. A namespace
 represents a group or family of tasks if other namespaces inherit from
 it, or a task if no others inherit from it.
 
-%Names may not contain colons (which would preclude use of directory paths
-%involving the registration name in \lstinline=$PATH= variables). They
-%may not contain the `.' character (it will be interpreted as the
-%namespace hierarchy delimiter, separating groups and names -huh?).
+.. todo::
+   follolwing para here is a '%' thing i.e. not ment to be seen /comment:
 
-\begin{myitemize}
-\item {\em legal values:}
-    \begin{myitemize}
-        \item \lstinline=[[foo]]=
-        \item \lstinline=[[foo, bar, baz]]=
-    \end{myitemize}
-\end{myitemize}
+  Names may not contain colons (which would preclude use of directory paths
+  involving the registration name in ``$PATH`` variables). They
+  may not contain the "." character (it will be interpreted as the
+  namespace hierarchy delimiter, separating groups and names -huh?).
+
+- *legal values*:
+  - ``[[foo]]``
+  - ``[[foo, bar, baz]]``
 
 If multiple names are listed the subsequent settings apply to each.
 
-All namespaces inherit initially from {\em root}, which can be
+All namespaces inherit initially from *root*, which can be
 explicitly configured to provide or override default settings
 for all tasks in the suite.
 
-\paragraph[inherit]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow
-extra log files}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` extra log files
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 A list of user-defined log files associated with a task. Files defined here
-will appear alongside the default log files in the cylc gui. Log files
-must reside in the job log directory \lstinline=$CYLC_TASK_LOG_DIR= and ideally
-should be named using the \lstinline=$CYLC_TASK_LOG_ROOT= prefix
+will appear alongside the default log files in the cylc GUI. Log files
+must reside in the job log directory ``$CYLC_TASK_LOG_DIR`` and ideally
+should be named using the ``$CYLC_TASK_LOG_ROOT`` prefix
 (see~\ref{Task Job Script Variables}).
 
-\begin{myitemize}
-\item {\em type:} Comma-separated list of strings (log file names).
-\item {\em default:} (none)
-\item {\em example:} (job.custom-log-name)
-\end{myitemize}
+- *type*: Comma-separated list of strings (log file names).
+- *default*: (none)
+- *example*: (job.custom-log-name)
 
-\paragraph[inherit]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow inherit}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` inherit
+""""""""""""""""""""""""""""""""""""""""""""""""
 
 A list of the immediate parent(s) this namespace inherits from. If no
-parents are listed \lstinline=root= is assumed.
+parents are listed ``root`` is assumed.
 
-\begin{myitemize}
-\item {\em type:} Comma-separated list of strings (parent namespace names).
-\item {\em default:} \lstinline=root=
-\end{myitemize}
+- *type*: Comma-separated list of strings (parent namespace names).
+- *default*: ``root``
 
-\paragraph[init-script]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow init-script}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` init-script
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 Custom script invoked by the task job script before the task execution environment
 is configured - so it does not have access to any suite or task
@@ -1174,143 +1355,149 @@ environment variables. It can be an external command or script, or inlined
 scripting. The original intention for this item was to allow remote tasks to
 source login scripts to configure their access to cylc, but this should no
 longer be necessary (see~\ref{HowTasksGetAccessToCylc}). See also
-\lstinline=env-script=, \lstinline=err-script=, \lstinline=exit-script=,
-\lstinline=pre-script=, \lstinline=script=, and \lstinline=post-script=.
+``env-script``, ``err-script``, ``exit-script``,
+``pre-script``, ``script``, and ``post-script``.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\item {\em example:} \lstinline@init-script = "echo Hello World"@
-\end{myitemize}
+- *type*: string
+- *default*: (none)
+- *example*: ``init-script = "echo Hello World"``
 
-\paragraph[env-script]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow env-script}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` env-script
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Custom script invoked by the task job script between the cylc-defined environment
 (suite and task identity, etc.) and the user-defined task runtime environment -
 so it has access to the cylc environment (and the task environment has
 access to variables defined by this scripting). It can be an external command
-or script, or inlined scripting. See also \lstinline=init-script=,
-\lstinline=err-script=, \lstinline=exit-script=, \lstinline=pre-script=,
-\lstinline=script=, and \lstinline=post-script=.
+or script, or inlined scripting. See also ``init-script``,
+``err-script``, ``exit-script``, ``pre-script``,
+``script``, and ``post-script``.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\item {\em example:} \lstinline@env-script = "echo Hello World"@
-\end{myitemize}
+- *type*: string
+- *default*: (none)
+- *example*: ``env-script = "echo Hello World"``
 
-\paragraph[exit-script]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow exit-script}
 
-Custom script invoked at the very end of {\em successful} job execution, just
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` exit-script
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Custom script invoked at the very end of *successful* job execution, just
 before the job script exits. It should execute very quickly. Companion of
-\lstinline=err-script=, which is executed on job failure. It can be an external
-command or script, or inlined scripting. See also \lstinline=init-script=,
-\lstinline=env-script=, \lstinline=exit-script=, \lstinline=pre-script=,
-\lstinline=script=, and \lstinline=post-script=.
+``err-script``, which is executed on job failure. It can be an external
+command or script, or inlined scripting. See also ``init-script``,
+``env-script``, ``exit-script``, ``pre-script``,
+``script``, and ``post-script``.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\item {\em example:} \lstinline@exit-script = "rm -f $TMP_FILES"@
-\end{myitemize}
+- *type*: string
+- *default*: (none)
+- *example*: ``exit-script = "rm -f $TMP_FILES"``
 
-\paragraph[err-script]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow err-script}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` err-script
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Custom script to be invoked at the end of the error trap, which is triggered
 due to failure of a command in the task job script or trapable job kill. The
-output of this will always be sent to STDERR and \lstinline=$1= is set to the
+output of this will always be sent to STDERR and ``$1`` is set to the
 name of the signal caught by the error trap. The script should be fast and use
 very little system resource to ensure that the error trap can return quickly.
-Companion of \lstinline=exit-script=, which is executed on job success.
+Companion of ``exit-script``, which is executed on job success.
 It can be an external command or script, or inlined scripting. See also
-\lstinline=init-script=, \lstinline=env-script=, \lstinline=exit-script=,
-\lstinline=pre-script=, \lstinline=script=, and \lstinline=post-script=.
+``init-script``, ``env-script``, ``exit-script``,
+``pre-script``, ``script``, and ``post-script``.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\item {\em example:} \lstinline@err-script = "printenv FOO"@
-\end{myitemize}
+- *type*: string
+- *default*: (none)
+- *example*: ``err-script = "printenv FOO"``
 
-\paragraph[pre-script]{ [runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow pre-script}
 
-Custom script invoked by the task job script immediately before the \lstinline=script=
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` pre-script
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Custom script invoked by the task job script immediately before the ``script``
 item (just below). It can be an external command or script, or inlined scripting.
-See also \lstinline=init-script=, \lstinline=env-script=,
-\lstinline=err-script=, \lstinline=exit-script=, \lstinline=script=, and
-\lstinline=post-script=.
+See also ``init-script``, ``env-script``,
+``err-script``, ``exit-script``, ``script``, and
+``post-script``.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\item {\em example:}
+- *type*: string
+- *default*: (none)
+- *example*:
  \begin{lstlisting}
     pre-script = """
       . $HOME/.profile
       echo Hello from suite ${CYLC_SUITE_NAME}!"""
  \end{lstlisting}
-\end{myitemize}
 
-\paragraph[script]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow script}
-\label{ScriptItem}
+
+.. _ScriptItem:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` script
+"""""""""""""""""""""""""""""""""""""""""""""""
 
 The main custom script invoked from the task job script. It can be an
 external command or script, or inlined scripting. See also
-\lstinline=init-script=, \lstinline=env-script=, \lstinline=err-script=,
-\lstinline=exit-script=, \lstinline=pre-script=, and \lstinline=post-script=.
+``init-script``, ``env-script``, ``err-script``,
+``exit-script``, ``pre-script``, and ``post-script``.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em root default:} (none)
-\end{myitemize}
+- *type*: string
+- *root default*: (none)
 
-\paragraph[post-script]{ [runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow post-script}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` post-script
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 Custom script invoked by the task job script immediately after the
-\lstinline=script= item (just above). It can be an external command or script,
+``script`` item (just above). It can be an external command or script,
 or inlined scripting.  See also
-\lstinline=init-script=, \lstinline=env-script=, \lstinline=err-script=,
-\lstinline=exit-script=, \lstinline=pre-script=, and \lstinline=script=.
+``init-script``, ``env-script``, ``err-script``,
+``exit-script``, ``pre-script``, and ``script``.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\end{myitemize}
+- *type*: string
+- *default*: (none)
 
-\paragraph[work sub-directory]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow work sub-directory}
-\label{worksubdirectory}
 
-Task job scripts are executed from within {\em work directories} created
+.. _worksubdirectory:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` work sub-directory
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Task job scripts are executed from within *work directories* created
 automatically under the suite run directory. A task can get its own work
-directory from \lstinline=$CYLC_TASK_WORK_DIR= (or simply \lstinline=$PWD= if
-it does not \lstinline=cd= elsewhere at runtime). The default directory
+directory from ``$CYLC_TASK_WORK_DIR`` (or simply ``$PWD`` if
+it does not ``cd`` elsewhere at runtime). The default directory
 path contains task name and cycle point, to provide a unique workspace for
 every instance of every task. If several tasks need to exchange files and
 simply read and write from their from current working directory, this item
 can be used to override the default to make them all use the same workspace.
 
-The top level share and work directory location can be changed (e.g.\ to a
+.. todo::
+   refs:
+
+The top level share and work directory location can be changed (e.g. to a
 large data area) by a global config setting (see~\ref{workdirectory}).
 
-\begin{myitemize}
-\item {\em type:} string (directory path, can contain environment variables)
-\item {\em default:} \lstinline=$CYLC_TASK_CYCLE_POINT/$CYLC_TASK_NAME=
-\item {\em example:} \lstinline=$CYLC_TASK_CYCLE_POINT/shared/=
-\end{myitemize}
+- *type*: string (directory path, can contain environment variables)
+- *default*: ``$CYLC_TASK_CYCLE_POINT/$CYLC_TASK_NAME``
+- *example*: ``$CYLC_TASK_CYCLE_POINT/shared/``
 
 Note that if you omit cycle point from the work sub-directory path successive
 instances of the task will share the same workspace.  Consider the effect on
 cycle point offset housekeeping of work directories before doing this.
 
-\paragraph[{[[[}meta{]]]}]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[meta]]]}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[meta]]]
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Section containing metadata items for this task or family namespace. Several items
 (title, description, URL) are pre-defined and are used by the GUI. Others can be 
 user-defined and passed to task event handlers to be interpreted according to your 
-needs. For example, the value of an ``importance'' item could determine how an event 
+needs. For example, the value of an "importance" item could determine how an event 
 handler responds to task failure events.
 
 Any suite meta item can now be passed to task event handlers by prefixing the
-string template item name with ``suite\_'', for example : 
+string template item name with "suite_", for example : 
 
 \begin{lstlisting}
 [runtime]
@@ -1319,182 +1506,219 @@ string template item name with ``suite\_'', for example :
             failed handler = send-help.sh %(suite_title)s %(suite_importance)s %(title)s
 \end{lstlisting}
 
-\subparagraph[title]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[meta]]] \textrightarrow title}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[meta]]] ``->`` title
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 A single line description of this namespace. It is displayed by the
-\lstinline=cylc list= command and can be retrieved from running tasks
-with the \lstinline=cylc show= command.
+``cylc list`` command and can be retrieved from running tasks
+with the ``cylc show`` command.
 
-\begin{myitemize}
-\item {\em type:} single line string
-\item {\em root default:} (none)
-\end{myitemize}
+- *type*: single line string
+- *root default*: (none)
 
-\subparagraph[description]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[meta]]] \textrightarrow description}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[meta]]] ``->`` description
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 A multi-line description of this namespace, retrievable from running tasks with the
-\lstinline=cylc show= command.
+``cylc show`` command.
 
-\begin{myitemize}
-\item {\em type:} multi-line string
-\item {\em root default:} (none)
-\end{myitemize}
+- *type*: multi-line string
+- *root default*: (none)
 
-\subparagraph[URL]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[meta]]] \textrightarrow URL}
-\label{TaskURL}
+
+.. _TaskURL:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[meta]]] ``->`` URL
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. todo::
+   refs:
 
 A web URL to task documentation for this suite.  If present it can be browsed
-with the \lstinline=cylc doc= command, or by right-clicking on the task in
-gcylc. The string templates \lstinline=%(suite_name)s= and
-\lstinline=%(task_name)s= will be replaced with the actual suite and task names.
+with the ``cylc doc`` command, or by right-clicking on the task in
+gcylc. The string templates ``%(suite_name)s`` and
+``%(task_name)s`` will be replaced with the actual suite and task names.
 See also suite URLs (\ref{SuiteURL}).
 
-\begin{myitemize}
-\item {\em type:} string (URL)
-\item {\em default:} (none)
-\item {\em example:} you can set URLs to all tasks in a suite by putting
-    something like the following in the root namespace:
-    \begin{lstlisting}
-[runtime]
-    [[root]]
-        [[[meta]]]
-            URL = http://my-site.com/suites/%(suite_name)s/%(task_name)s.html
-    \end{lstlisting}
-\end{myitemize}
+- *type*: string (URL)
+- *default*: (none)
+- *example*: you can set URLs to all tasks in a suite by putting
+  something like the following in the root namespace:
 
-(Note that URLs containing the comment delimiter \lstinline=#= must be
+  .. todo::
+     cylc lang.
+
+  .. code-block:: none
+
+     [runtime]
+         [[root]]
+             [[[meta]]]
+                 URL = http://my-site.com/suites/%(suite_name)s/%(task_name)s.html
+
+(Note that URLs containing the comment delimiter ``#`` must be
 protected by quotes).
 
-\subparagraph[\_\_MANY\_\_]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[meta]]] \textrightarrow \_\_MANY\_\_}
 
-Replace \_\_MANY\_\_ with any user-defined metadata item. These, like title, URL, etc. can be passed
-to task event handlers to be interpreted according to your needs. For example, the value of an
-"importance" item could determine how an event handler responds to task failure events.
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[meta]]] ``->`` \_\_MANY\_\_
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-\begin{myitemize}
-\item {\em type:} String or integer
-\item {\em default:} (none)
-\item {\em example:}
-    \begin{lstlisting}
-[runtime]
-    [[root]]
-        [[[meta]]]
-            importance = high
-            color = red
-    \end{lstlisting}
-\end{myitemize}
+Replace ``\_\_MANY\_\_`` with any user-defined metadata item. These, like title,
+URL, etc. can be passed to task event handlers to be interpreted according to your
+needs. For example, the value of an "importance" item could determine how an event
+handler responds to task failure events.
 
-\paragraph[{[[[}job{]]]}]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[job]]]}
+- *type*: String or integer
+- *default*: (none)
+- *example*:
+
+  .. todo::
+     cylc lang.
+
+  .. code-block:: none
+
+     [runtime]
+         [[root]]
+             [[[meta]]]
+                 importance = high
+                 color = red
+
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[job]]]
+""""""""""""""""""""""""""""""""""""""""""""""""""
 
 This section configures the means by which cylc submits task job scripts to run.
 
-\subparagraph[batch system]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[job]]] \textrightarrow batch system}
-\label{RuntimeJobSubMethods}
+
+.. _RuntimeJobSubMethods:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[job]]] ``->`` batch system
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. todo::
+   refs:
 
 See~\ref{TaskJobSubmission} for how job submission works, and how to define
-new handlers for different batch systems. Cylc has a number of built in batch system handlers:
-\begin{myitemize}
-\item {\em type:} string
-\item {\em legal values:}
-   \begin{myitemize}
-       \item \lstinline=background= - invoke a child process
-       \item \lstinline=at= - the rudimentary Unix \lstinline=at= scheduler
-       \item \lstinline=loadleveler= - IBM LoadLeveler \lstinline=llsubmit=, with directives defined in the suite.rc file
-       \item \lstinline=lsf= - IBM Platform LSF \lstinline=bsub=, with directives defined in the suite.rc file
-       \item \lstinline=pbs= - PBS \lstinline=qsub=, with directives defined in the suite.rc file
-       \item \lstinline=sge= - Sun Grid Engine \lstinline=qsub=, with directives defined in the suite.rc file
-       \item \lstinline=slurm= - Simple Linux Utility for Resource Management \lstinline=sbatch=, with directives defined in the suite.rc file
-       \item \lstinline=moab= - Moab workload manager \lstinline=msub=, with directives defined in the suite.rc file
-   \end{myitemize}
-\item {\em default:} \lstinline=background=
-\end{myitemize}
+new handlers for different batch systems. Cylc has a number of built in batch
+system handlers:
 
-\subparagraph[execution time limit]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[job]]] \textrightarrow execution time limit}
+- *type*: string
+- *legal values*:
+  - ``background`` - invoke a child process
+  -``at`` - the rudimentary Unix ``at`` scheduler
+  - ``loadleveler`` - IBM LoadLeveler ``llsubmit``, with directives defined in
+    the suite.rc file
+  - ``lsf`` - IBM Platform LSF ``bsub``, with directives defined in the suite.rc file
+  - ``pbs`` - PBS ``qsub``, with directives defined in the suite.rc file
+  - ``sge`` - Sun Grid Engine ``qsub``, with directives defined in the suite.rc file
+  - ``slurm`` - Simple Linux Utility for Resource Management ``sbatch``, with
+    directives defined in the suite.rc file
+  - ``moab`` - Moab workload manager ``msub``, with directives defined in the
+    suite.rc file
+- *default*: ``background``
+
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[job]]] ``->`` execution time limit
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Specify the execution wall clock limit for a job of the task.
-For \lstinline=background= and \lstinline=at=, the job script will be invoked using the \lstinline=timeout= command.
-For other batch systems, the specified time will be automatically translated into the equivalent directive for wall clock limit.
+For ``background`` and ``at``, the job script will be invoked using the ``timeout``
+command. For other batch systems, the specified time will be automatically
+translated into the equivalent directive for wall clock limit.
+
+.. todo::
+   refs:
 
 Tasks are polled multiple times, where necessary, when they exceed their
-execution time limits.
-(See~\ref{ExecutionTimeLimitPollingIntervals} for how to configure the polling
-intervals).
+execution time limits. (See~\ref{ExecutionTimeLimitPollingIntervals} for how to
+configure the polling intervals).
 
-\begin{myitemize}
-    \item {\em type:} ISO 8601 duration/interval representation
-    \item {\em example:} \lstinline=PT5M=, 5 minutes, \lstinline=PT1H=, 1 hour
-    \item {\em default:} (none)
-\end{myitemize}
+    - *type*: ISO 8601 duration/interval representation
+    - *example*: ``PT5M``, 5 minutes, ``PT1H``, 1 hour
+    - *default*: (none)
 
-\subparagraph[batch submit command template]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[job]]] \textrightarrow batch submit command template}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[job]]] ``->`` batch submit command template
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 This allows you to override the actual command used by the chosen batch
-system. The template's \%(job)s will be substituted by the
+system. The template's ``\%(job)s`` will be substituted by the
 job file path.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em legal values:} a string template
-\item {\em example:} \lstinline@llsubmit \%(job)s@
-\end{myitemize}
+- *type*: string
+- *legal values*: a string template
+- *example*: ``llsubmit \%(job)s``
 
-\subparagraph[shell]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[job]]] \textrightarrow shell}
-\label{JobSubShell}
+
+.. _JobSubShell:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[job]]] ``->`` shell
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Location of the command used to interpret the job script submitted by the suite
 server program when a task is ready to run. This can be set to the location of
-\lstinline=bash= in the job host if the shell is not installed in the standard
-location.
-{\em Note: It has no bearing on any sub-shells that may be called by the job script.}
+``bash`` in the job host if the shell is not installed in the standard
+location. *Note: It has no bearing on any sub-shells that may be called by the
+job script.*
 
 Setting this to the path of a ksh93 interpreter is deprecated. Support of which
 will be withdrawn in a future cylc release. Setting this to any other shell is
 not supported.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em root default:} \lstinline=/bin/bash=
-\end{myitemize}
+- *type*: string
+- *root default*: ``/bin/bash``
 
-\subparagraph[submission retry delays]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[job]]] \textrightarrow submission retry delays}
-\label{JobSubRefRetries}
+
+.. _JobSubRefRetries:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[job]]] ``->`` submission retry delays
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 A list of duration (in ISO 8601 syntax), after which to resubmit if job
 submission fails.
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of ISO 8601 duration/interval
-        representations, optionally {\em preceded} by multipliers.
-    \item {\em example:} \lstinline=PT1M,3*PT1H, P1D= is equivalent to
-    \lstinline=PT1M, PT1H, PT1H, PT1H, P1D= - 1 minute, 1 hour, 1 hour, 1
-    hour, 1 day.
-    \item {\em default:} (none)
-\end{myitemize}
 
-\subparagraph[execution retry delays]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[job]]] \textrightarrow execution retry delays}
-\label{RefRetries}
+- *type*: Comma-separated list of ISO 8601 duration/interval
+  representations, optionally *preceded* by multipliers.
+- *example*: ``PT1M,3*PT1H, P1D`` is equivalent to
+  ``PT1M, PT1H, PT1H, PT1H, P1D`` - 1 minute, 1 hour, 1 hour, 1
+  hour, 1 day.
+- *default*: (none)
+
+
+.. _RefRetries:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[job]]] ``->`` execution retry delays
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. todo::
+   refs:
 
 See also~\ref{TaskRetries}.
 
 A list of ISO 8601 time duration/intervals after which to resubmit the task
-if it fails. The variable \lstinline=$CYLC_TASK_TRY_NUMBER= in the task
+if it fails. The variable ``$CYLC_TASK_TRY_NUMBER`` in the task
 execution environment is incremented each time, starting from 1 for the
 first try - this can be used to vary task behaviour by try number.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of ISO 8601 duration/interval representations,
-    optionally {\em preceded} by multipliers.
-    \item {\em example:} \lstinline=PT1.5M,3*PT10M= is equivalent to
-    \lstinline=PT1.5M, PT10M, PT10M, PT10M= - 1.5 minutes, 10 minutes,
-    10 minutes, 10 minutes.
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: Comma-separated list of ISO 8601 duration/interval representations,
+  optionally *preceded* by multipliers.
+- *example*: ``PT1.5M,3*PT10M`` is equivalent to
+  ``PT1.5M, PT10M, PT10M, PT10M`` - 1.5 minutes, 10 minutes, 10 minutes, 10 minutes.
+- *default*: (none)
 
-\subparagraph[submission polling intervals]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[job]]] \textrightarrow submission polling intervals}
-\label{SubmissionPollingIntervals}
+
+.. _SubmissionPollingIntervals:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[job]]] ``->`` submission polling intervals
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 A list of intervals, expressed as ISO 8601 duration/intervals, with optional
 multipliers, after which cylc will poll for status while the task is in the
 submitted state.
+
+.. todo::
+   refs:
 
 For the polling task communication method this overrides the default
 submission polling interval in the site/user config files
@@ -1505,22 +1729,27 @@ regular check on the health of submitted tasks.
 Each list value is used in turn until the last, which is used repeatedly
 until finished.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of ISO 8601 duration/interval
-        representations, optionally {\em preceded} by multipliers.
-    \item {\em example:} \lstinline=PT1M,3*PT1H, PT1M= is equivalent to
-    \lstinline=PT1M, PT1H, PT1H, PT1H, PT1M= - 1 minute, 1 hour, 1 hour, 1
-    hour, 1 minute.
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: Comma-separated list of ISO 8601 duration/interval
+  representations, optionally *preceded* by multipliers.
+- *example*: ``PT1M,3*PT1H, PT1M`` is equivalent to
+  ``PT1M, PT1H, PT1H, PT1H, PT1M`` - 1 minute, 1 hour, 1 hour, 1
+  hour, 1 minute.
+- *default*: (none)
+
 A single interval value is probably appropriate for submission polling.
 
-\subparagraph[execution polling intervals]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[job]]] \textrightarrow execution polling intervals}
-\label{ExecutionPollingIntervals}
+
+.. _ExecutionPollingIntervals:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[job]]] ``->`` execution polling intervals
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 A list of intervals, expressed as ISO 8601 duration/intervals, with optional
 multipliers, after which cylc will poll for status while the task is in the
 running state.
+
+.. todo::
+   refs:
 
 For the polling task communication method this overrides the default
 execution polling interval in the site/user config files
@@ -1531,16 +1760,16 @@ regular check on the health of submitted tasks.
 Each list value is used in turn until the last, which is used repeatedly
 until finished.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of ISO 8601 duration/interval
-        representations, optionally {\em preceded} by multipliers.
-    \item {\em example:} \lstinline=PT1M,3*PT1H, PT1M= is equivalent to
-    \lstinline=PT1M, PT1H, PT1H, PT1H, PT1M= - 1 minute, 1 hour, 1 hour, 1
-    hour, 1 minute.
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: Comma-separated list of ISO 8601 duration/interval
+  representations, optionally *preceded* by multipliers.
+- *example*: ``PT1M,3*PT1H, PT1M`` is equivalent to
+  ``PT1M, PT1H, PT1H, PT1H, PT1M`` - 1 minute, 1 hour, 1 hour, 1
+  hour, 1 minute.
+- *default*: (none)
 
-\paragraph[{[[[}remote{]]]}]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[remote]]]}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[remote]]]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Configure host and username, for tasks that do not run on the suite host
 account. Non-interactive ssh is used to submit the task by the configured
@@ -1548,8 +1777,11 @@ batch system, so you must distribute your ssh key to allow
 this. Cylc must be installed on task remote accounts, but no external
 software dependencies are required there.
 
-\subparagraph[host]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[remote]]] \textrightarrow host}
-\label{DynamicHostSelection}
+
+.. _DynamicHostSelection:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[remote]]] ``->`` host
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 The remote host for this namespace. This can be a static hostname, an
 environment variable that holds a hostname, or a command that prints a
@@ -1559,309 +1791,316 @@ cylc site or user config file to specify parameters such as the location
 of cylc on the remote machine; if not, the corresponding local settings
 (on the suite host) will be assumed to apply on the remote host.
 
-\begin{myitemize}
-\item {\em type:} string (a valid hostname on the network)
-\item {\em default:} (none)
-\item {\em examples:}
-    \begin{myitemize}
-        \item static host name: \lstinline@host = foo@
-        \item fully qualified: \lstinline@host = foo.bar.baz@
-        \item dynamic host selection:
-        \begin{myitemize}
-            \item shell command (1): \lstinline@host = $(host-selector.sh)@
-            \item shell command (2): \lstinline@host = `host-selector.sh`@
-            \item environment variable: \lstinline@host = $MY_HOST@
-        \end{myitemize}
-    \end{myitemize}
-\end{myitemize}
+- *type*: string (a valid hostname on the network)
+- *default*: (none)
+- *examples*:
+  - static host name: ``host = foo``
+  - fully qualified: ``host = foo.bar.baz``
+  - dynamic host selection:
+    - shell command (1): ``host = $(host-selector.sh)``
+    - shell command (2): ``host = \`host-selector.sh\```
+    - environment variable: ``host = $MY_HOST``
 
 
-\subparagraph[owner]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[remote]]] \textrightarrow owner}
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[remote]]] ``->`` owner
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 The username of the task host account. This is (only) used in the
 non-interactive ssh command invoked by the suite server program to submit the
 remote task (consequently it may be defined using local environment variables
-(i.e.\ the shell in which cylc runs, and [cylc] \textrightarrow [[environment]]).
+(i.e. the shell in which cylc runs, and ``[cylc] -> [[environment]]``).
 
 If you use dynamic host selection and have different usernames on
 the different selectable hosts, you can configure your
-\lstinline=$HOME/.ssh/config= to handle username translation.
+``$HOME/.ssh/config`` to handle username translation.
 
-\begin{myitemize}
-\item {\em type:} string (a valid username on the remote host)
-\item {\em default:} (none)
-\end{myitemize}
+- *type*: string (a valid username on the remote host)
+- *default*: (none)
 
-\subparagraph[retrieve job logs]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[remote]]] \textrightarrow retrieve job logs}
-\label{runtime-remote-retrieve-job-logs}
+
+.. _runtime-remote-retrieve-job-logs:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[remote]]] ``->`` retrieve job logs
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Remote task job logs are saved to the suite run directory on the task host, not
 on the suite host. If you want the job logs pulled back to the suite host
-automatically, you can set this item to \lstinline=True=. The suite will
-then attempt to \lstinline=rsync= the job logs once from the remote host each
+automatically, you can set this item to ``True``. The suite will
+then attempt to ``rsync`` the job logs once from the remote host each
 time a task job completes. E.g. if the job file is
-\lstinline=~/cylc-run/tut.oneoff.remote/log/job/1/hello/01/job=, anything under
-\lstinline=~/cylc-run/tut.oneoff.remote/log/job/1/hello/01/= will be retrieved.
+``~/cylc-run/tut.oneoff.remote/log/job/1/hello/01/job``, anything under
+``~/cylc-run/tut.oneoff.remote/log/job/1/hello/01/`` will be retrieved.
 
-\begin{myitemize}
-\item {\em type:} boolean
-\item {\em default:} False
-\end{myitemize}
+- *type*: boolean
+- *default*: False
 
-\subparagraph[retrieve job logs max size]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[remote]]] \textrightarrow retrieve job logs max size}
-\label{runtime-remote-retrieve-job-logs-max-size}
+
+.. _runtime-remote-retrieve-job-logs-max-size:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[remote]]] ``->`` retrieve job logs max size
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 If the disk space of the suite host is limited, you may want to set the maximum
 sizes of the job log files to retrieve. The value can be anything that is
-accepted by the \lstinline@--max-size=SIZE@ option of the \lstinline=rsync=
-command.
+accepted by the ``--max-size=SIZE`` option of the ``rsync`` command.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} None
-\end{myitemize}
+- *type*: string
+- *default*: None
 
-\subparagraph[retrieve job logs retry delays]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[remote]]] \textrightarrow retrieve job logs retry delays}
-\label{runtime-remote-retrieve-job-logs-retry-delays}
+
+.. _runtime-remote-retrieve-job-logs-retry-delays:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[remote]]] ``->`` retrieve job logs retry delays
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Some batch systems have considerable delays between the time when the job
 completes and when it writes the job logs in its normal location. If this is
 the case, you can configure an initial delay and some retry delays between
-subsequent attempts. The default behaviour is to attempt once without any
-delay.
+subsequent attempts. The default behaviour is to attempt once without any delay.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of ISO 8601 duration/interval representations, optionally {\em preceded} by multipliers.
-    \item {\em default:} (none)
-    \item {\em example:} \lstinline@retrieve job logs retry delays = PT10S, PT1M, PT5M@
-\end{myitemize}
+- *type*: Comma-separated list of ISO 8601 duration/interval representations, optionally
+  *preceded* by multipliers.
+- *default*: (none)
+- *example*: ``retrieve job logs retry delays = PT10S, PT1M, PT5M``
 
-\subparagraph[suite definition directory]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[remote]]] \textrightarrow  suite definition directory}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[remote]]] ``->``  suite definition directory
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 The path to the suite configuration directory on the remote account, needed if
 remote tasks require access to files stored there (via
-\lstinline=$CYLC_SUITE_DEF_PATH=) or in the suite bin directory (via
-\lstinline=$PATH=).  If this item is not defined, the local suite
+``$CYLC_SUITE_DEF_PATH``) or in the suite bin directory (via
+``$PATH``).  If this item is not defined, the local suite
 configuration directory path will be assumed, with the suite owner's home
-directory, if present, replaced by \lstinline='$HOME'= for
+directory, if present, replaced by ``'$HOME'`` for
 interpretation on the remote account.
 
-\begin{myitemize}
-\item {\em type:} string (a valid directory path on the remote account)
-\item {\em default:} (local suite configuration path with \lstinline=$HOME=
-    replaced)
-\end{myitemize}
+- *type*: string (a valid directory path on the remote account)
+- *default*: (local suite configuration path with ``$HOME`` replaced)
 
 
-\paragraph[{[[[}events{]]]}]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[events]]]}
-\label{TaskEventHandling}
+.. _TaskEventHandling:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 Cylc can call nominated event handlers when certain task events occur. This
 section configures specific task event handlers; see~\ref{SuiteEventHandling}
 for suite events.
 
-Event handlers can be located in the suite \lstinline=bin/= directory,
-otherwise it is up to you to ensure their location is in \lstinline=$PATH= (in
+Event handlers can be located in the suite ``bin/`` directory,
+otherwise it is up to you to ensure their location is in ``$PATH`` (in
 the shell in which the suite server program runs). They should require little
 resource to run and return quickly.
 
 Each task event handler can be specified as a list of command lines or command
 line templates. They can contain any or all of the following patterns, which
 will be substituted with actual values:
-\begin{myitemize}
-    \item \%(event)s: event name
-    \item \%(suite)s: suite name
-    \item \%(point)s: cycle point
-    \item \%(name)s: task name
-    \item \%(submit\_num)s: submit number
-    \item \%(try\_num)s: try number
-    \item \%(id)s: task ID (i.e.\ \%(name)s.\%(point)s)
-    \item \%(batch\_sys\_name)s: batch system name
-    \item \%(batch\_sys\_job\_id)s: batch system job ID
-    \item \%(message)s: event message, if any
-    \item any task [meta] item, e.g.:
-    \begin{myitemize}
-      \item \%(title)s: task title
-      \item \%(URL)s: task URL
-      \item \%(importance)s - example custom task metadata
-    \end{myitemize}
-    \item any suite [meta] item, prefixed with ``suite\_'', e.g.:
-    \begin{myitemize}
-      \item \%(suite\_title)s: suite title
-      \item \%(suite\_URL)s: suite URL
-      \item \%(suite\_rating)s - example custom suite metadata
-    \end{myitemize}
-\end{myitemize}
+
+- \%(event)s: event name
+- \%(suite)s: suite name
+- \%(point)s: cycle point
+- \%(name)s: task name
+- \%(submit\_num)s: submit number
+- \%(try\_num)s: try number
+- \%(id)s: task ID (i.e. \%(name)s.\%(point)s)
+- \%(batch\_sys\_name)s: batch system name
+- \%(batch\_sys\_job\_id)s: batch system job ID
+- \%(message)s: event message, if any
+- any task [meta] item, e.g.:
+  - \%(title)s: task title
+  - \%(URL)s: task URL
+  - \%(importance)s - example custom task metadata
+- any suite [meta] item, prefixed with "suite\_", e.g.:
+  - \%(suite\_title)s: suite title
+  - \%(suite\_URL)s: suite URL
+  - \%(suite\_rating)s - example custom suite metadata
 
 Otherwise, the command line will be called with the following default
 arguments:
-\begin{lstlisting}
-<task-event-handler> %(event)s %(suite)s %(id)s %(message)s
-\end{lstlisting}
 
-{\em Note: substitution patterns should not be quoted in the template strings.
-This is done automatically where required.}
+.. code-block:: none
 
-For an explanation of the substitution syntax, see String Formatting Operations
-in the Python documentation:
-\url{https://docs.python.org/2/library/stdtypes.html#string-formatting}.
+   <task-event-handler> %(event)s %(suite)s %(id)s %(message)s
+
+*Note: substitution patterns should not be quoted in the template strings.
+This is done automatically where required.*
+
+For an explanation of the substitution syntax, see
+`String Formatting Operations in the Python
+documentation <https://docs.python.org/2/library/stdtypes.html#string-formatting>`_.
 
 Additional information can be passed to event handlers via the
-[cylc] \textrightarrow [[environment]] (but not via task
+``[cylc] -> [[environment]]`` (but not via task
 runtime environments - event handlers are not called by tasks).
 
-\subparagraph[EVENT handler]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[events]]] \textrightarrow EVENT handler}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]] ``->`` EVENT handler
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 A list of one or more event handlers to call when one of the following EVENTs occurs:
-\begin{myitemize}
-    \item {\bf submitted}      - the job submit command was successful
-    \item {\bf submission failed}  - the job submit command failed, or the
-                                   submitted job was killed before it started executing
-    \item {\bf submission retry}   - job submit failed, but cylc will resubmit it
-                                   after a configured delay
-    \item {\bf submission timeout} - the submitted job timed out without commencing execution
 
-    \item {\bf started}        - the task reported commencement of execution
-    \item {\bf succeeded}      - the task reported that it completed successfully
-    \item {\bf failed}         - the task reported that if tailed to complete successfully
-    \item {\bf retry}          - the task failed, but cylc will resubmit it
-                                  after a configured delay
-    \item {\bf execution timeout}        - the task timed out after execution commenced
-    \item {\bf warning}        - the task reported a WARNING severity message
-    \item {\bf critical}       - the task reported a CRITICAL severity message
-    \item {\bf custom}       - the task reported a CUSTOM severity message
-    \item {\bf late}       - the task is never active and is late
-\end{myitemize}
+- **submitted** - the job submit command was successful
+- **submission failed** - the job submit command failed, or the
+  submitted job was killed before it started executing
+- **submission retry** - job submit failed, but cylc will resubmit it
+  after a configured delay
+- **submission timeout** - the submitted job timed out without commencing execution
+- **started** - the task reported commencement of execution
+- **succeeded** - the task reported that it completed successfully
+- **failed** - the task reported that if tailed to complete successfully
+- **retry** - the task failed, but cylc will resubmit it
+  after a configured delay
+- **execution timeout** - the task timed out after execution commenced
+- **warning** - the task reported a WARNING severity message
+- **critical** - the task reported a CRITICAL severity message
+- **custom** - the task reported a CUSTOM severity message
+- **late** - the task is never active and is late
 
 Item details:
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of strings (event handler scripts).
-    \item {\em default:} None
-    \item {\em example:} \lstinline@failed handler = my-failed-handler.sh@
-\end{myitemize}
+- *type*: Comma-separated list of strings (event handler scripts).
+- *default*: None
+- *example*: ``failed handler = my-failed-handler.sh``
 
-\subparagraph[submission timeout]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[events]]] \textrightarrow submission timeout}
-\label{runtime-event-hooks-submission-timeout}
+
+.. _runtime-event-hooks-submission-timeout:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]] ``->`` submission timeout
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 If a task has not started after the specified ISO 8601 duration/interval, the
-{\em submission timeout} event handler(s) will be called.
-\begin{myitemize}
-    \item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
- \lstinline=PT30M=, 30 minutes or \lstinline=P1D=, 1 day).
-    \item {\em default:} (none)
-\end{myitemize}
+*submission timeout* event handler(s) will be called.
 
-\subparagraph[execution timeout]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[events]]] \textrightarrow execution timeout}
-\label{runtime-event-hooks-execution-timeout}
+- *type*: ISO 8601 duration/interval representation (e.g.
+  ``PT30M``, 30 minutes or ``P1D``, 1 day).
+- *default*: (none)
+
+
+.. _runtime-event-hooks-execution-timeout:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]] ``->`` execution timeout
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 If a task has not finished after the specified ISO 8601 duration/interval, the
-{\em execution timeout} event handler(s) will be called.
-\begin{myitemize}
-    \item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
- \lstinline=PT4H=, 4 hours or \lstinline=P1D=, 1 day).
-    \item {\em default:} (none)
-\end{myitemize}
+*execution timeout* event handler(s) will be called.
 
-\subparagraph[reset timer]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[events]]] \textrightarrow reset timer}
-\label{runtime-event-hooks-reset-timer}
+- *type*: ISO 8601 duration/interval representation (e.g.
+  ``PT4H``, 4 hours or ``P1D=, 1 day).
+- *default*: (none)
+
+
+.. _runtime-event-hooks-reset-timer:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]] ``->`` reset timer
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 If you set an execution timeout the timer can be reset to zero every
 time a message is received from the running task (which indicates the
 task is still alive).  Otherwise, the task will timeout if it does not
 finish in the alotted time regardless of incoming messages.
 
-\begin{myitemize}
-\item {\em type:} boolean
-\item {\em default:} False
-\end{myitemize}
+- *type*: boolean
+- *default*: False
 
-\subparagraph[handlers]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[events]]] \textrightarrow handlers}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]] ``->`` handlers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Specify a list of command lines or command line templates as task event handlers.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of strings (event handler command line or command line templates).
-    \item {\em default:} (none)
-    \item {\em example:} \lstinline@handlers = my-handler.sh@
-\end{myitemize}
+- *type*: Comma-separated list of strings (event handler command line or command
+  line templates).
+- *default*: (none)
+- *example*: ``handlers = my-handler.sh``
 
-\subparagraph[handler events]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[events]]] \textrightarrow handler events}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]] ``->`` handler events
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Specify the events for which the general task event handlers should be invoked.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of events
-    \item {\em default:} (none)
-    \item {\em example:} \lstinline@handler events = submission failed, failed@
-\end{myitemize}
+- *type*: Comma-separated list of events
+- *default*: (none)
+- *example*: ``handler events = submission failed, failed``
 
-\subparagraph[handler retry delays]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[events]]] \textrightarrow handler retry delays}
-\label{runtime-events-handler-retry-delays}
+
+.. _runtime-events-handler-retry-delays:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]] ``->`` handler retry delays
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Specify an initial delay before running an event handler command and any retry
 delays in case the command returns a non-zero code. The default behaviour is to
 run an event handler command once without any delay.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of ISO 8601 duration/interval representations, optionally {\em preceded} by multipliers.
-    \item {\em default:} (none)
-    \item {\em example:} \lstinline@handler retry delays = PT10S, PT1M, PT5M@
-\end{myitemize}
+- *type*: Comma-separated list of ISO 8601 duration/interval representations,
+  optionally *preceded* by multipliers.
+- *default*: (none)
+- *example*: ``handler retry delays = PT10S, PT1M, PT5M``
 
-\subparagraph[mail events]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[events]]] \textrightarrow mail events}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]] ``->`` mail events
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Specify the events for which notification emails should be sent.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of events
-    \item {\em default:} (none)
-    \item {\em example:} \lstinline@mail events = submission failed, failed@
-\end{myitemize}
+- *type*: Comma-separated list of events
+- *default*: (none)
+- *example*: ``mail events = submission failed, failed``
 
-\subparagraph[mail from]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[events]]] \textrightarrow mail from}
 
-Specify an alternate \lstinline=from:= email address for event notifications.
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]] ``->`` mail from
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-\begin{myitemize}
-    \item {\em type:} string
-    \item {\em default:} None, (notifications@HOSTNAME)
-    \item {\em example:} \lstinline|mail from = no-reply@your-org|
-\end{myitemize}
+Specify an alternate ``from:`` email address for event notifications.
 
-\subparagraph[mail retry delays]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[events]]] \textrightarrow mail retry delays}
+- *type*: string
+- *default*: None, (notifications@HOSTNAME)
+- *example*: ``mail from = no-reply@your-org``
+
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]] ``->`` mail retry delays
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Specify an initial delay before running the mail notification command and any
 retry delays in case the command returns a non-zero code. The default behaviour
 is to run the mail notification command once without any delay.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of ISO 8601 duration/interval representations, optionally {\em preceded} by multipliers.
-    \item {\em default:} (none)
-    \item {\em example:} \lstinline@mail retry delays = PT10S, PT1M, PT5M@
-\end{myitemize}
+- *type*: Comma-separated list of ISO 8601 duration/interval representations,
+  optionally *preceded* by multipliers.
+- *default*: (none)
+- *example*: ``mail retry delays = PT10S, PT1M, PT5M``
 
-\subparagraph[mail smtp]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[events]]] \textrightarrow mail smtp}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]] ``->`` mail smtp
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Specify the SMTP server for sending email notifications.
 
-\begin{myitemize}
-    \item {\em type:} string
-    \item {\em default:} None, (localhost:25)
-    \item {\em example:} \lstinline@mail smtp = smtp.yourorg@
-\end{myitemize}
+- *type*: string
+- *default*: None, (localhost:25)
+- *example*: ``mail smtp = smtp.yourorg``
 
-\subparagraph[mail to]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[events]]] \textrightarrow mail to}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]] ``->`` mail to
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 A list of email addresses to send task event notifications. The list can be
-anything accepted by the \lstinline=mail= command.
+anything accepted by the ``mail`` command.
 
-\begin{myitemize}
-    \item {\em type:} string
-    \item {\em default:} None, (USER@HOSTNAME)
-    \item {\em example:} \lstinline@mail to = your.colleague@
-\end{myitemize}
+- *type*: string
+- *default*: None, (USER@HOSTNAME)
+- *example*: ``mail to = your.colleague``
 
-\paragraph[{[[[}environment{]]]}]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[environment]]]}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[environment]]]
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 The user defined task execution environment. Variables defined here can
 refer to cylc suite and task identity variables, which are exported
@@ -1869,450 +2108,496 @@ earlier in the task job script, and variable assignment expressions can
 use cylc utility commands because access to cylc is also configured
 earlier in the script.  See also~\ref{TaskExecutionEnvironment}.
 
-\subparagraph[\_\_VARIABLE\_\_ ]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[environment]]] \textrightarrow \_\_VARIABLE\_\_}
-\label{AppendixTaskExecutionEnvironment}
 
-Replace \_\_VARIABLE\_\_ with any number of environment variable
-assignment expressions.
-Order of definition is preserved so values can refer to previously
-defined variables. Values are passed through to the task job script
-without evaluation or manipulation by cylc, so any variable assignment
+.. _AppendixTaskExecutionEnvironment:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[environment]]] ``->`` \_\_VARIABLE\_\_
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Replace ``\_\_VARIABLE\_\_`` with any number of environment variable
+assignment expressions. Order of definition is preserved so values can
+refer to previously defined variables. Values are passed through to the task
+job script without evaluation or manipulation by cylc, so any variable assignment
 expression that is legal in the job submission shell can be used.
-White space around the `$=$' is allowed (as far as cylc's suite.rc
+White space around the ``=`` is allowed (as far as cylc's suite.rc
 parser is concerned these are just normal configuration items).
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\item {\em legal values:} depends to some extent on the task job
-    submission shell (\ref{JobSubShell}).
-\item {\em examples}, for the bash shell:
-   \begin{myitemize}
-       \item \lstinline@FOO = $HOME/bar/baz@
-       \item \lstinline@BAR = ${FOO}$GLOBALVAR@
-       \item \lstinline@BAZ = $( echo "hello world" )@
-       \item \lstinline@WAZ = ${FOO%.jpg}.png@
-       \item \lstinline@NEXT_CYCLE = $( cylc cycle-point --offset=PT6H )@
-       \item \lstinline@PREV_CYCLE = `cylc cycle-point --offset=-PT6H`@
-       \item \lstinline@ZAZ = "${FOO#bar}" # <-- QUOTED to escape the suite.rc comment character@
-   \end{myitemize}
-\end{myitemize}
+.. todo::
+   refs:
 
-\paragraph[{[[[}environment filter{]]]}]{ [runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[environment filter]]]}
-\label{EnvironmentFilter}
+- *type*: string
+- *default*: (none)
+- *legal values*: depends to some extent on the task job
+    submission shell (\ref{JobSubShell}).
+- *examples*, for the bash shell:
+  - ``FOO = $HOME/bar/baz``
+  - ``BAR = ${FOO}$GLOBALVAR``
+  - ``BAZ = $( echo "hello world" )``
+  - ``WAZ = ${FOO%.jpg}.png``
+  - ``NEXT_CYCLE = $( cylc cycle-point --offset=PT6H )``
+  - ``PREV_CYCLE = \`cylc cycle-point --offset=-PT6H```
+  - ``ZAZ = "${FOO#bar}" # <-- QUOTED to escape the suite.rc comment character``
+
+
+.. _EnvironmentFilter:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[environment filter]]]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 This section contains environment variable inclusion and exclusion
-lists that can be used to filter the inherited environment. {\em This is
+lists that can be used to filter the inherited environment. *This is
 not intended as an alternative to a well-designed inheritance hierarchy
-that provides each task with just the variables it needs.} Filters can,
+that provides each task with just the variables it needs.* Filters can,
 however, improve suites with tasks that inherit a lot of environment
 they don't need, by making it clear which tasks use which variables.
-They can optionally be used routinely as explicit ``task environment
-interfaces'' too, at some cost to brevity, because they guarantee that
+They can optionally be used routinely as explicit "task environment
+interfaces" too, at some cost to brevity, because they guarantee that
 variables filtered out of the inherited task environment are not used.
 
 Note that environment filtering is done after inheritance is completely
 worked out, not at each level on the way, so filter lists in higher-level
 namespaces only have an effect if they are not overridden by descendants.
 
-\subparagraph[include]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[environment filter]]] \textrightarrow include}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[environment filter]]] ``->`` include
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 If given, only variables named in this list will be included from the
 inherited environment, others will be filtered out. Variables may also
-be explicitly excluded by an \lstinline=exclude= list.
+be explicitly excluded by an ``exclude`` list.
 
-\begin{myitemize}
-\item {\em type:} Comma-separated list of strings (variable names).
-\item {\em default:} (none)
-\end{myitemize}
+- *type*: Comma-separated list of strings (variable names).
+- *default*: (none)
 
-\subparagraph[exclude]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[environment filter]]] \textrightarrow exclude}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[environment filter]]] ``->`` exclude
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Variables named in this list will be filtered out of the inherited
 environment.  Variables may also be implicitly excluded by
-omission from an \lstinline=include= list.
+omission from an ``include`` list.
 
-\begin{myitemize}
-\item {\em type:} Comma-separated list of strings (variable names).
-\item {\em default:} (none)
-\end{myitemize}
+- *type*: Comma-separated list of strings (variable names).
+- *default*: (none)
 
-\paragraph[{[[[}parameter environment templates{]]]}]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[parameter environment templates]]]}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[parameter environment templates]]]
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 The user defined task execution parameter environment templates. This is only
-relevant for {\em parameterized tasks} - see Section~\ref{Parameterized Tasks}.
+relevant for *parameterized tasks* - see Section~\ref{Parameterized Tasks}.
 
-\subparagraph[\_\_VARIABLE\_\_ ]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[parameter environment templates]]] \textrightarrow \_\_VARIABLE\_\_}
 
-Replace \_\_VARIABLE\_\_ with pairs of environment variable
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[parameter environment templates]]] ``->`` \_\_VARIABLE\_\_
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. todo::
+   refs:
+
+Replace ``\_\_VARIABLE\_\_`` with pairs of environment variable
 name and Python string template for parameter substitution. This is only
-relevant for {\em parameterized tasks} - see Section~\ref{Parameterized Tasks}.
+relevant for *parameterized tasks* - see Section~\ref{Parameterized Tasks}.
 
-If specified, in addition to the standard CYLC\_TASK\_PARAM\_<key> variables, the
+If specified, in addition to the standard ``CYLC\_TASK\_PARAM\_<key>`` variables, the
 job script will also export the named variables specified here, with the
 template strings substituted with the parameter values.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\item {\em legal values:} name=string template pairs
-\item {\em examples}, for the bash shell:
-   \begin{myitemize}
-       \item \lstinline@MYNUM=%(i)d@
-       \item \lstinline@MYITEM=%(item)s@
-       \item \lstinline@MYFILE=/path/to/%(i)03d/%(item)s@
-   \end{myitemize}
-\end{myitemize}
+- *type*: string
+- *default*: (none)
+- *legal values*: name=string template pairs
+- *examples*, for the bash shell:
+  - ``MYNUM=%(i)d``
+  - ``MYITEM=%(item)s``
+  - ``MYFILE=/path/to/%(i)03d/%(item)s``
 
-\paragraph[{[[[}directives{]]]}]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[directives]]]}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[directives]]]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Batch queue scheduler directives.  Whether or not these are used depends
 on the batch system. For the built-in methods that support directives
-(\lstinline=loadleveler=, \lstinline=lsf=, \lstinline=pbs=, \lstinline=sge=,
-\lstinline=slurm=, \lstinline=moab=), directives are written to the top of the
+(``loadleveler``, ``lsf``, ``pbs``, ``sge``,
+``slurm``, ``moab``), directives are written to the top of the
 task job script in the correct format for the method. Specifying directives
 individually like this allows use of default directives that can be
 individually overridden at lower levels of the runtime namespace hierarchy.
 
-\subparagraph[\_\_DIRECTIVE\_\_ ]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[directives]]] \textrightarrow \_\_DIRECTIVE\_\_}
 
-Replace \_\_DIRECTIVE\_\_ with each directive assignment, e.g.\ 
-\lstinline@class = parallel@
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[directives]]] ``->`` \_\_DIRECTIVE\_\_
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\end{myitemize}
+Replace ``\_\_DIRECTIVE\_\_`` with each directive assignment, e.g.
+``class = parallel``.
+
+- *type*: string
+- *default*: (none)
+
+.. todo::
+   refs:
 
 Example directives for the built-in batch system handlers are shown
 in~\ref{AvailableMethods}.
 
-\paragraph[{[[[}outputs{]]]}]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[outputs]]]}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[outputs]]]
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 Register custom task outputs for use in message triggering in this section
 (\ref{MessageTriggers})
 
-\subparagraph[\_\_OUTPUT\_\_ ]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[outputs]]] \textrightarrow \_\_OUTPUT\_\_}
 
-Replace \_\_OUTPUT\_\_ with one or more custom task output messages
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[outputs]]] ``->`` \_\_OUTPUT\_\_
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. todo::
+   refs:
+
+Replace ``\_\_OUTPUT\_\_`` with one or more custom task output messages
 (\ref{MessageTriggers}).  The item name is used to select the custom output
 message in graph trigger notation.
-\begin{myitemize}
-    \item {\em type:} string
-    \item {\em default:} (none)
-    \item{ \em examples:}
-\end{myitemize}
-\begin{lstlisting}
-out1 = "sea state products ready"
-out2 = "NWP restart files completed"
-\end{lstlisting}
 
-\paragraph[{[[[}suite state polling{]]]}]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[suite state polling]]]}
+- *type*: string
+- *default*: (none)
+- *examples*:
 
-\lstset{language=transcript}
+  .. todo::
+     cylc lang.
+
+  .. code-block:: none
+
+     out1 = "sea state products ready"
+     out2 = "NWP restart files completed"
+
+
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[suite state polling]]]
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
+
 Configure automatic suite polling tasks as described
 in~\ref{SuiteStatePolling}. The
 items in this section reflect the options and defaults of the
-\lstinline=cylc suite-state= command, except that the target suite name and the
-\lstinline=--task=, \lstinline=--cycle=, and \lstinline=--status= options are
+``cylc suite-state`` command, except that the target suite name and the
+``--task``, ``--cycle``, and ``--status`` options are
 taken from the graph notation.
 
-\subparagraph[run-dir]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[suite state polling]]] \textrightarrow run-dir}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[suite state polling]]] ``->`` run-dir
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 For your own suites the run database location is determined by your
-site/user config. For other suites, e.g.\  those owned by others, or
+site/user config. For other suites, e.g. those owned by others, or
 mirrored suite databases, use this item to specify the location
 of the top level cylc run directory (the database should be a
 suite-name sub-directory of this location).
 
-\begin{myitemize}
-    \item {\em type:} string (a directory path on the target suite host)
-    \item {\em default:} as configured by site/user config (for your own suites)
-\end{myitemize}
+- *type*: string (a directory path on the target suite host)
+- *default*: as configured by site/user config (for your own suites)
 
-\subparagraph[interval]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[suite state polling]]] \textrightarrow interval}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[suite state polling]]] ``->`` interval
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Polling interval expressed as an ISO 8601 duration/interval.
-\begin{myitemize}
-    \item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
- \lstinline=PT10S=, 10 seconds, or \lstinline=PT1M=, 1 minute).
-    \item {\em default:} PT1M
-\end{myitemize}
 
-\subparagraph[max-polls]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[suite state polling]]] \textrightarrow max-polls}
+- *type*: ISO 8601 duration/interval representation (e.g.
+  ``PT10S``, 10 seconds, or ``PT1M``, 1 minute).
+- *default*: PT1M
 
-The maximum number of polls before timing out and entering the `failed' state.
 
-\begin{myitemize}
-    \item {\em type:} integer
-    \item {\em default:} 10
-\end{myitemize}
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[suite state polling]]] ``->`` max-polls
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-\subparagraph[user]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[suite state polling]]] \textrightarrow user}
+The maximum number of polls before timing out and entering the "failed" state.
+
+- *type*: integer
+- *default*: 10
+
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[suite state polling]]] ``->`` user
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Username of an account on the suite host to which you have access. The
-polling \lstinline=cylc suite-state= command will be invoked
+polling ``cylc suite-state`` command will be invoked
 on the remote account.
 
-\begin{myitemize}
-    \item {\em type:} string (username)
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: string (username)
+- *default*: (none)
 
-\subparagraph[host]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[suite state polling]]] \textrightarrow host}
 
-The hostname of the target suite. The polling \lstinline=cylc suite-state= command
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[suite state polling]]] ``->`` host
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+The hostname of the target suite. The polling ``cylc suite-state`` command
 will be invoked on the remote account.
 
-\begin{myitemize}
-    \item {\em type:} string (hostname)
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: string (hostname)
+- *default*: (none)
 
-\subparagraph[host]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[suite state polling]]] \textrightarrow message}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[suite state polling]]] ``->`` message
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Wait for the target task in the target suite to receive a specified message
 rather than achieve a state.
 
-\begin{myitemize}
-    \item {\em type:} string (the message)
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: string (the message)
+- *default*: (none)
 
-\subparagraph[verbose]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[suite state polling]]] \textrightarrow verbose}
 
-Run the polling \lstinline=cylc suite-state= command in verbose output mode.
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[suite state polling]]] ``->`` verbose
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False
-\end{myitemize}
+Run the polling ``cylc suite-state`` command in verbose output mode.
 
-\paragraph[{[[[}simulation{]]]}]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[simulation]]]}
-\label{suiterc-sim-config}
+- *type*: boolean
+- *default*: False
 
-\lstset{language=transcript}
 
-Task configuration for the suite {\em simulation} and {\em dummy} run modes
+.. _suiterc-sim-config:
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[simulation]]]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
+
+Task configuration for the suite *simulation* and *dummy* run modes
 described in Section~\ref{SimulationMode}.
 
-\subparagraph[default run length]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[simulation]]] \textrightarrow default run length}
 
-The default simulated job run length, if \lstinline=[job]execution time limit=
-and \lstinline=[simulation]speedup factor= are not set.
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[simulation]]] ``->`` default run length
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-\begin{myitemize}
-    \item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
- \lstinline=PT10S=, 10 seconds, or \lstinline=PT1M=, 1 minute).
-    \item {\em default:} \lstinline=PT10S=
-\end{myitemize}
+The default simulated job run length, if ``[job]execution time limit``
+and ``[simulation]speedup factor`` are not set.
 
-\subparagraph[speedup factor]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[simulation]]] \textrightarrow speedup factor}
+- *type*: ISO 8601 duration/interval representation (e.g.
+  ``PT10S``, 10 seconds, or ``PT1M``, 1 minute).
+- *default*: ``PT10S``
 
-If \lstinline=[job]execution time limit= is set, the task simulated run length
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[simulation]]] ``->`` speedup factor
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+If ``[job]execution time limit`` is set, the task simulated run length
 is computed by dividing it by this factor.
 
-\begin{myitemize}
-    \item {\em type:} float
-    \item {\em default:} (none) - i.e.\ do not use proportional run length
-    \item {\em example:} \lstinline=10.0=
-\end{myitemize}
+- *type*: float
+- *default*: (none) - i.e. do not use proportional run length
+- *example*: ``10.0``
 
-\subparagraph[time limit buffer]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[simulation]]] \textrightarrow time limit buffer}
 
-For dummy jobs, a new \lstinline=[job]execution time limit= is set to the
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[simulation]]] ``->`` time limit buffer
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+For dummy jobs, a new ``[job]execution time limit`` is set to the
 simulated task run length plus this buffer interval, to avoid job kill due to
 exceeding the time limit.
 
-\begin{myitemize}
-    \item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
- \lstinline=PT10S=, 10 seconds, or \lstinline=PT1M=, 1 minute).
-    \item {\em default:} PT10S
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g.
+  ``PT10S``, 10 seconds, or ``PT1M``, 1 minute).
+- *default*: PT10S
 
-\subparagraph[fail cycle points]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[simulation]]] \textrightarrow fail cycle points}
+
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[simulation]]] ``->`` fail cycle points
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Configure simulated or dummy jobs to fail at certain cycle points.
 
-\begin{myitemize}
-    \item {\em type:} list of strings (cycle points), or {\em all}
-    \item {\em default:} (none) - no instances of the task will fail
-    \item {\em examples:}
-    \begin{myitemize}
-        \item \lstinline=all= - all instance of the task will fail
-        \item \lstinline=2017-08-12T06, 2017-08-12T18= - these instances of the
-        task will fail
-    \end{myitemize}
-\end{myitemize}
+- *type*: list of strings (cycle points), or *all*
+- *default*: (none) - no instances of the task will fail
+- *examples*:
+  - ``all`` - all instance of the task will fail
+  - ``2017-08-12T06, 2017-08-12T18`` - these instances of the task will fail
 
-\subparagraph[fail try 1 only]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[simulation]]] \textrightarrow fail try 1 only}
 
-If this is set to \lstinline=True= only the first run of the task instance will
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[simulation]]] ``->`` fail try 1 only
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+If this is set to ``True`` only the first run of the task instance will
 fail, otherwise retries will fail too.
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} \lstinline=True=
-\end{myitemize}
+- *type*: boolean
+- *default*: ``True``
 
-\subparagraph[disable task event handlers]{[runtime] \textrightarrow [[\_\_NAME\_\_]] \textrightarrow [[[simulation]]] \textrightarrow disable task event handlers}
 
-If this is set to \lstinline=True= configured task event handlers will not be called
+[runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[simulation]]] ``->`` disable task event handlers
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+If this is set to ``True`` configured task event handlers will not be called
 in simulation or dummy modes.
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} \lstinline=True=
-\end{myitemize}
+- *type*: boolean
+- *default*: ``True``
 
-\subsection{[visualization]}
 
-Configuration of suite graphing for the \lstinline=cylc graph= command (graph
+[visualization]
+---------------
+
+Configuration of suite graphing for the ``cylc graph`` command (graph
 extent, styling, and initial family-collapsed state) and the gcylc graph view
-(initial family-collapsed state). Graphviz documentation of node shapes
-and so on can be found at \url{http://www.graphviz.org/documentation/}.
+(initial family-collapsed state). See the
+`Graphviz documentation of node shapes <http://www.graphviz.org/documentation/>`_.
 
-\subsubsection[initial cycle point]{[visualization] \textrightarrow initial cycle point}
+
+[visualization] ``->`` initial cycle point
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The initial cycle point for graph plotting.
-\begin{myitemize}
-    \item {\em type:} ISO 8601 date-time representation (e.g.\  CCYYMMDDThhmm)
-    \item {\em default:} the suite initial cycle point
-\end{myitemize}
+
+- *type*: ISO 8601 date-time representation (e.g. CCYYMMDDThhmm)
+- *default*: the suite initial cycle point
+
 The visualization initial cycle point gets adjusted up if necessary to the
 suite initial cycling point.
 
-\subsubsection[final cycle point]{[visualization] \textrightarrow final cycle point}
+
+[visualization] ``->`` final cycle point
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 An explicit final cycle point for graph plotting. If used, this overrides the
-preferred {\em number of cycle points} (below).
-\begin{myitemize}
-    \item {\em type:} ISO 8601 date-time representation (e.g.\  CCYYMMDDThhmm)
-    \item {\em default:} (none)
-\end{myitemize}
+preferred *number of cycle points* (below).
+
+- *type*: ISO 8601 date-time representation (e.g. CCYYMMDDThhmm)
+- *default*: (none)
+
 The visualization final cycle point gets adjusted down if necessary to the
 suite final cycle point.
 
-\subsubsection[number of cycle points]{[visualization] \textrightarrow number of cycle points}
+
+[visualization] ``->`` number of cycle points
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The number of cycle points to graph starting from the visualization initial
 cycle point. This is the preferred way of defining the graph end point, but
-it can be overridden by an explicit {\em final cycle point} (above).
-\begin{myitemize}
-    \item {\em type:} integer
-    \item {\em default:} 3
-\end{myitemize}
+it can be overridden by an explicit *final cycle point* (above).
 
-\subsubsection[collapsed families]{[visualization] \textrightarrow collapsed families}
+- *type*: integer
+- *default*: 3
+
+
+[visualization] ``->`` collapsed families
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A list of family (namespace) names to be shown in the collapsed state
-(i.e.\ the family members will be replaced by a single family node) when
+(i.e. the family members will be replaced by a single family node) when
 the suite is first plotted in the graph viewer or the gcylc graph view.
 If this item is not set, the default is to collapse all families at first.
 Interactive GUI controls can then be used to group and ungroup family
 nodes at will.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of family names.
-    \item {\em default:} (none)
-\end{myitemize}
+- *type*: Comma-separated list of family names.
+- *default*: (none)
 
-\subsubsection[use node color for edges]{[visualization] \textrightarrow use node color for edges}
+
+[visualization] ``->`` use node color for edges
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Plot graph edges (dependency arrows) with the same color as the upstream
 node, otherwise default to black.
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False
-\end{myitemize}
+- *type*: boolean
+- *default*: False
 
-\subsubsection[use node fillcolor for edges]{[visualization] \textrightarrow use node fillcolor for edges}
+
+[visualization] ``->`` use node fillcolor for edges
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Plot graph edges (i.e. dependency arrows) with the same fillcolor as the
 upstream node, if it is filled, otherwise default to black.
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False
-\end{myitemize}
+- *type*: boolean
+- *default*: False
 
-\subsubsection[node penwidth]{[visualization] \textrightarrow node penwidth}
+
+[visualization] ``->`` node penwidth
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Line width of node shape borders.
 
-\begin{myitemize}
-    \item {\em type:} integer
-    \item {\em default:} 2
-\end{myitemize}
+- *type*: integer
+- *default*: 2
 
-\subsubsection[edge penwidth]{[visualization] \textrightarrow edge penwidth}
+
+[visualization] ``->`` edge penwidth
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Line width of graph edges (dependency arrows).
 
-\begin{myitemize}
-    \item {\em type:} integer
-    \item {\em default:} 2
-\end{myitemize}
+- *type*: integer
+- *default*: 2
 
-\subsubsection[use node color for labels]{[visualization] \textrightarrow use node color for labels}
+
+[visualization] ``->`` use node color for labels
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Graph node labels can be printed in the same color as the node outline.
 
-\begin{myitemize}
-    \item {\em type:} boolean
-    \item {\em default:} False
-\end{myitemize}
+- *type*: boolean
+- *default*: False
 
 
-\subsubsection[default node attributes]{[visualization] \textrightarrow default node attributes}
+[visualization] ``->`` default node attributes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Set the default attributes (color and style etc.) of graph nodes (tasks and families).
-Attribute pairs must be quoted to hide the internal \lstinline@=@ character.
+Attribute pairs must be quoted to hide the internal ``=`` character.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of quoted \lstinline@'attribute=value'@ pairs.
-    \item {\em legal values:} see graphviz or pygraphviz documentation
-    \item {\em default:} \lstinline@'style=filled', 'fillcolor=yellow', 'shape=box'@
-\end{myitemize}
+- *type*: Comma-separated list of quoted ``'attribute=value'`` pairs.
+- *legal values*: see graphviz or pygraphviz documentation
+- *default*: ``'style=filled', 'fillcolor=yellow', 'shape=box'``
 
-\subsubsection[default edge attributes]{[visualization] \textrightarrow default edge attributes}
+
+[visualization] ``->`` default edge attributes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Set the default attributes (color and style etc.) of graph edges
 (dependency arrows).  Attribute pairs must be quoted to hide the
-internal \lstinline@=@ character.
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of quoted \lstinline@'attribute=value'@ pairs.
-    \item {\em legal values:} see graphviz or pygraphviz documentation
-    \item {\em default:} \lstinline@'color=black'@
-\end{myitemize}
+internal ``=`` character.
 
-\subsubsection[{[[}node groups{]]}]{[visualization] \textrightarrow [[node groups]]}
+- *type*: Comma-separated list of quoted ``'attribute=value'`` pairs.
+- *legal values*: see graphviz or pygraphviz documentation
+- *default*: ``'color=black'``
+
+
+[visualization] ``->`` [[node groups]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Define named groups of graph nodes (tasks and families) which can styled
-en masse, by name, in [visualization] \textrightarrow [[node attributes]].
+en masse, by name, in ``[visualization] -> [[node attributes]]``.
 Node groups are automatically defined for all task families, including
 root, so you can style family and member nodes at once by family name.
 
-\paragraph[\_\_GROUP\_\_]{[visualization] \textrightarrow [[node groups]] \textrightarrow \_\_GROUP\_\_}
 
-Replace \_\_GROUP\_\_ with each named group of tasks or families.
+[visualization] ``->`` [[node groups]] ``->`` \_\_GROUP\_\_
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of task or family names.
-    \item {\em default:} (none)
-    \item {\em example:}
+Replace ``\_\_GROUP\_\_`` with each named group of tasks or families.
+
+- *type*: Comma-separated list of task or family names.
+- *default*: (none)
+- *example*:
 \begin{lstlisting}
    PreProc = foo, bar
    PostProc = baz, waz
 \end{lstlisting}
-\end{myitemize}
 
-\subsubsection[{[[}node attributes{]]}]{[visualization] \textrightarrow [[node attributes]]}
+
+[visualization] ``->`` [[node attributes]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Here you can assign graph node attributes to specific nodes, or to all
-members of named groups defined in [visualization] \textrightarrow [[node
-groups]]. Task families are automatically node groups. Styling of a
+members of named groups defined in ``[visualization] -> [[node groups]]``.
+Task families are automatically node groups. Styling of a
 family node applies to all member nodes (tasks and sub-families), but
 precedence is determined by ordering in the suite configuration.  For
 example, if you style a family red and then one of its members green,
@@ -2320,19 +2605,19 @@ cylc will plot a red family with one green member; but if you style one
 member green and then the family red, the red family styling will
 override the earlier green styling of the member.
 
-\paragraph[\_\_NAME\_\_]{[visualization] \textrightarrow [[node attributes]] \textrightarrow \_\_NAME\_\_}
 
-Replace \_\_NAME\_\_ with each node or node group for style attribute
+[visualization] ``->`` [[node attributes]] ``->`` \_\_NAME\_\_
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+Replace ``\_\_NAME\_\_`` with each node or node group for style attribute
 assignment.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of quoted \lstinline@'attribute=value'@ pairs.
-    \item {\em legal values:} see graphviz or pygraphviz documentation
-    \item {\em default:} (none)
-    \item {\em example:} (with reference to the node groups defined above)
+- *type*: Comma-separated list of quoted ``'attribute=value'`` pairs.
+- *legal values*: see the Graphviz or PyGraphviz documentation
+- *default*: (none)
+- *example* (with reference to the node groups defined above):
 \begin{lstlisting}
    PreProc = 'style=filled', 'fillcolor=orange'
    PostProc = 'color=red'
    foo = 'style=filled'
 \end{lstlisting}
-\end{myitemize}

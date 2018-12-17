@@ -1,320 +1,360 @@
-Site and User Config Ref
-========================
+.. _SiteAndUserConfiguration:
 
-\section{Global (Site, User) Configuration Files}
-\label{SiteAndUserConfiguration}
+Global (Site, User) Configuration Files
+=======================================
+
+.. todo::
+   refs:
 
 Cylc site and user global configuration files contain settings that affect all
 suites.  Some of these, such as the range of network ports used by cylc,
 should be set at site level. Legal items, values, and system defaults are
 documented in (\ref{SiteRCReference}).
 
-\lstset{language=transcript}
-\begin{lstlisting}
-# cylc site global config file
-<cylc-dir>/etc/global.rc
-\end{lstlisting}
+.. code-block:: bash
+
+   # cylc site global config file
+   <cylc-dir>/etc/global.rc
+
 Others, such as the preferred text editor for suite configurations,
 can be overridden by users,
-\lstset{language=transcript}
-\begin{lstlisting}
-# cylc user global config file
-~/.cylc/$(cylc --version)/global.rc  # e.g. ~/.cylc/7.7.0/global.rc
-\end{lstlisting}
 
-The file \lstinline=<cylc-dir>/etc/global.rc.eg= contains instructions on how
+.. code-block:: bash
+
+   # cylc user global config file
+   ~/.cylc/$(cylc --version)/global.rc  # e.g. ~/.cylc/7.7.0/global.rc
+
+The file ``<cylc-dir>/etc/global.rc.eg`` contains instructions on how
 to generate and install site and user global config files:
-\lstinputlisting{../../../etc/global.rc.eg}
 
-\section{Global (Site, User) Config File Reference}
-\label{SiteRCReference}
+.. todo:
+   add-in
 
-\lstset{language=transcript}
+ADD-IN: \lstinputlisting{../../../etc/global.rc.eg}
+
+
+.. _SiteRCReference:
+
+Global (Site, User) Config File Reference
+=========================================
+
+.. todo::
+   refs:
 
 This section defines all legal items and values for cylc site and
-user config files. See {\em Site And User Config Files}
+user config files. See *Site And User Config Files*
 (Section~\ref{SiteAndUserConfiguration}) for file locations, intended
 usage, and how to generate the files using the
-\lstinline=cylc get-site-config= command.
+``cylc get-site-config`` command.
 
-{\em As for suite configurations, Jinja2 expressions can be embedded in
-site and user config files to generate the final result parsed by cylc.}
+.. todo::
+   refs:
+
+*As for suite configurations, Jinja2 expressions can be embedded in
+site and user config files to generate the final result parsed by cylc.*
 Use of Jinja2 in suite configurations is documented in
 Section~\ref{Jinja2}.
 
-\subsection{Top Level Items}
 
-\subsubsection{temporary directory}
+Top Level Items
+---------------
+
+temporary directory
+^^^^^^^^^^^^^^^^^^^
 
 A temporary directory is needed by a few cylc commands, and is cleaned
-automatically on exit. Leave unset for the default (usually
-\lstinline=$TMPDIR=).
+automatically on exit. Leave unset for the default (usually ``$TMPDIR``).
 
-\begin{myitemize}
-\item {\em type:} string (directory path)
-\item {\em default:} (none)
-\item {\em example:} \lstinline@temporary directory = /tmp/$USER/cylc@
-\end{myitemize}
+- *type*: string (directory path)
+- *default*: (none)
+- *example*: ``temporary directory = /tmp/$USER/cylc``
 
-\subsubsection{process pool size}
-\label{process pool size}
+
+.. _process pool size:
+
+process pool size
+^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 Maximum number of concurrent processes used to execute external job submission,
 event handlers, and job poll and kill commands - see~\ref{Managing External
 Command Execution}.
 
-\begin{myitemize}
-\item {\em type:} integer
-\item {\em default:} 4
-\end{myitemize}
+- *type*: integer
+- *default*: 4
 
-\subsubsection{process pool timeout}
-\label{process pool timeout}
+
+.. _process pool timeout:
+
+process pool timeout
+^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 Interval after which long-running commands in the process pool will be killed -
 see~\ref{Managing External Command Execution}.
 
-\begin{myitemize}
-\item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
-\lstinline=PT10S=, 10 seconds, or \lstinline=PT1M=, 1 minute).
-\item {\em default:} PT10M -  note this is set quite high to avoid killing
+- *type*: ISO 8601 duration/interval representation (e.g.
+  ``PT10S``, 10 seconds, or ``PT1M``, 1 minute).
+- *default*: PT10M -  note this is set quite high to avoid killing
   important processes when the system is under load.
-\end{myitemize}
 
-\subsubsection{disable interactive command prompts}
+
+disable interactive command prompts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Commands that intervene in running suites can be made to ask for
 confirmation before acting. Some find this annoying and ineffective as a
 safety measure, however, so command prompts are disabled by default.
 
-\begin{myitemize}
-\item {\em type:} boolean
-\item {\em default:} True
-\end{myitemize}
+- *type*: boolean
+- *default*: True
 
-\subsubsection{enable run directory housekeeping}
+
+enable run directory housekeeping
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 The suite run directory tree is created anew with every suite start
 (not restart) but output from the most recent previous runs can be
 retained in a rolling archive. Set length to 0 to keep no backups.
-{\bf This is incompatible with current Rose suite housekeeping} (see
+**This is incompatible with current Rose suite housekeeping** (see
 Section~\ref{SuiteStorageEtc} for more on Rose) so it is disabled by
 default, in which case new suite run files will overwrite existing ones
 in the same run directory tree. Rarely, this can result in incorrect
 polling results due to the presence of old task status files.
 
-\begin{myitemize}
-\item {\em type:} boolean
-\item {\em default:} False
-\end{myitemize}
+- *type*: boolean
+- *default*: False
 
-\subsubsection{run directory rolling archive length}
+
+run directory rolling archive length
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The number of old run directory trees to retain if run directory
 housekeeping is enabled.
-\begin{myitemize}
-\item {\em type:} integer
-\item {\em default:} 2
-\end{myitemize}
 
-\subsubsection{task host select command timeout}
+- *type*: integer
+- *default*: 2
+
+
+task host select command timeout
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When a task host in a suite is a shell command string, cylc calls the shell to
 determine the task host. This call is invoked by the main process, and may
 cause the suite to hang while waiting for the command to finish. This setting
 sets a timeout for such a command to ensure that the suite can continue.
 
-\begin{myitemize}
-\item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
-\lstinline=PT10S=, 10 seconds, or \lstinline=PT1M=, 1 minute).
-\item {\em default: PT10S}
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g.
+  ``PT10S``, 10 seconds, or ``PT1M``, 1 minute).
+- *default*: PT10S
 
-\subsection{[task messaging]}
+
+[task messaging]
+----------------
 
 This section contains configuration items that affect task-to-suite
 communications.
 
-\subsubsection[retry interval]{[task messaging] \textrightarrow retry interval}
+
+[retry interval]{[task messaging] ``->`` retry interval
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If a send fails, the messaging code will retry after a configured
 delay interval.
 
-\begin{myitemize}
-\item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
-\lstinline=PT10S=, 10 seconds, or \lstinline=PT1M=, 1 minute).
-\item {\em default:} PT5S
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g.
+  ``PT10S``, 10 seconds, or ``PT1M``, 1 minute).
+- *default*: PT5S
 
-\subsubsection[maximum number of tries]{[task messaging] \textrightarrow maximum number of tries}
+
+[maximum number of tries]{[task messaging] ``->`` maximum number of tries
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If successive sends fail, the messaging code will give up after a
 configured number of tries.
 
-\begin{myitemize}
-\item {\em type:} integer
-\item {\em minimum:} 1
-\item {\em default:} 7
-\end{myitemize}
+- *type*: integer
+- *minimum*: 1
+- *default*: 7
 
-\subsubsection[connection timeout]{[task messaging] \textrightarrow connection timeout}
 
-This is the same as the \lstinline=--comms-timeout= option in cylc
+[connection timeout]{[task messaging] ``->`` connection timeout
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This is the same as the ``--comms-timeout`` option in cylc
 commands. Without a timeout remote connections to unresponsive
 suites can hang indefinitely (suites suspended with Ctrl-Z for instance).
 
-\begin{myitemize}
-\item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
-\lstinline=PT10S=, 10 seconds, or \lstinline=PT1M=, 1 minute).
-\item {\em default:} PT30S
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g.
+  ``PT10S``, 10 seconds, or ``PT1M``, 1 minute).
+- *default*: PT30S
 
-\subsection{[suite logging]}
+
+[suite logging]
+---------------
 
 The suite event log, held under the suite run directory, is maintained
 as a rolling archive. Logs are rolled over (backed up and started anew)
 when they reach a configurable limit size.
 
-\subsubsection[rolling archive length]{[suite logging] \textrightarrow rolling archive length}
+
+[rolling archive length]{[suite logging] ``->`` rolling archive length
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 How many rolled logs to retain in the archive.
 
-\begin{myitemize}
-\item {\em type:} integer
-\item {\em minimum:} 1
-\item {\em default:} 5
-\end{myitemize}
+- *type*: integer
+- *minimum*: 1
+- *default*: 5
 
-\subsubsection[maximum size in bytes]{[suite logging] \textrightarrow maximum size in bytes}
+
+maximum size in bytes]{[suite logging] ``->`` maximum size in bytes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Suite event logs are rolled over when they reach this file size.
 
-\begin{myitemize}
-\item {\em type:} integer
-\item {\em default:} 1000000
-\end{myitemize}
+- *type*: integer
+- *default*: 1000000
 
-\subsection{[documentation]}
 
-Documentation locations for the \lstinline=cylc doc= command and gcylc
+[documentation]
+---------------
+
+Documentation locations for the ``cylc doc`` command and gcylc
 Help menus.
 
-\subsubsection[{[[}files{]]}]{[documentation] \textrightarrow [[files]]}
+
+[documentation] ``->`` [[files]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 File locations of documentation held locally on the cylc host server.
 
-\paragraph[html index]{[documentation] \textrightarrow [[files]] \textrightarrow html index }
+
+[documentation] ``->`` [[files]] ``->`` html index
+""""""""""""""""""""""""""""""""""""""""""""""""""
 
 File location of the main cylc documentation index.
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} \lstinline=<cylc-dir>/doc/index.html=
-\end{myitemize}
 
-\paragraph[pdf user guide]{[documentation] \textrightarrow [[files]] \textrightarrow pdf user guide }
+- *type*: string
+- *default*: ``<cylc-dir>/doc/index.html``
+
+
+[documentation] ``->`` [[files]] ``->`` pdf user guide
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 File location of the cylc User Guide, PDF version.
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} \lstinline=<cylc-dir>/doc/cug-pdf.pdf=
-\end{myitemize}
 
-\paragraph[multi-page html user guide]{[documentation] \textrightarrow [[files]] \textrightarrow multi-page html user guide }
+- *type*: string
+- *default*: ``<cylc-dir>/doc/cug-pdf.pdf``
+
+
+[documentation] ``->`` [[files]] ``->`` multi-page html user guide
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 File location of the cylc User Guide, multi-page HTML version.
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} \lstinline=<cylc-dir>/doc/html/multi/cug-html.html=
-\end{myitemize}
 
-\paragraph[single-page html user guide]{[documentation] \textrightarrow [[files]] \textrightarrow single-page html user guide }
+- *type*: string
+- *default*: ``<cylc-dir>/doc/html/multi/cug-html.html``
+
+
+[documentation] ``->`` [[files]] ``->`` single-page html user guide
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 File location of the cylc User Guide, single-page HTML version.
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} \lstinline=<cylc-dir>/doc/html/single/cug-html.html=
-\end{myitemize}
 
-\subsubsection[{[[}urls{]]}]{[documentation] \textrightarrow [[urls]]}
+- *type*: string
+- *default*: ``<cylc-dir>/doc/html/single/cug-html.html``
+
+
+[documentation] ``->`` [[urls]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Online documentation URLs.
 
-\paragraph[internet homepage]{[documentation] \textrightarrow [[urls]] \textrightarrow internet homepage }
+
+[documentation] ``->`` [[urls]] ``->`` internet homepage
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 URL of the cylc internet homepage, with links to documentation for the
 latest official release.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} http://cylc.github.com/cylc/
-\end{myitemize}
+- *type*: string
+- *default*: http://cylc.github.com/cylc/
 
-\paragraph[local index]{[documentation] \textrightarrow [[urls]] \textrightarrow local index}
+
+[documentation] ``->`` [[urls]] ``->`` local index
+""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Local intranet URL of the main cylc documentation index.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\end{myitemize}
+- *type*: string
+- *default*: (none)
 
-\subsection{[document viewers]}
+
+[document viewers]
+------------------
 
 PDF and HTML viewers can be launched by cylc to view the documentation.
 
-\subsubsection[pdf]{[document viewers] \textrightarrow pdf}
+
+[document viewers] ``->`` pdf
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Your preferred PDF viewer program.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} evince
-\end{myitemize}
+- *type*: string
+- *default*: evince
 
-\subsubsection[html]{[document viewers] \textrightarrow html}
+
+[document viewers] ``->`` html
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Your preferred web browser.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} firefox
-\end{myitemize}
+- *type*: string
+- *default*: firefox
 
-\subsection{[editors]}
+
+[editors]
+---------
 
 Choose your favourite text editor for editing suite configurations.
 
-\subsubsection[terminal]{[editors] \textrightarrow terminal}
+
+[editors] ``->`` terminal
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The editor to be invoked by the cylc command line interface.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} \lstinline=vim=
-\item {\em examples:}
-    \begin{myitemize}
-            \item \lstinline@terminal = emacs -nw@ (emacs non-GUI)
-            \item \lstinline@terminal = emacs@ (emacs GUI)
-            \item \lstinline@terminal = gvim -f@ (vim GUI)
-    \end{myitemize}
-\end{myitemize}
+- *type*: string
+- *default*: ``vim``
+- *examples*:
+  - ``terminal = emacs -nw`` (emacs non-GUI)
+  - ``terminal = emacs`` (emacs GUI)
+  - ``terminal = gvim -f`` (vim GUI)
 
-\subsubsection[gui]{[editors] \textrightarrow gui}
+
+[editors] ``->`` gui
+^^^^^^^^^^^^^^^^^^^^
 
 The editor to be invoked by the cylc GUI.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} \lstinline=gvim -f=
-\item {\em examples:}
-    \begin{myitemize}
-            \item \lstinline@gui = emacs@
-            \item \lstinline@gui = xterm -e vim@
-    \end{myitemize}
-\end{myitemize}
+- *type*: string
+- *default*: ``gvim -f``
+- *examples*:
+  - ``gui = emacs``
+  - ``gui = xterm -e vim``
 
 
-\subsection{[communication]}
+[communication]
+---------------
 
 This section covers options for network communication between cylc
 clients (suite-connecting commands and guis) servers (running suites).
@@ -326,102 +366,103 @@ Authentication. If the system does not support SSL, you should configure
 this section to use HTTP. Cylc will not automatically fall back to HTTP
 if HTTPS is not available.
 
-\subsubsection[method]{[communication] \textrightarrow method }
+
+[communication] ``->`` method
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The choice of client-server communication method - currently only HTTPS
 and HTTP are supported, although others could be developed and plugged in.
 Cylc defaults to HTTPS if this setting is not explicitly configured.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em options:}
-    \begin{myitemize}
-    \item {\bf https}
-    \item {\bf http}
-    \end{myitemize}
-\item {\em default:} https
-\end{myitemize}
+- *type*: string
+- *options*:
+  - **https**
+  - **http**
+- *default*: https
 
-\subsubsection[base port]{[communication] \textrightarrow base port }
+
+[communication] ``->`` base port
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The first port that Cylc is allowed to use. This item (and
-\lstinline=maximum number of ports=) is deprecated; please use
-\lstinline=run ports= under \lstinline=[suite servers]= instead.
+``maximum number of ports``) is deprecated; please use
+``run ports`` under ``[suite servers]`` instead.
 
-\begin{myitemize}
-\item {\em type:} integer
-\item {\em default:} \lstinline=43001=
-\end{myitemize}
+- *type*: integer
+- *default*: ``43001``
 
-\subsubsection[maximum number of ports]{[communication] \textrightarrow maximum number of ports}
 
-This setting (and \lstinline=base port=) is deprecated; please use
-\lstinline=run ports= under \lstinline=[suite servers]= instead.
+[communication] ``->`` maximum number of ports
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-\begin{myitemize}
-\item {\em type:} integer
-\item {\em default:} \lstinline=100=
-\end{myitemize}
+This setting (and ``base port``) is deprecated; please use
+``run ports`` under ``[suite servers]`` instead.
 
-\subsubsection[proxies on]{[communication] \textrightarrow proxies on}
+- *type*: integer
+- *default*: ``100``
+
+
+[communication] ``->`` proxies on
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Enable or disable proxy servers for HTTPS - disabled by default.
 
-\begin{myitemize}
-\item {\em type:} boolean
-\item {\em localhost default:} False
-\end{myitemize}
+- *type*: boolean
+- *localhost default*: False
 
-\subsubsection[options]{[communication] \textrightarrow options}
+
+[communication] ``->`` options
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Option flags for the communication method. Currently only 'SHA1' is
 supported for HTTPS, which alters HTTP Digest Auth to use the SHA1 hash
 algorithm rather than the standard MD5. This is more secure but is also
 less well supported by third party web clients including web browsers.
 You may need to add the 'SHA1' option if you are running on platforms
-where MD5 is discouraged (e.g.\  under FIPS).
+where MD5 is discouraged (e.g. under FIPS).
 
-\begin{myitemize}
-\item {\em type:} string\_list
-\item {\em default:} \lstinline@[]@
-\item {\em options:}
-    \begin{myitemize}
-        \item {\bf SHA1}
-    \end{myitemize}
-\end{myitemize}
+- *type*: string\_list
+- *default*: ``[]``
+- *options*:
+  - **SHA1**
 
-\subsection{[monitor]}
 
-Configurable settings for the command line \lstinline=cylc monitor= tool.
+[monitor]
+---------
 
-\subsubsection[monitor]{[monitor] \textrightarrow sort order}
+Configurable settings for the command line ``cylc monitor= tool.
+
+
+[monitor] ``->`` sort order
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The sort order for tasks in the monitor view.
-\begin{myitemize}
-    \item {\em type:} string
-    \item {\em options:}
-    \begin{myitemize}
-        \item {\bf alphanumeric}
-        \item {\bf definition} -  the order that tasks appear under
-            \lstinline=[runtime]= in the suite configuration.
-    \end{myitemize}
-    \item {\em default:} definition
-\end{myitemize}
 
-\subsection{[hosts]}
+- *type*: string
+- *options*:
+  - **alphanumeric**
+  - **definition** -  the order that tasks appear under
+    ``[runtime]`` in the suite configuration.
+- *default*: definition
+
+
+[hosts]
+-------
 
 The [hosts] section configures some important host-specific settings for
-the suite host (`localhost') and remote task hosts. Note that {\em
-remote task behaviour is determined by the site/user config on the
-suite host, not on the task host}. Suites can specify task hosts that
+the suite host (`localhost') and remote task hosts. Note that
+*remote task behaviour is determined by the site/user config on the
+suite host, not on the task host*. Suites can specify task hosts that
 are not listed here, in which case local settings will be assumed,
 with the local home directory path, if present, replaced by
-\lstinline=$HOME= in items that configure directory locations.
+``$HOME`` in items that configure directory locations.
 
-\subsubsection[{[[}HOST{]]}]{[hosts] \textrightarrow [[HOST]]}
 
-The default task host is the suite host, {\bf localhost}, with default
-values as listed below. Use an explicit \lstinline=[hosts][[localhost]]=
+[hosts] ``->`` [[HOST]]
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The default task host is the suite host, **localhost**, with default
+values as listed below. Use an explicit ``[hosts][[localhost]]``
 section if you need to override the defaults. Localhost settings are
 then also used as defaults for other hosts, with the local home
 directory path replaced as described above. This applies to items
@@ -429,311 +470,359 @@ omitted from an explicit host section, and to hosts that are not listed
 at all in the site and user config files.  Explicit host sections are only
 needed if the automatically modified local defaults are not sufficient.
 
-Host section headings can also be {\em regular expressions} to match
+Host section headings can also be *regular expressions* to match
 multiple hostnames.  Note that the general regular expression wildcard
-is `\lstinline=.*=' (zero or more of any character), not
-`\lstinline=*='.
+is ``'.*'`` (zero or more of any character), not ``'*'``.
 Hostname matching regular expressions are used as-is in the Python
-\lstinline=re.match()= function. As such they match from the beginning
+``re.match()`` function. As such they match from the beginning
 of the hostname string (as specified in the suite configuration) and they
 do not have to match through to the end of the string (use the
-string-end matching character `\lstinline=$=' in the expression to
-force this).
+string-end matching character ``'$'`` in the expression to force this).
 
 A hierachy of host match expressions from specific to general can be
 used because config items are processed in the order specified in the
 file.
 
-\begin{myitemize}
-\item {\em type:} string (hostname or regular expression)
-\item {\em examples:}
-\begin{myitemize}
-    \item \lstinline@server1.niwa.co.nz@ - explicit host name
-    \item  \lstinline@server\d.niwa.co.nz@ - regular expression
-\end{myitemize}
-\end{myitemize}
+- *type*: string (hostname or regular expression)
+- *examples*:
+  - ``server1.niwa.co.nz`` - explicit host name
+  - ``server\d.niwa.co.nz`` - regular expression
 
-\paragraph[run directory]{[hosts] \textrightarrow [[HOST]] \textrightarrow run directory }
+
+[hosts] ``->`` [[HOST]] ``->`` run directory
+""""""""""""""""""""""""""""""""""""""""""""
 
 The top level for suite logs and service files, etc. Can contain
-\lstinline=$HOME= or \lstinline=$USER= but not other environment variables (the
+``$HOME`` or ``$USER`` but not other environment variables (the
 item cannot actually be evaluated by the shell on HOST before use, but the
-remote home directory is where \lstinline=rsync= and \lstinline=ssh= naturally
+remote home directory is where ``rsync`` and ``ssh`` naturally
 land, and the remote username is known by the suite server program).
 
-\begin{myitemize}
-\item {\em type:} string (directory path)
-\item {\em default:} \lstinline=$HOME/cylc-run=
-\item {\em example:} \lstinline=/nfs/data/$USER/cylc-run=
-\end{myitemize}
+- *type*: string (directory path)
+- *default*: ``$HOME/cylc-run``
+- *example*: ``/nfs/data/$USER/cylc-run``
 
-\paragraph[work directory]{[hosts] \textrightarrow [[HOST]] \textrightarrow work directory }
-\label{workdirectory}
+
+.. _workdirectory:
+
+[hosts] ``->`` [[HOST]] ``->`` work directory
+"""""""""""""""""""""""""""""""""""""""""""""
 
 The top level for suite work and share directories. Can contain
-\lstinline=$HOME= or \lstinline=$USER= but not other environment variables
+``$HOME`` or ``$USER`` but not other environment variables
 (the item cannot actually be evaluated by the shell on HOST before use, but the
-remote home directory is where \lstinline=rsync= and \lstinline=ssh= naturally
+remote home directory is where ``rsync`` and ``ssh`` naturally
 land, and the remote username is known by the suite server program).
 
-\begin{myitemize}
-\item {\em type:} string (directory path)
-\item {\em localhost default:} \lstinline=$HOME/cylc-run=
-\item {\em example:} \lstinline=/nfs/data/$USER/cylc-run=
-\end{myitemize}
+- *type*: string (directory path)
+- *localhost default*: ``$HOME/cylc-run``
+- *example*: ``/nfs/data/$USER/cylc-run``
 
 
-\paragraph[task communication method]{[hosts] \textrightarrow [[HOST]] \textrightarrow task communication method }
-\label{task_comms_method}
+.. _task_comms_method:
+
+[hosts] ``->`` [[HOST]] ``->`` task communication method
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The means by which task progress messages are reported back to the running suite.
 See above for default polling intervals for the poll method.
 
-\begin{myitemize}
-\item {\em type:} string (must be one of the following three options)
-\item {\em options:}
-    \begin{myitemize}
-    \item {\bf default} - direct client-server communication via network ports
-    \item {\bf ssh} - use ssh to re-invoke the messaging commands on the suite server
-    \item {\bf poll} - the suite polls for the status of tasks (no task messaging)
-  \end{myitemize}
-\item {\em localhost default:} default
-\end{myitemize}
+- *type*: string (must be one of the following three options)
+- *options*:
+  - **default** - direct client-server communication via network ports
+  - **ssh** - use ssh to re-invoke the messaging commands on the suite server
+  - **poll** - the suite polls for the status of tasks (no task messaging)
+- *localhost default*: default
 
-\paragraph[execution polling intervals]{[hosts] \textrightarrow [[HOST]] \textrightarrow execution polling intervals}
-\label{execution_polling}
+
+.. _execution_polling:
+
+[hosts] ``->`` [[HOST]] ``->`` execution polling intervals
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Cylc can poll running jobs to catch problems that prevent task messages
 from being sent back to the suite, such as hard job kills, network
 outages, or unplanned task host shutdown. Routine polling is done only
-for the polling {\em task communication method} (below) unless
+for the polling *task communication method* (below) unless
 suite-specific polling is configured in the suite configuration.
 A list of interval values can be specified, with the last value used
 repeatedly until the task is finished - this allows more frequent
 polling near the beginning and end of the anticipated task run time.
 Multipliers can be used as shorthand as in the example below.
 
-\begin{myitemize}
-\item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
-\lstinline=PT10S=, 10 seconds, or \lstinline=PT1M=, 1 minute).
-\item {\em default:}
-\item {\em example:} \lstinline@execution polling intervals = 5*PT1M, 10*PT5M, 5*PT1M@
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g.
+  ``PT10S``, 10 seconds, or ``PT1M``, 1 minute).
+- *default*:
+- *example*: ``execution polling intervals = 5*PT1M, 10*PT5M, 5*PT1M``
 
 
-\paragraph[submission polling intervals]{[hosts] \textrightarrow [[HOST]] \textrightarrow submission polling intervals}
-\label{submission_polling}
+.. _submission_polling:
+
+[hosts] ``->`` [[HOST]] ``->`` submission polling intervals
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 Cylc can also poll submitted jobs to catch problems that prevent the
 submitted job from executing at all, such as deletion from an external
-batch scheduler queue. Routine polling is done only for the polling {\em
-task communication method} (above) unless suite-specific polling
+batch scheduler queue. Routine polling is done only for the polling
+*task communication method* (above) unless suite-specific polling
 is configured in the suite configuration. A list of interval
 values can be specified as for execution polling (above) but a single
 value is probably sufficient for job submission polling.
 
-\begin{myitemize}
-\item {\em type:} ISO 8601 duration/interval representation (e.g.\ 
-\lstinline=PT10S=, 10 seconds, or \lstinline=PT1M=, 1 minute).
-\item {\em default:}
-\item {\em example:} (see the execution polling example above)
-\end{myitemize}
+- *type*: ISO 8601 duration/interval representation (e.g.
+  ``PT10S``, 10 seconds, or ``PT1M``, 1 minute).
+- *default*:
+- *example*: (see the execution polling example above)
 
-\paragraph[scp command]{[hosts] \textrightarrow [[HOST]] \textrightarrow scp command }
+
+[hosts] ``->`` [[HOST]] ``->`` scp command
+""""""""""""""""""""""""""""""""""""""""""
 
 A string for the command used to copy files to a remote host. This is not used
 on the suite host unless you run local tasks under another user account. The
-value is assumed to be \lstinline=scp= with some initial options or a command
-that implements a similar interface to \lstinline=scp=.
+value is assumed to be ``scp`` with some initial options or a command
+that implements a similar interface to ``scp``.
+
+- *type*: string
+- *localhost default*: ``scp -oBatchMode=yes -oConnectTimeout=10``
 
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em localhost default:} \lstinline@scp -oBatchMode=yes -oConnectTimeout=10@
-\end{myitemize}
-
-\paragraph[ssh command]{[hosts] \textrightarrow [[HOST]] \textrightarrow ssh command }
+[hosts] ``->`` [[HOST]] ``->`` ssh command
+""""""""""""""""""""""""""""""""""""""""""
 
 A string for the command used to invoke commands on this host. This is not
 used on the suite host unless you run local tasks under another user account.
-The value is assumed to be \lstinline=ssh= with some initial options or a
-command that implements a similar interface to \lstinline=ssh=.
+The value is assumed to be ``ssh`` with some initial options or a
+command that implements a similar interface to ``ssh``.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em localhost default:} \lstinline@ssh -oBatchMode=yes -oConnectTimeout=10@
-\end{myitemize}
+- *type*: string
+- *localhost default*: ``ssh -oBatchMode=yes -oConnectTimeout=10``
 
-\paragraph[use login shell]{[hosts] \textrightarrow [[HOST]] \textrightarrow use login shell }
+
+[hosts] ``->`` [[HOST]] ``->`` use login shell
+""""""""""""""""""""""""""""""""""""""""""""""
 
 Whether to use a login shell or not for remote command invocation. By
 default cylc runs remote ssh commands using a login shell:
-\begin{lstlisting}
-  ssh user@host 'bash --login cylc ...'
-\end{lstlisting}
-which will source \lstinline=/etc/profile= and
-\lstinline=~/.profile= to set up the user environment.  However, for
+
+.. code-block:: bash
+
+   ssh user@host 'bash --login cylc ...'
+
+which will source ``/etc/profile`` and
+``~/.profile`` to set up the user environment.  However, for
 security reasons some institutions do not allow unattended commands to
 start login shells, so you can turn off this behaviour to get:
-\begin{lstlisting}
-  ssh user@host 'cylc ...'
-\end{lstlisting}
+
+.. code-block:: bash
+
+   ssh user@host 'cylc ...'
+
 which will use the default shell on the remote machine,
-sourcing \lstinline=~/.bashrc= (or \lstinline=~/.cshrc=) to set up the
+sourcing ``~/.bashrc`` (or ``~/.cshrc``) to set up the
 environment.
 
-\begin{myitemize}
-\item {\em type:} boolean
-\item {\em localhost default:} True
-\end{myitemize}
+- *type*: boolean
+- *localhost default*: True
 
-\paragraph[cylc executable]{[hosts] \textrightarrow [[HOST]] \textrightarrow cylc executable }
 
-The \lstinline=cylc= executable on a remote host. Note this should normally
+[hosts] ``->`` [[HOST]] ``->`` cylc executable
+""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
+
+The ``cylc`` executable on a remote host. Note this should normally
 point to the cylc multi-version wrapper (see~\ref{CUI}) on the host, not
-\lstinline=bin/cylc= for a specific installed version.
-Specify a full path if \lstinline=cylc= is not in \lstinline=\$PATH= when it is
-invoked via \lstinline=ssh= on this host.
+``bin/cylc`` for a specific installed version.
+Specify a full path if ``cylc`` is not in ``\$PATH`` when it is
+invoked via ``ssh`` on this host.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em localhost default:} \lstinline@cylc@
-\end{myitemize}
+- *type*: string
+- *localhost default*: ``cylc``
 
-\paragraph[global init-script]{[hosts] \textrightarrow [[HOST]] \textrightarrow global init-script }
-\label{GlobalInitScript}
+
+.. _GlobalInitScript:
+
+[hosts] ``->`` [[HOST]] ``->`` global init-script
+"""""""""""""""""""""""""""""""""""""""""""""""""
 
 If specified, the value of this setting will be inserted to just before the
-\lstinline=init-script= section of all job scripts that are to be
+``init-script`` section of all job scripts that are to be
 submitted to the specified remote host.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em localhost default:} \lstinline@""@
-\end{myitemize}
+- *type*: string
+- *localhost default*: ``""``
 
-\paragraph[copyable environment variables]{[hosts] \textrightarrow [[HOST]] \textrightarrow copyable environment variables }
+
+[hosts] ``->`` [[HOST]] ``->`` copyable environment variables
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 A list containing the names of the environment variables that can and/or need
 to be copied from the suite server program to a job.
 
-\begin{myitemize}
-\item {\em type:} string\_list
-\item {\em localhost default:} \lstinline@[]@
-\end{myitemize}
+- *type*: string\_list
+- *localhost default*: ``[]``
 
-\paragraph[retrieve job logs]{[hosts] \textrightarrow [[HOST]] \textrightarrow retrieve job logs}
+
+[hosts] ``->`` [[HOST]] ``->`` retrieve job logs
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 Global default for the~\ref{runtime-remote-retrieve-job-logs} setting for the
 specified host.
 
-\paragraph[retrieve job logs command]{[hosts] \textrightarrow [[HOST]] \textrightarrow retrieve job logs command}
 
-If \lstinline@rsync -a@ is unavailable or insufficient to retrieve job logs
+[hosts] ``->`` [[HOST]] ``->`` retrieve job logs command
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+If ``rsync -a`` is unavailable or insufficient to retrieve job logs
 from a remote host, you can use this setting to specify a suitable command.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} rsync -a
-\end{myitemize}
+- *type*: string
+- *default*: rsync -a
 
-\paragraph[retrieve job logs max size]{[hosts] \textrightarrow [[HOST]] \textrightarrow retrieve job logs max size}
 
-Global default for the~\ref{runtime-remote-retrieve-job-logs-max-size} setting for the
-specified host.
+[hosts] ``->`` [[HOST]] ``->`` retrieve job logs max size
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-\paragraph[retrieve job logs retry delays]{[hosts] \textrightarrow [[HOST]] \textrightarrow retrieve job logs retry delays}
+.. todo::
+   refs:
+
+Global default for the~\ref{runtime-remote-retrieve-job-logs-max-size}
+setting for the specified host.
+
+
+[hosts] ``->`` [[HOST]] ``->`` retrieve job logs retry delays
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 Global default for the~\ref{runtime-remote-retrieve-job-logs-retry-delays}
 setting for the specified host.
 
-\paragraph[task event handler retry delays]{[hosts] \textrightarrow [[HOST]] \textrightarrow task event handler retry delays}
+
+[hosts] ``->`` [[HOST]] ``->`` task event handler retry delays
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 Host specific default for the~\ref{runtime-events-handler-retry-delays}
 setting.
 
-\paragraph[tail command template]{[hosts] \textrightarrow [[HOST]] \textrightarrow tail command template}
-\label{tail-command-template}
 
-A command template (with \lstinline=%(filename)s= substitution) to tail-follow
-job logs on HOST, by the GUI log viewer and \lstinline=cylc cat-log=. You are
+.. _tail-command-template:
+
+[hosts] ``->`` [[HOST]] ``->`` tail command template
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+A command template (with ``%(filename)s`` substitution) to tail-follow
+job logs on HOST, by the GUI log viewer and ``cylc cat-log``. You are
 unlikely to need to override this.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} \lstinline@tail -n +1 -F %(filename)s@
-\end{myitemize}
+- *type*: string
+- *default*: ``tail -n +1 -F %(filename)s``
 
-\paragraph[{[[[}batch systems{]]]}]{[hosts] \textrightarrow [[HOST]] \textrightarrow [[[batch systems]]]}
+
+[hosts] ``->`` [[HOST]] ``->`` [[[batch systems]]]
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. todo::
+   refs:
 
 Settings for particular batch systems on HOST. In the subsections below, SYSTEM
 should be replaced with the cylc batch system handler name that represents the
 batch system (see~\ref{RuntimeJobSubMethods}).
 
-\subparagraph[{[[[[}SYSTEM{]]]]}err tailer]{[hosts] \textrightarrow [[HOST]] \textrightarrow [[[batch systems]]] \textrightarrow [[[[SYSTEM]]]] \textrightarrow err tailer}
-\label{err-tailer}
 
-A command template (with \lstinline=%(job_id)s= substitution) that can be used
+.. _err-tailer:
+
+[hosts] ``->`` [[HOST]] ``->`` [[[batch systems]]] ``->`` [[[[SYSTEM]]]] ``->`` err tailer
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. todo::
+   refs:
+
+A command template (with ``%(job_id)s`` substitution) that can be used
 to tail-follow the stderr stream of a running job if SYSTEM does
 not use the normal log file location while the job is running.  This setting
 overrides~\ref{tail-command-template} above.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\item {\em example:} For PBS:
-    \begin{lstlisting}
-[hosts]
-    [[ myhpc*]]
-        [[[batch systems]]]
-            [[[[pbs]]]]
-                err tailer = qcat -f -e %(job_id)s
-                out tailer = qcat -f -o %(job_id)s
-                err viewer = qcat -e %(job_id)s
-                out viewer = qcat -o %(job_id)s
-    \end{lstlisting}
-\end{myitemize}
+- *type*: string
+- *default*: (none)
+- *example*: For PBS:
 
-\subparagraph[{[[[[}SYSTEM{]]]]}out tailer]{[hosts] \textrightarrow [[HOST]] \textrightarrow [[[batch systems]]] \textrightarrow [[[[SYSTEM]]]] \textrightarrow out tailer}
-\label{out-tailer}
+.. todo::
+   cylc lang:
 
-A command template (with \lstinline=%(job_id)s= substitution) that can be used
+.. code-block:: none
+
+    [hosts]
+        [[ myhpc*]]
+            [[[batch systems]]]
+                [[[[pbs]]]]
+                    err tailer = qcat -f -e %(job_id)s
+                    out tailer = qcat -f -o %(job_id)s
+                    err viewer = qcat -e %(job_id)s
+                    out viewer = qcat -o %(job_id)s
+
+
+.. _out-tailer:
+
+[hosts] ``->`` [[HOST]] ``->`` [[[batch systems]]] ``->`` [[[[SYSTEM]]]] ``->`` out tailer
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. todo::
+   refs:
+
+A command template (with ``%(job_id)s`` substitution) that can be used
 to tail-follow the stdout stream of a running job if SYSTEM does
 not use the normal log file location while the job is running.  This setting
 overrides~\ref{tail-command-template} above.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\item {\em example:} see~\ref{err-tailer}
-\end{myitemize}
+- *type*: string
+- *default*: (none)
+- *example*: see~\ref{err-tailer}
 
-\subparagraph[{[[[[}SYSTEM{]]]]}err viewer]{[hosts] \textrightarrow [[HOST]] \textrightarrow [[[batch systems]]] \textrightarrow [[[[SYSTEM]]]] \textrightarrow err viewer}
 
-A command template (with \lstinline=%(job_id)s= substitution) that can be used
+[hosts] ``->`` [[HOST]] ``->`` [[[batch systems]]] ``->`` [[[[SYSTEM]]]] ``->`` err viewer
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+A command template (with ``%(job_id)s`` substitution) that can be used
 to view the stderr stream of a running job if SYSTEM does
 not use the normal log file location while the job is running.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\item {\em example:} see~\ref{err-tailer}
-\end{myitemize}
+.. todo::
+   refs:
 
-\subparagraph[{[[[[}SYSTEM{]]]]}out viewer]{[hosts] \textrightarrow [[HOST]] \textrightarrow [[[batch systems]]] \textrightarrow [[[[SYSTEM]]]] \textrightarrow out viewer}
+- *type*: string
+- *default*: (none)
+- *example*: see~\ref{err-tailer}
 
-A command template (with \lstinline=%(job_id)s= substitution) that can be used
+
+[hosts] ``->`` [[HOST]] ``->`` [[[batch systems]]] ``->`` [[[[SYSTEM]]]] ``->`` out viewer
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+A command template (with ``%(job_id)s`` substitution) that can be used
 to view the stdout stream of a running job if SYSTEM does
 not use the normal log file location while the job is running.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em default:} (none)
-\item {\em example:} see~\ref{err-tailer}
-\end{myitemize}
+.. todo::
+   refs:
 
-\subparagraph[{[[[[}SYSTEM{]]]]}job name length maximum]{[hosts] \textrightarrow [[HOST]] \textrightarrow [[[batch systems]]] \textrightarrow [[[[SYSTEM]]]] \textrightarrow job name length maximum}
-\label{JobNameLengthMaximum}
+- *type*: string
+- *default*: (none)
+- *example*: see~\ref{err-tailer}
+
+
+.. _JobNameLengthMaximum:
+
+[hosts] ``->`` [[HOST]] ``->`` [[[batch systems]]] ``->`` [[[[SYSTEM]]]] ``->`` job name length maximum
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 The maximum length for job name acceptable by a batch system on a given host.
 Currently, this setting is only meaningful for PBS jobs. For example, PBS 12
@@ -741,22 +830,27 @@ or older will fail a job submit if the job name has more than 15 characters,
 which is the default setting. If you have PBS 13 or above, you may want to
 modify this setting to a larger value.
 
-\begin{myitemize}
-\item {\em type:} integer
-\item {\em default:} (none)
-\item {\em example:}  For PBS:
-    \begin{lstlisting}
-[hosts]
-    [[myhpc*]]
-        [[[batch systems]]]
-            [[[[pbs]]]]
-                # PBS 13
-                job name length maximum = 236
-    \end{lstlisting}
-\end{myitemize}
+- *type*: integer
+- *default*: (none)
+- *example*:  For PBS:
 
-\subparagraph[{[[[[}SYSTEM{]]]]}execution time limit polling intervals]{[hosts] \textrightarrow [[HOST]] \textrightarrow [[[batch systems]]] \textrightarrow [[[[SYSTEM]]]] \textrightarrow execution time limit polling intervals}
-\label{ExecutionTimeLimitPollingIntervals}
+.. todo::
+   cylc-lang:
+
+.. code-block:: none
+
+   [hosts]
+       [[myhpc*]]
+           [[[batch systems]]]
+               [[[[pbs]]]]
+                   # PBS 13
+                   job name length maximum = 236
+
+
+.. _ExecutionTimeLimitPollingIntervals:
+
+[hosts] ``->`` [[HOST]] ``->`` [[[batch systems]]] ``->`` [[[[SYSTEM]]]] ``->`` execution time limit polling intervals
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 The intervals between polling after a task job (submitted to the relevant batch
 system on the relevant host) exceeds its execution time limit. The default
@@ -764,359 +858,464 @@ setting is PT1M, PT2M, PT7M. The accumulated times (in minutes) for these
 intervals will be roughly 1, 1 + 2 = 3 and 1 + 2 + 7 = 10 after a task job
 exceeds its execution time limit.
 
-\begin{myitemize}
-    \item {\em type:} Comma-separated list of ISO 8601 duration/interval
-        representations, optionally {\em preceded} by multipliers.
-    \item {\em default:} PT1M, PT2M, PT7M
-    \item {\em example:}
-    \begin{lstlisting}
-[hosts]
-    [[myhpc*]]
-        [[[batch systems]]]
-            [[[[pbs]]]]
-                execution time limit polling intervals = 5*PT2M
-    \end{lstlisting}
-\end{myitemize}
+    - *type*: Comma-separated list of ISO 8601 duration/interval
+      representations, optionally *preceded* by multipliers.
+    - *default*: PT1M, PT2M, PT7M
+    - *example*:
 
-\subsection{[suite servers] }
+.. todo::
+   refs:
 
-\label{global-suite-servers}
+.. code-block:: none
+
+   [hosts]
+       [[myhpc*]]
+           [[[batch systems]]]
+               [[[[pbs]]]]
+                   execution time limit polling intervals = 5*PT2M
+
+
+.. _global-suite-servers:
+
+[suite servers]
+---------------
 
 Configure allowed suite hosts and ports for starting up (running or
 restarting) suites and enabling them to be detected whilst running via
-utilities such as \lstinline=cylc gscan=. Additionally configure host
+utilities such as ``cylc gscan``. Additionally configure host
 selection settings specifying how to determine the most suitable run host at
 any given time from those configured.
 
-\subsubsection[run hosts]{[suite servers] \textrightarrow auto restart delay}
+
+[suite servers] ``->`` auto restart delay
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 Relates to Cylc's auto stop-restart mechanism (see~\ref{auto-stop-restart}).
 When a host is set to automatically shutdown/restart it will first wait a
-random period of time between zero and \lstinline=auto restart delay=
+random period of time between zero and ``auto restart delay``
 seconds before beginning the process. This is to prevent large numbers
 of suites from restarting simultaneously. 
 
-\begin{myitemize}
-\item {\em type:} integer
-\item {\em default:} \lstinline=0=
-\end{myitemize}
+- *type*: integer
+- *default*: ``0``
 
-\subsubsection[run hosts]{[suite servers] \textrightarrow condemned hosts}
 
-Hosts specified in \lstinline=condemned hosts= will not be considered as suite
-run hosts. If suites are already running on \lstinline=condemned hosts= they
+[suite servers] ``->`` condemned hosts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
+
+Hosts specified in ``condemned hosts`` will not be considered as suite
+run hosts. If suites are already running on ``condemned hosts`` they
 will be automatically shutdown and restarted (see~\ref{auto-stop-restart}).
 
-\begin{myitemize}
-\item {\em type:} comma-separated list of host names and/or IP addresses.
-\item {\em default:} (none)
-\end{myitemize}
+- *type*: comma-separated list of host names and/or IP addresses.
+- *default*: (none)
 
-\subsubsection[run hosts]{[suite servers] \textrightarrow run hosts }
+
+[suite servers] ``->`` run hosts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A list of allowed suite run hosts. One of these hosts will be appointed for
 a suite to start up on if an explicit host is not provided as an option to
-a \lstinline=run= or \lstinline=restart= command.
+a ``run`` or ``restart`` command.
 
-\begin{myitemize}
-\item {\em type:} comma-separated list of host names and/or IP addresses.
-\item {\em default:} \lstinline=localhost=
-\end{myitemize}
+- *type*: comma-separated list of host names and/or IP addresses.
+- *default*: ``localhost``
 
-\subsubsection[scan hosts]{[suite servers] \textrightarrow scan hosts }
+
+[suite servers] ``->`` scan hosts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A list of hosts to scan for running suites.
 
-\begin{myitemize}
-\item {\em type:} comma-separated list of host names and/or IP addresses.
-\item {\em default:} \lstinline=localhost=
-\end{myitemize}
+- *type*: comma-separated list of host names and/or IP addresses.
+- *default*: ``localhost``
 
-\subsubsection[run ports]{[suite servers] \textrightarrow run ports }
+
+[suite servers] ``->`` run ports
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A list of allowed ports for Cylc to use to run suites. Note that only one
 suite can run per port for a given host, so the length of this list
 determines the maximum number of suites that can run at once per suite host.
-This config item supersedes the deprecated settings \lstinline=base port=
-and \lstinline=maximum number of ports=, where the base port is equivalent to
+This config item supersedes the deprecated settings ``base port``
+and ``maximum number of ports``, where the base port is equivalent to
 the first port, and the maximum number of ports to the length, of this list.
 
-\begin{myitemize}
-\item {\em type:} string in the format \lstinline=X .. Y= for
- \lstinline@X <= Y@ where \lstinline=X= and \lstinline=Y= are integers.
-\item {\em default:} \lstinline=43001 .. 43100= (equivalent to the list
-\lstinline=43001, 43002, ... , 43099, 43100=)
-\end{myitemize}
+- *type*: string in the format ``X .. Y`` for
+  ``X <= Y`` where ``X`` and ``Y`` are integers.
+- *default*: ``43001 .. 43100`` (equivalent to the list
+  ``43001, 43002, ... , 43099, 43100``)
 
-\subsubsection[scan ports]{[suite servers] \textrightarrow scan ports }
+
+[suite servers] ``->`` scan ports
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A list of ports to scan for running suites on each host set in scan hosts.
 
-\begin{myitemize}
-\item {\em type:} string in the format \lstinline=X .. Y= for
- \lstinline@X <= Y@ where \lstinline=X= and \lstinline=Y= are integers.
-\item {\em default:} \lstinline=43001 .. 43100= (equivalent to the list
-\lstinline=43001, 43002, ... , 43099, 43100=)
-\end{myitemize}
+- *type*: string in the format ``X .. Y`` for
+  ``X <= Y`` where ``X`` and ``Y`` are integers.
+- *default*: ``43001 .. 43100`` (equivalent to the list
+  ``43001, 43002, ... , 43099, 43100``)
 
-\subsubsection[run host select]{[suite servers] \textrightarrow [[run host select]]}
+
+[suite servers] ``->`` [[run host select]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Configure thresholds for excluding insufficient hosts and a method for
 ranking the remaining hosts to be applied in selection of the most suitable
-\lstinline=run host=, from those configured, at start-up whenever a set host
-is not specified on the command line via the \lstinline@--host=@ option.
+``run host``, from those configured, at start-up whenever a set host
+is not specified on the command line via the ``--host=`` option.
 
-\paragraph[rank]{[suite servers] \textrightarrow [[run host select]] \textrightarrow rank}
 
-The method to use to rank the \lstinline=run host= list in order of
+[suite servers] ``->`` [[run host select]] ``->`` rank
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The method to use to rank the ``run host`` list in order of
 suitability.
 
-\begin{myitemize}
-\item {\em type:} string (which must be one of the options outlined below)
-\item {\em default:} \lstinline=random=
-\item {\em options:}
-    \begin{myitemize}
-    \item {\bf random} - shuffle the hosts to select a host at random
-    \item {\bf load:1} - rank and select for the lowest load average over 1 minute (as given by the \lstinline=uptime= command)
-    \item {\bf load:5} - as for \lstinline=load:1= above, but over 5 minutes
-    \item {\bf load:15} - as for \lstinline=load:1= above, but over 15 minutes
-    \item {\bf memory} - rank and select for the highest usable memory i.e.
+- *type*: string (which must be one of the options outlined below)
+- *default*: ``random``
+- *options*:
+  - **random** - shuffle the hosts to select a host at random
+  - **load:1** - rank and select for the lowest load average over
+    1 minute (as given by the ``uptime`` command)
+  - **load:5** - as for ``load:1`` above, but over 5 minutes
+  - **load:15** - as for ``load:1`` above, but over 15 minutes
+  - **memory** - rank and select for the highest usable memory i.e.
       free memory plus memory in the buffer cache ('buffers') and in the
-      page cache ('cache'), as specified under \lstinline=/proc/meminfo=
-    \item {\bf disk-space:PATH} - rank and select for the highest free disk
-      space for a given mount directory path \lstinline=PATH= as given by
-      the \lstinline=df= command, where multiple paths may be specified
-      individually i.e. via \lstinline=disk-space:PATH_1= and
-      \lstinline=disk-space:PATH_2=, etc.
-    \end{myitemize}
-\item {\em default:} (none)
-\end{myitemize}
+      page cache ('cache'), as specified under ``/proc/meminfo``
+  - **disk-space:PATH** - rank and select for the highest free disk
+      space for a given mount directory path ``PATH`` as given by
+      the ``df`` command, where multiple paths may be specified
+      individually i.e. via ``disk-space:PATH_1`` and
+      ``disk-space:PATH_2``, etc.
+- *default*: (none)
 
-\paragraph[thresholds]{[suite servers] \textrightarrow [[run host select]] \textrightarrow thresholds}
+
+[suite servers] ``->`` [[run host select]] ``->`` thresholds
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 A list of thresholds i.e. cutoff values which run hosts must meet in order
 to be considered as a possible run host. Each threshold is a minimum or a
 maximum requirement depending on the context of the measure; usable
-memory (\lstinline=memory=) and free disk space
-(\lstinline=disk-space:PATH=) threshold values set a {\em minimum} value,
-which must be exceeded, whereas load average (\lstinline=load:1=,
-\lstinline=load:5= and \lstinline=load:15=) threshold values set a
-{\em maximum}, which must not be. Failure to meet a threshold results in
+memory (``memory``) and free disk space
+(``disk-space:PATH``) threshold values set a *minimum* value,
+which must be exceeded, whereas load average (``load:1``,
+``load:5`` and ``load:15``) threshold values set a
+*maximum*, which must not be. Failure to meet a threshold results in
 exclusion from the list of hosts that undergo ranking to
 determine the best host which becomes the run host.
 
-\begin{myitemize}
-\item {\em type:} string in format
-\lstinline=MEASURE_1 CUTOFF_1; ... ;MEASURE_n CUTOFF_n= (etc),
-where each \lstinline=MEASURE_N= is one of the options below (note
-these correspond to all the rank methods accepted under the rank setting
-except for \lstinline=random= which does not make sense as a threshold
-measure). Spaces delimit corresponding measures and their values, while
-semi-colons (optionally with subsequent spaces) delimit each measure-value
-pair.
-\item {\em options:}
-    \begin{myitemize}
-    \item {\bf load:1} - load average over 1 minute (as given by
-the \lstinline=uptime= command)
-    \item {\bf load:5} - as for \lstinline=load:1= above, but over 5 minutes
-    \item {\bf load:15} - as for \lstinline=load:1= above, but over 15 minutes
-    \item {\bf memory} - usable memory i.e. free memory plus memory in the
-      buffer cache ('buffers') and in the page cache ('cache'), in KB, as
-      specified under \lstinline=/proc/meminfo=
-    \item {\bf disk-space:PATH} - free disk space for a given mount
-directory path \lstinline=PATH=, in KB, as given by the \lstinline=df=
-command, where multiple paths may be specified individually i.e. via
-\lstinline=disk-space:PATH_1= and \lstinline=disk-space:PATH_2=, etc.
-    \end{myitemize}
-\item {\em default:} (none)
-\item {\em examples:}
-    \begin{myitemize}
-            \item \lstinline@thresholds = memory 2000@ (set a minimum of 2000 KB in usable memory for possible run hosts)
-            \item \lstinline@thresholds = load:5 0.5; load:15 1.0; disk-space:/ 5000@ (set a maximum of 0.5 and 1.0 for load averages over 5
-and 15 minutes respectively and a minimum of 5000 KB of free disk-space on
-the \lstinline=/= mount directory. If any of these thresholds are not met
-by a host, it will be excluded for running a suite on.)
-    \end{myitemize}
-\end{myitemize}
+- *type*: string in format ``MEASURE_1 CUTOFF_1; ... ;MEASURE_n CUTOFF_n``
+  (etc), where each ``MEASURE_N`` is one of the options below (note
+  these correspond to all the rank methods accepted under the rank setting
+  except for ``random`` which does not make sense as a threshold
+  measure). Spaces delimit corresponding measures and their values, while
+  semi-colons (optionally with subsequent spaces) delimit each measure-value
+  pair.
+- *options*:
+  - **load:1** - load average over 1 minute (as given by
+    the ``uptime`` command)
+  - **load:5** - as for ``load:1`` above, but over 5 minutes
+  - **load:15** - as for ``load:1`` above, but over 15 minutes
+  - **memory** - usable memory i.e. free memory plus memory in the
+    buffer cache ('buffers') and in the page cache ('cache'), in KB, as
+    specified under ``/proc/meminfo``
+  - **disk-space:PATH** - free disk space for a given mount
+    directory path ``PATH``, in KB, as given by the ``df``
+    command, where multiple paths may be specified individually i.e. via
+    ``disk-space:PATH_1`` and ``disk-space:PATH_2``, etc.
+- *default*: (none)
+- *examples*:
+  - ``thresholds = memory 2000`` (set a minimum of 2000 KB in usable
+    memory for possible run hosts)
+  - ``thresholds = load:5 0.5; load:15 1.0; disk-space:/ 5000`` (set a maximum
+    of 0.5 and 1.0 for load averages over 5
+    and 15 minutes respectively and a minimum of 5000 KB of free disk-space on
+    the ``/`` mount directory. If any of these thresholds are not met
+    by a host, it will be excluded for running a suite on.)
 
-\subsection{[suite host self-identification] }
+
+[suite host self-identification]
+--------------------------------
 
 The suite host's identity must be determined locally by cylc and passed
-to running tasks (via \lstinline@$CYLC_SUITE_HOST@) so that task messages
+to running tasks (via ``$CYLC_SUITE_HOST``) so that task messages
 can target the right suite on the right host.
 
-%(TO DO: is it conceivable that different remote task hosts at the same
-%site might see the suite host differently? If so we would need to be
-%able to override the target in suite configurations.)
+.. todo:
+   original TODO:
 
-\subsubsection[method]{[suite host self-identification] \textrightarrow method }
+   %(TO DO: is it conceivable that different remote task hosts at the same
+   %site might see the suite host differently? If so we would need to be
+   %able to override the target in suite configurations.)
+
+
+[suite host self-identification] ``->`` method
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This item determines how cylc finds the identity of the suite host. For
-the default {\em name} method cylc asks the suite host for its host
+the default *name* method cylc asks the suite host for its host
 name. This should resolve on remote task hosts to the IP address of the
 suite host; if it doesn't, adjust network settings or use one of the
-other methods. For the {\em address} method, cylc attempts to use a
-special external ``target address'' to determine the IP address of the
+other methods. For the *address* method, cylc attempts to use a
+special external "target address" to determine the IP address of the
 suite host as seen by remote task hosts (in-source documentation in
-\lstinline=<cylc-dir>/lib/cylc/hostuserutil.py= explains how this works).
-And finally, as a last resort, you can choose the {\em hardwired} method
+``<cylc-dir>/lib/cylc/hostuserutil.py`` explains how this works).
+And finally, as a last resort, you can choose the *hardwired* method
 and manually specify the host name or IP address of the suite host.
 
-\begin{myitemize}
-\item {\em type:} string
-\item {\em options:}
-\begin{myitemize}
-    \item name - self-identified host name
-    \item address - automatically determined IP address (requires {\em target}, below)
-    \item hardwired - manually specified host name or IP address (requires {\em host}, below)
-\end{myitemize}
-\item {\em default:} name
-\end{myitemize}
+- *type*: string
+- *options*:
+  - name - self-identified host name
+  - address - automatically determined IP address (requires *target*,
+    below)
+  - hardwired - manually specified host name or IP address (requires
+    *host*, below)
+- *default*: name
 
-\subsubsection[target]{[suite host self-identification] \textrightarrow target }
 
-This item is required for the {\em address} self-identification method.
+[suite host self-identification] ``->`` target
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This item is required for the *address* self-identification method.
 If your suite host sees the internet, a common address such as
-\lstinline@google.com@ will do; otherwise choose a host visible on your
+``google.com`` will do; otherwise choose a host visible on your
 intranet.
-\begin{myitemize}
-\item {\em type:} string (an inter- or intranet URL visible from the suite host)
-\item {\em default:} \lstinline@google.com@
-\end{myitemize}
+
+- *type*: string (an inter- or intranet URL visible from the suite host)
+- *default*: ``google.com``
 
 
-\subsubsection[host]{[suite host self-identification] \textrightarrow host }
+[suite host self-identification] ``->`` host
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Use this item to explicitly set the name or IP address of the suite host
-if you have to use the {\em hardwired} self-identification method.
-\begin{myitemize}
-\item {\em type:} string (host name or IP address)
-\item {\em default:} (none)
-\end{myitemize}
+if you have to use the *hardwired* self-identification method.
 
-\subsection{[task events]}
+- *type*: string (host name or IP address)
+- *default*: (none)
+
+
+[task events]
+-------------
+
+.. todo::
+   refs:
 
 Global site/user defaults for~\ref{TaskEventHandling}.
 
-\subsection{[test battery]}
+
+[test battery]
+--------------
 
 Settings for the automated development tests. Note the test battery reads
-\lstinline=<cylc-dir>/etc/global-tests.rc= instead of the normal site/user
+``<cylc-dir>/etc/global-tests.rc`` instead of the normal site/user
 global config files.
 
-\subsubsection[remote host with shared fs]{[test battery] \textrightarrow remote host with shared fs}
 
-The name of a remote host that sees the same HOME file system as the host running the
-test battery.
+[test battery] ``->`` remote host with shared fs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-\subsubsection[remote host]{[test battery] \textrightarrow remote host}
+The name of a remote host that sees the same HOME file system as the host
+running the test battery.
+
+
+[test battery] ``->`` remote host
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Host name of a remote account that does not see the same home directory as
-the account running the test battery - see also ``remote owner'' below).
+the account running the test battery - see also "remote owner" below).
 
-\subsubsection[remote owner]{[test battery] \textrightarrow remote owner}
+
+[test battery] ``->`` remote owner
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 User name of a remote account that does not see the same home directory as the
-account running the test battery - see also ``remote host'' above).
+account running the test battery - see also "remote host" above).
 
-\subsubsection[{[[}batch systems{]]}]{[test battery] \textrightarrow [[batch systems]]}
+
+[test battery] ``->`` [[batch systems]]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Settings for testing supported batch systems (job submission methods). The
 tests for a batch system are only performed if the batch system is available on
 the test host or a remote host accessible via SSH from the test host.
 
-\paragraph[{[[[}SYSTEM{]]]}]{[test battery] \textrightarrow [[batch systems]] \textrightarrow [[[SYSTEM]]]}
+
+[test battery] ``->`` [[batch systems]] ``->`` [[[SYSTEM]]]
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 SYSTEM is the name of a supported batch system with automated tests.
 This can currently be "loadleveler", "lsf", "pbs", "sge" and/or "slurm".
 
-\subparagraph[host]{[test battery] \textrightarrow [[batch systems]] \textrightarrow [[[SYSTEM]]] \textrightarrow host}
+
+[test battery] ``->`` [[batch systems]] ``->`` [[[SYSTEM]]] ``->`` host
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 The name of a host where commands for this batch system is available. Use
 "localhost" if the batch system is available on the host running the test
 battery. Any specified remote host should be accessible via SSH from the host
 running the test battery.
 
-\subparagraph[err viewer]{[test battery] \textrightarrow [[batch systems]] \textrightarrow [[[SYSTEM]]] \textrightarrow err viewer}
 
-The command template (with \lstinline=\%(job_id)s= substitution) for testing
+[test battery] ``->`` [[batch systems]] ``->`` [[[SYSTEM]]] ``->`` err viewer
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+The command template (with ``\%(job_id)s`` substitution) for testing
 the run time stderr viewer functionality for this batch system.
 
-\subparagraph[out viewer]{[test battery] \textrightarrow [[batch systems]] \textrightarrow [[[SYSTEM]]] \textrightarrow out viewer}
 
-The command template (with \lstinline=\%(job_id)s= substitution) for testing
+[test battery] ``->`` [[batch systems]] ``->`` [[[SYSTEM]]] ``->`` out viewer
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+The command template (with ``\%(job_id)s`` substitution) for testing
 the run time stdout viewer functionality for this batch system.
 
-\subparagraph[{[[[[}directives{]]]]}]{[test battery] \textrightarrow [[batch systems]] \textrightarrow [[[SYSTEM]]] \textrightarrow [[[[directives]]]]}
+
+[test battery] ``->`` [[batch systems]] ``->`` [[[SYSTEM]]] ``->`` [[[[directives]]]]
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 The minimum set of directives that must be supplied to the batch system on the
 site to initiate jobs for the tests.
 
-\subsection{[cylc]}
 
-Default values for entries in the suite.rc [cylc] section.
+[cylc]
+------
 
-\subsubsection[UTC mode]{[cylc] \textrightarrow UTC mode}
-\label{SiteUTCMode}
+Default values for entries in the suite.rc ``[cylc]`` section.
+
+
+.. _SiteUTCMode:
+
+[cylc] ``->`` UTC mode
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 Allows you to set a default value for UTC mode in a suite at the site level.
 See ~\ref{UTC-mode} for details.
 
-\subsubsection[health check interval]{[cylc] \textrightarrow health check interval}
+
+[cylc] ``->`` health check interval
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 Site default suite health check interval.
 See ~\ref{health-check-interval} for details.
 
-\subsubsection[task event mail interval]{[cylc] \textrightarrow task event mail interval}
+
+[cylc] ``->`` task event mail interval
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo::
+   refs:
 
 Site default task event mail interval.
 See ~\ref{task-event-mail-interval} for details.
 
-\subsubsection[{[}events{]}]{[cylc] \textrightarrow [[events]]}
+
+[cylc] ``->`` [[events]]
+^^^^^^^^^^^^^^^^^^^^^^^^
 \label{SiteCylcHooks}
+
+.. todo::
+   refs:
 
 You can define site defaults for each of the following options, details
 of which can be found under ~\ref{SuiteEventHandling}:
 
-\paragraph[handlers]{[cylc] \textrightarrow [[events]] \textrightarrow handlers}
 
-\paragraph[handler events]{[cylc] \textrightarrow [[events]] \textrightarrow handler events}
+[cylc] ``->`` [[events]] ``->`` handlers
+""""""""""""""""""""""""""""""""""""""""
 
-\paragraph[startup handler]{[cylc] \textrightarrow [[events]] \textrightarrow startup handler}
 
-\paragraph[shutdown handler]{[cylc] \textrightarrow [[events]] \textrightarrow shutdown handler}
+[cylc] ``->`` [[events]] ``->`` handler events
+""""""""""""""""""""""""""""""""""""""""""""""
 
-\paragraph[mail events]{[cylc] \textrightarrow [[events]] \textrightarrow mail events}
 
-\paragraph[mail footer]{[cylc] \textrightarrow [[events]] \textrightarrow mail footer}
+[cylc] ``->`` [[events]] ``->`` startup handler
+"""""""""""""""""""""""""""""""""""""""""""""""
 
-\paragraph[mail from]{[cylc] \textrightarrow [[events]] \textrightarrow mail from}
 
-\paragraph[mail smtp]{[cylc] \textrightarrow [[events]] \textrightarrow mail smtp}
+[cylc] ``->`` [[events]] ``->`` shutdown handler
+""""""""""""""""""""""""""""""""""""""""""""""""
 
-\paragraph[mail to]{[cylc] \textrightarrow [[events]] \textrightarrow mail to}
 
-\paragraph[timeout handler]{[cylc] \textrightarrow [[events]] \textrightarrow timeout handler}
+[cylc] ``->`` [[events]] ``->`` mail events
+"""""""""""""""""""""""""""""""""""""""""""
 
-\paragraph[timeout]{[cylc] \textrightarrow [[events]] \textrightarrow timeout}
 
-\paragraph[abort on timeout]{[cylc] \textrightarrow [[events]] \textrightarrow abort on timeout}
+[cylc] ``->`` [[events]] ``->`` mail footer
+"""""""""""""""""""""""""""""""""""""""""""
 
-\paragraph[stalled handler]{[cylc] \textrightarrow [[events]] \textrightarrow stalled handler}
 
-\paragraph[abort on stalled]{[cylc] \textrightarrow [[events]] \textrightarrow abort on stalled}
+[cylc] ``->`` [[events]] ``->`` mail from
+"""""""""""""""""""""""""""""""""""""""""
 
-\paragraph[inactivity handler]{[cylc] \textrightarrow [[events]] \textrightarrow inactivity handler}
 
-\paragraph[inactivity]{[cylc] \textrightarrow [[events]] \textrightarrow inactivity}
+[cylc] ``->`` [[events]] ``->`` mail smtp
+"""""""""""""""""""""""""""""""""""""""""
 
-\paragraph[abort on inactivity]{[cylc] \textrightarrow [[events]] \textrightarrow abort on inactivity}
 
-\subsection{[authentication]}
-\label{GlobalAuth}
+[cylc] ``->`` [[events]] ``->`` mail to
+"""""""""""""""""""""""""""""""""""""""
+
+
+[cylc] ``->`` [[events]] ``->`` timeout handler
+"""""""""""""""""""""""""""""""""""""""""""""""
+
+
+[cylc] ``->`` [[events]] ``->`` timeout
+"""""""""""""""""""""""""""""""""""""""
+
+
+[cylc] ``->`` [[events]] ``->`` abort on timeout
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+[cylc] ``->`` [[events]] ``->`` stalled handler
+"""""""""""""""""""""""""""""""""""""""""""""""
+
+
+[cylc] ``->`` [[events]] ``->`` abort on stalled
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+[cylc] ``->`` [[events]] ``->`` inactivity handler
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+[cylc] ``->`` [[events]] ``->`` inactivity
+""""""""""""""""""""""""""""""""""""""""""
+
+
+[cylc] ``->`` [[events]] ``->`` abort on inactivity
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+.. _GlobalAuth:
+
+[authentication]
+----------------
+
+.. todo::
+   refs:
 
 Authentication of client programs with suite server programs can be configured
 here, and overridden in suites if necessary (see~\ref{SuiteAuth}).
+
+.. todo::
+   refs:
 
 The suite-specific passphrase must be installed on a user's account to
 authorize full control privileges (see~\ref{tutPassphrases}
@@ -1124,21 +1323,19 @@ and~\ref{ConnectionAuthentication}). In the future we plan to move to a more
 traditional user account model so that each authorized user can have their own
 password.
 
-\subsubsection[public]{[authentication] \textrightarrow public}
 
-This sets the client privilege level for public access - i.e.\ no suite passphrase
+[authentication] ``->`` public
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This sets the client privilege level for public access - i.e. no suite passphrase
 required.
 
-\begin{myitemize}
-\item {\em type:} string (must be one of the following options)
-\item {\em options:}
-    \begin{myitemize}
-        \item {\em identity} - only suite and owner names revealed
-        \item {\em description} - identity plus suite title and description
-        \item {\em state-totals} - identity, description, and task state totals
-        \item {\em full-read} - full read-only access for monitor and GUI
-        \item {\em shutdown} - full read access plus shutdown, but no other
-            control.
-    \end{myitemize}
-\item {\em default:} state-totals
-\end{myitemize}
+- *type*: string (must be one of the following options)
+- *options*:
+  - *identity* - only suite and owner names revealed
+  - *description* - identity plus suite title and description
+  - *state-totals* - identity, description, and task state totals
+  - *full-read* - full read-only access for monitor and GUI
+  - *shutdown* - full read access plus shutdown, but no other
+    control.
+- *default*: state-totals

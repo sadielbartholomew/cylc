@@ -4,24 +4,24 @@ Remote Job Management
 Managing tasks in a workflow requires more than just job execution: Cylc
 performs additional actions with ``rsync`` for file transfer, and
 direct execution of ``cylc`` sub-commands over non-interactive
-SSH [1]_.
+SSH [4]_.
 
 SSH-free Job Management?
 ------------------------
 
 Some sites may want to restrict access to job hosts by whitelisting SSH
 connections to allow only ``rsync`` for file transfer, and allowing job
-execution only via a local batch system that sees the job hosts [2]_ .
+execution only via a local batch system that sees the job hosts [5]_ .
 We are investigating the feasibility of SSH-free job management when a local
 batch system is available, but this is not yet possible unless your suite
 and job hosts also share a filesystem, which allows Cylc to treat jobs as
-entirely local [3]_ .
+entirely local [6]_ .
 
 SSH-based Job Management
 ------------------------
 
 Cylc does not have persistent agent processes running on job hosts to act on
-instructions received over the network [4]_ so instead we execute job
+instructions received over the network [7]_ so instead we execute job
 management commands directly on job hosts over SSH. Reasons for this include:
 
 - it works equally for batch system and background jobs
@@ -356,13 +356,13 @@ Other Use of SSH in Cylc
   ``_load_remote_item()`` in ``suite_srv_files_mgr.py``
 
 
-.. [1] Cylc used to run bare shell expressions over SSH, which required
+.. [4] Cylc used to run bare shell expressions over SSH, which required
        a bash shell and made whitelisting difficult.
-.. [2] A malicious script could be ``rsync``'d and run from a batch
+.. [5] A malicious script could be ``rsync``'d and run from a batch
        job, but batch jobs are considered easier to audit.
-.. [3] The job ID must also be valid to query and kill the job via the local
+.. [6] The job ID must also be valid to query and kill the job via the local
        batch system. This is not the case for Slurm, unless the ``--cluster``
        option is explicitly used in job query and kill commands, otherwise
        the job ID is not recognized by the local Slurm instance.
-.. [4] This would be a more complex solution, in terms of implementation,
+.. [7] This would be a more complex solution, in terms of implementation,
        administration, and security.

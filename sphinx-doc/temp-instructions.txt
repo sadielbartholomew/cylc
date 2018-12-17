@@ -1,7 +1,0 @@
-Run:
-
-[$ cd ~/cylc.git/sphinx-doc/]
-$ sphinx-build -b html . ./doc
-$ firefox doc/index.html
-
-to build & see output in firefox.
