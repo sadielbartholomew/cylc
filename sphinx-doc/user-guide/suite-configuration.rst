@@ -273,36 +273,44 @@ vary depending on the particular cycle point:
 the suite graph. This is a complete, valid, runnable suite (it will
 use default task runtime properties such as ``script``).
 
+.. Need to use a 'container' directive to get centered image with
+   left-aligned caption (as required for code block text).
+
 .. _fig-dep-eg-1:
 
-.. figure:: ../graphics/png/orig/dep-eg-1.png
-    :align: center
-    :figclass: align-center
+.. container:: twocol
 
-    Example Suite
+   .. container:: image
 
-    .. code-block:: cylc
+      .. figure:: ../graphics/png/orig/dep-eg-1.png
+         :align: center
 
-       [meta]
-           title = "Dependency Example 1"
-       [cylc]
-           UTC mode = True
-       [scheduling]
-           initial cycle point = 20200401
-           final cycle point = 20200405
-           [[dependencies]]
-               [[[T00,T06,T12,T18]]] # validity (hours)
-                   graph = """
-       A => B & C   # B and C trigger off A
-       A[-PT6H] => A  # Model A restart trigger
-                           """
-               [[[T06,T18]]] # hours
-                   graph = "C => X"
-       [visualization]
-           initial cycle point = 20200401
-           final cycle point = 20200401T06
-           [[node attributes]]
-               X = "color=red"
+   .. container:: caption
+
+      Example Suite
+
+      .. code-block:: cylc
+
+         [meta]
+             title = "Dependency Example 1"
+         [cylc]
+             UTC mode = True
+         [scheduling]
+             initial cycle point = 20200401
+             final cycle point = 20200405
+             [[dependencies]]
+                 [[[T00,T06,T12,T18]]] # validity (hours)
+                     graph = """
+         A => B & C   # B and C trigger off A
+         A[-PT6H] => A  # Model A restart trigger
+                             """
+                 [[[T06,T18]]] # hours
+                     graph = "C => X"
+         [visualization]
+             initial cycle point = 20200401
+             final cycle point = 20200401T06
+             [[node attributes]]
+                 X = "color=red"
 
 
 Graph String Syntax
@@ -470,20 +478,29 @@ tasks; these all share a single cycle point (``1``) and don't spawn
 successors (once they're all finished the suite just exits). The integer
 ``1`` attached to each graph node is just an arbitrary label here.
 
+.. Need to use a 'container' directive to get centered image with
+   left-aligned caption (as required for code block text).
+
 .. _fig-test1:
-.. figure:: ../graphics/png/orig/test1.png
-    :align: center
-    :figclass: align-center
 
-    One-off (Non-Cycling) Tasks.
+.. container:: twocol
 
-    .. code-block:: cylc
+   .. container:: image
 
-       [meta]
-           title = some one-off tasks
-       [scheduling]
-           [[dependencies]]
-               graph = "foo => bar & baz => qux"
+      .. figure:: ../graphics/png/orig/test1.png
+         :align: center
+
+   .. container:: caption
+
+      One-off (Non-Cycling) Tasks.
+
+      .. code-block:: cylc
+
+         [meta]
+             title = some one-off tasks
+         [scheduling]
+             [[dependencies]]
+                 graph = "foo => bar & baz => qux"
 
 
 Cycling Graphs
@@ -493,22 +510,31 @@ For cycling tasks the graph section heading defines a sequence of cycle points
 for which the subsequent graph section is valid. :ref:`Figure X <fig-test2>`
 shows a small suite of cycling tasks.
 
+.. Need to use a 'container' directive to get centered image with
+   left-aligned caption (as required for code block text).
+
 .. _fig-test2:
-.. figure:: ../graphics/png/orig/test2.png
-    :align: center
-    :figclass: align-center
 
-    Cycling Tasks.
+.. container:: twocol
 
-    .. code-block:: cylc
+   .. container:: image
 
-       [meta]
-           title = some cycling tasks
-       # (no dependence between cycle points)
-       [scheduling]
-           [[dependencies]]
-               [[[T00,T12]]]
-                   graph = "foo => bar & baz => qux"
+      .. figure:: ../graphics/png/orig/test2.png
+         :align: center
+
+   .. container:: caption
+
+      Cycling Tasks.
+
+      .. code-block:: cylc
+
+         [meta]
+             title = some cycling tasks
+         # (no dependence between cycle points)
+         [scheduling]
+             [[dependencies]]
+                 [[[T00,T12]]]
+                     graph = "foo => bar & baz => qux"
 
 
 Graph Section Headings
@@ -878,74 +904,93 @@ if the interval is null, this implies the task at the initial cycle point.
 
 For example, we can write our suite like :ref:`Figure X <fig-test4>`.
 
+.. Need to use a 'container' directive to get centered image with
+   left-aligned caption (as required for code block text).
+
 .. _fig-test4:
-.. figure:: ../graphics/png/orig/test4.png
-    :align: center
-    :figclass: align-center
 
-    Staggered Start Suite
+.. container:: twocol
 
-    .. code-block:: cylc
+   .. container:: image
 
-       [cylc]
-           UTC mode = True
-       [scheduling]
-           initial cycle point = 20130808T00
-           final cycle point = 20130812T00
-           [[dependencies]]
-               [[[R1]]]
-                   graph = "prep"
-               [[[R1/T00]]]
-       # ^ implies the initial cycle point:
-            graph = "prep[^] => foo"
-               [[[R1/T12]]]
-       # ^ is initial cycle point, as above:
-            graph = "prep[^] => baz"
-               [[[T00]]]
-            graph = "foo[-P1D] => foo => bar"
-               [[[T12]]]
-            graph = "baz[-P1D] => baz => qux"
-       [visualization]
-           initial cycle point = 20130808T00
-           final cycle point = 20130810T00
-           [[node attributes]]
-               foo = "color=red"
-               bar = "color=orange"
-               baz = "color=green"
-               qux = "color=blue"
+      .. figure:: ../graphics/png/orig/test4.png
+         :align: center
+
+   .. container:: caption
+
+      Staggered Start Suite
+
+      .. code-block:: cylc
+
+         [cylc]
+             UTC mode = True
+         [scheduling]
+             initial cycle point = 20130808T00
+             final cycle point = 20130812T00
+             [[dependencies]]
+                 [[[R1]]]
+                     graph = "prep"
+                 [[[R1/T00]]]
+         # ^ implies the initial cycle point:
+              graph = "prep[^] => foo"
+                 [[[R1/T12]]]
+         # ^ is initial cycle point, as above:
+              graph = "prep[^] => baz"
+                 [[[T00]]]
+              graph = "foo[-P1D] => foo => bar"
+                 [[[T12]]]
+              graph = "baz[-P1D] => baz => qux"
+         [visualization]
+             initial cycle point = 20130808T00
+             final cycle point = 20130810T00
+             [[node attributes]]
+                 foo = "color=red"
+                 bar = "color=orange"
+                 baz = "color=green"
+                 qux = "color=blue"
+
 
 This neatly expresses what we want - a task running at the initial cycle point
 that has one-off dependencies with other task sets at different cycles.
 
+.. Need to use a 'container' directive to get centered image with
+   left-aligned caption (as required for code block text).
+
 .. _fig-test5:
 
-.. figure:: ../graphics/png/orig/test5.png
-   :align: center
-   :figclass: align-center
+.. container:: twocol
 
-   Restricted First Cycle Point Suite
+   .. container:: image
 
-   .. code-block:: cylc
+      .. figure:: ../graphics/png/orig/test5.png
+         :align: center
 
-       [cylc]
-           UTC mode = True
-       [scheduling]
-           initial cycle point = 20130808T00
-           final cycle point = 20130808T18
-           [[dependencies]]
-               [[[R1]]]
-                   graph = "setup_foo => foo"
-               [[[+PT6H/PT6H]]]
-                   graph = """
-                       foo[-PT6H] => foo
-                       foo => bar
-                   """
-       [visualization]
-           initial cycle point = 20130808T00
-           final cycle point = 20130808T18
-           [[node attributes]]
-               foo = "color=red"
-               bar = "color=orange"
+   .. container:: caption
+
+      Restricted First Cycle Point Suite
+
+      .. code-block:: cylc
+
+          [cylc]
+              UTC mode = True
+          [scheduling]
+              initial cycle point = 20130808T00
+              final cycle point = 20130808T18
+              [[dependencies]]
+                  [[[R1]]]
+                      graph = "setup_foo => foo"
+                  [[[+PT6H/PT6H]]]
+                      graph = """
+                          foo[-PT6H] => foo
+                          foo => bar
+                      """
+          [visualization]
+              initial cycle point = 20130808T00
+              final cycle point = 20130808T18
+              [[node attributes]]
+                  foo = "color=red"
+                  bar = "color=orange"
+
 
 A different kind of requirement is displayed in :ref:`Figure X <fig-test5>`.
 Usually, we want to specify additional tasks and dependencies at the initial
@@ -1047,7 +1092,6 @@ shown in :ref:`Figure X <fig-satellite>`.
 
 .. figure:: ../graphics/png/orig/satellite.png
     :align: center
-    :figclass: align-center
 
     The ``etc/examples/satellite`` integer suite.
 
@@ -1267,23 +1311,32 @@ triggering requirements, but any valid conditional expression can be
 used, as shown in :ref:`Figure X <fig-conditional>`
 (conditional triggers are plotted with open arrow heads).
 
+.. Need to use a 'container' directive to get centered image with
+   left-aligned caption (as required for code block text).
+
 .. _fig-conditional:
-.. figure:: ../graphics/png/orig/conditional-triggers.png
-    :align: center
-    :figclass: align-center
 
-    Conditional triggers, which are plotted with open arrow heads.
+.. container:: twocol
 
-    .. code-block:: cylc
+   .. container:: image
 
-               graph = """
-       # D triggers if A or (B and C) succeed
-       A | B & C => D
-       # just to align the two graph sections
-       D => W
-       # Z triggers if (W or X) and Y succeed
-       (W|X) & Y => Z
-                       """
+      .. figure:: ../graphics/png/orig/conditional-triggers.png
+         :align: center
+
+   .. container:: caption
+
+      Conditional triggers, which are plotted with open arrow heads.
+
+      .. code-block:: cylc
+
+                 graph = """
+         # D triggers if A or (B and C) succeed
+         A | B & C => D
+         # just to align the two graph sections
+         D => W
+         # Z triggers if (W or X) and Y succeed
+         (W|X) & Y => Z
+                         """
 
 
 .. _SuicideTriggers:
@@ -1303,37 +1356,45 @@ as usual. Suicide triggers are ignored by default in the graph view, unless
 you toggle them on with *View* ``->`` *Options* ``->``
 *Ignore Suicide Triggers*.
 
+.. Need to use a 'container' directive to get centered image with
+   left-aligned caption (as required for code block text).
+
 .. _fig-suicide:
 
-.. figure:: ../graphics/png/orig/suicide.png
-    :align: center
-    :figclass: align-center
+.. container:: twocol
 
-    Automated failure recovery via suicide triggers.
+   .. container:: image
 
-    .. code-block:: cylc
+      .. figure:: ../graphics/png/orig/suicide.png
+         :align: center
 
-        [meta]
-            title = automated failure recovery
-            description = """
-        Model task failure triggers diagnosis
-        and recovery tasks, which take themselves
-        out of the suite if model succeeds. Model
-        post processing triggers off model OR
-        recovery tasks.
-                      """
-        [scheduling]
-            [[dependencies]]
-                graph = """
-        pre => model
-        model:fail => diagnose => recover
-        model => !diagnose & !recover
-        model | recover => post
+   .. container:: caption
+
+      Automated failure recovery via suicide triggers.
+
+      .. code-block:: cylc
+
+          [meta]
+              title = automated failure recovery
+              description = """
+          Model task failure triggers diagnosis
+          and recovery tasks, which take themselves
+          out of the suite if model succeeds. Model
+          post processing triggers off model OR
+          recovery tasks.
                         """
-        [runtime]
-            [[model]]
-                # UNCOMMENT TO TEST FAILURE:
-                # script = /bin/false
+          [scheduling]
+              [[dependencies]]
+                  graph = """
+          pre => model
+          model:fail => diagnose => recover
+          model => !diagnose & !recover
+          model | recover => post
+                          """
+          [runtime]
+              [[model]]
+                  # UNCOMMENT TO TEST FAILURE:
+                  # script = /bin/false
 
 .. note::
 
@@ -1963,7 +2024,6 @@ cycle point:
 
 .. figure:: ../graphics/png/orig/ghost-node-example.png
     :align: center
-    :figclass: align-center
 
     Screenshot of ``cylc graph`` showing one task as a "ghost node".
 
@@ -2465,27 +2525,21 @@ task families in the *namespaces* example suite.
 
 .. figure:: ../graphics/png/orig/inherit-2.png
     :align: center
-    :figclass: align-center
 
 .. figure:: ../graphics/png/orig/inherit-3.png
     :align: center
-    :figclass: align-center
 
 .. figure:: ../graphics/png/orig/inherit-4.png
     :align: center
-    :figclass: align-center
 
 .. figure:: ../graphics/png/orig/inherit-5.png
     :align: center
-    :figclass: align-center
 
 .. figure:: ../graphics/png/orig/inherit-6.png
     :align: center
-    :figclass: align-center
 
 .. figure:: ../graphics/png/orig/inherit-7.png
     :align: center
-    :figclass: align-center
 
     Graphs of the *namespaces* example suite showing various states of
     expansion of the nested namespace family hierarchy, from all families
@@ -2670,7 +2724,6 @@ Here's a more complex graph using two parameters (``[runtime]`` omitted):
 
 .. figure:: ../graphics/png/orig/params1.png
     :align: center
-    :figclass: align-center
 
     Parameter expansion example.
 
@@ -3048,11 +3101,9 @@ workflow will be visible at all times as the suite runs.
 
 .. figure:: ../graphics/png/orig/eg2-static.png
     :align: center
-    :figclass: align-center
 
 .. figure:: ../graphics/png/orig/eg2-dynamic.png
     :align: center
-    :figclass: align-center
 
     Parameterized (top) and cycling (bottom) versions of the same
     workflow. The first three cycle points are shown in the
@@ -3182,7 +3233,6 @@ with standard programming techniques.
 
 .. figure:: ../graphics/png/orig/jinja2-ensemble-graph.png
     :align: center
-    :figclass: align-center
 
     The Jinja2 ensemble example suite graph.
 
@@ -3235,7 +3285,6 @@ ADD-IN: \lstinputlisting{../../../etc/examples/jinja2/cities/suite.rc}
 
 .. figure:: ../graphics/png/orig/jinja2-suite-graph.png
     :align: center
-    :figclass: align-center
 
     The Jinja2 cities example suite graph, with the
     New York City task family expanded.
