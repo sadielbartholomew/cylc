@@ -3,13 +3,9 @@
 Running Suites
 ==============
 
-.. todo::
-  refs:
-
 This chapter currently features a diverse collection of topics related
-to running suites. Please also see the Tutorial (\ref{Tutorial}) and
-command documentation (\ref{CommandReference}), and experiment with
-plenty of examples.
+to running suites. Please also see :ref:`Tutorial` and
+:ref:`CommandReference`, and experiment with plenty of examples.
 
 
 .. _SuiteStartUp:
@@ -49,13 +45,10 @@ suite initial cycle point, or at the next valid point for the task.
 Warm Start
 ^^^^^^^^^^
 
-.. todo::
-  refs:
-
 A warm start runs a suite from scratch like a cold start, but from the
 beginning of a given cycle point that is beyond the suite initial cycle point.
 This is generally inferior to a *restart* (which loads a previously
-recorded suite state - see~\ref{RestartingSuites}) because it may result in
+recorded suite state - see :ref:`RestartingSuites`) because it may result in
 some tasks rerunning. However, a warm start may be required if a restart is not
 possible, e.g. because the suite run database was accidentally deleted. The
 warm start cycle point must be given on the command line:
@@ -90,7 +83,7 @@ before being shut down or killed.
    $ cylc restart SUITE
 
 Tasks recorded in the "submitted" or "running" states are automatically polled 
-(see Section~\ref{Task Job Polling}) at start-up to determine what happened to
+(see :ref:`Task Job Polling`) at start-up to determine what happened to
 them while the suite was down.
 
 
@@ -254,13 +247,10 @@ Task Job Access To Cylc
 Task jobs need access to Cylc on the job host, primarily for task messaging,
 but also to allow user-defined task scripting to run other Cylc commands.
 
-.. todo::
-  refs:
-
 Cylc should be installed on job hosts as on suite hosts, with different
 releases installed side-by-side and invoked via the central Cylc
 wrapper according to the value of ``$CYLC_VERSION`` - see
-Section~\ref{InstallCylc}. Task job scripts set ``$CYLC_VERSION`` to the
+:ref:`InstallCylc`. Task job scripts set ``$CYLC_VERSION`` to the
 version of the parent suite server program, so that the right Cylc will
 be invoked by jobs on the job host.
 
@@ -274,12 +264,9 @@ environment is already correct without the login shell, but the Cylc executable
 is not in ``$PATH``, then ``[hosts][HOST]cylc executable`` can
 be used to specify the direct path to the executable.
 
-.. todo::
-  refs:
-
 To customize the environment more generally for Cylc on jobs hosts,
-use of ``job-init-env.sh`` is described in Section~\ref{Configure
-Environment on Job Hosts}.
+use of ``job-init-env.sh`` is described in
+:ref:`Configure Environment on Job Hosts`.
 
 
 .. _The Suite Contact File:
@@ -324,12 +311,9 @@ timeout; several times on exceeding the job execution time limit; and at suite
 restart any tasks recorded as active in the suite state checkpoint are polled
 to find out what happened to them while the suite was down.
 
-.. todo::
-  refs:
-
 Finally, in necessary routine polling can be configured as a way to track job
 status on job hosts that do not allow networking routing back to the suite host
-for task messaging by HTTPS or ssh.  See~\ref{Polling To Track Job Status}.
+for task messaging by HTTPS or ssh. See :ref:`Polling To Track Job Status`.
 
 
 .. _TaskComms:
@@ -345,7 +329,7 @@ Cylc supports three ways of tracking task state on job hosts:
 - regular polling by the suite server program
 
 These can be configured per job host in the Cylc global config file - see
-~/ref{SiteRCReference}.
+:ref:`SiteRCReference`.
 
 If your site prohibits HTTPS and ssh back from job hosts to
 suite hosts, before resorting to the polling method you should
@@ -371,13 +355,10 @@ By default the messaging occurs via an authenticated, HTTPS connection to the
 suite server program. This is the preferred task communications
 method - it is efficient and direct.
 
-.. todo::
-  refs:
-
 Suite server programs automatically install suite contact information
 and credentials on job hosts.  Users only need to do this manually
 for remote access to suites on other hosts, or suites owned by other
-users - see~\ref{RemoteControl}.
+users - see :ref:`RemoteControl`.
 
 
 Ssh Task Messaging
@@ -446,13 +427,10 @@ Task Communications Configuration
 The Suite Service Directory
 ---------------------------
 
-.. todo::
-  refs:
-
 At registration time a *suite service directory*,
 ``$HOME/cylc-run/<SUITE>/.service/``, is created and populated
 with a private passphrase file (containing random text), a self-signed
-SSL certificate (see~\ref{ConnectionAuthentication}), and a symlink to the
+SSL certificate (see :ref:`ConnectionAuthentication`), and a symlink to the
 suite source directory.  An existing passphrase file will not be overwritten
 if a suite is re-registered.
 
@@ -515,13 +493,10 @@ too - see ``cylc scan --help``).
 
 Cylc supports two kinds of access to suite server programs:
 
-.. todo::
-  refs:
-
 - *public* (non-authenticated) - the amount of information
-  revealed is configurable, see~\ref{PublicAccess}
+  revealed is configurable, see :ref:`PublicAccess`
 - *control* (authenticated) - full control, suite passphrase
-  required, see~\ref{passphrases}
+  required, see :ref:`passphrases`
 
 
 .. _PublicAccess:
@@ -529,13 +504,10 @@ Cylc supports two kinds of access to suite server programs:
 Public Access - No Auth Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-  refs:
-
 Without a suite passphrase the amount of information revealed by a suite
 server program is determined by the public access privilege level set in global
-site/user config (\ref{GlobalAuth}) and optionally overidden in suites
-(\ref{SuiteAuth}):
+site/user config (:ref:`GlobalAuth`) and optionally overidden in suites
+(:ref:`SuiteAuth`):
 
 - *identity* - only suite and owner names revealed
 - *description* - identity plus suite title and description
@@ -581,15 +553,12 @@ if you do not have a shared filesystem - see below.*
 GUI-to-Suite Interaction
 ------------------------
 
-.. todo::
-  refs:
-
 The gcylc GUI is mainly a network client to retrieve and display suite status
 information from the suite server program, but it can also invoke file-reading
 commands to view and graph the suite configuration and so on. This is entirely
 transparent if the GUI is running on the suite host account, but full
 functionality for remote suites requires either a shared filesystem, or 
-(see~\ref{RemoteControl}) auth file installation *and* non-interactive ssh
+(see :ref:`RemoteControl`) auth file installation *and* non-interactive ssh
 access to the suite host.  Without the auth files you will not be able
 to connect to the suite, and without ssh you will see "permission denied"
 errors on attempting file access.
@@ -634,18 +603,12 @@ is the suite name. Client commands should then be invoked with the
 
    $ cylc gui --user=OWNER --host=HOST SUITE
 
-.. todo::
-  refs:
-
 .. note::
 
    Remote suite auth files do not need to be installed for read-only
-   access - see~\ref{PublicAccess} - via the GUI or monitor.
+   access - see :ref:`PublicAccess` - via the GUI or monitor.
 
-.. todo::
-  refs:
-
-The suite contact file (see~\ref{The Suite Contact File}) is not needed if 
+The suite contact file (see :ref:`The Suite Contact File`) is not needed if 
 you have read-access to the remote suite run directory via the local
 filesystem or non-interactive ssh to the suite host account - client commands
 will automatically read it. If you do install the contact file in your auth
@@ -668,13 +631,10 @@ the suite port number and use the ``--port`` client command option.
 Scan And Gscan
 --------------
 
-.. todo::
-  refs:
-
 Both ``cylc scan`` and the ``cylc gscan`` GUI can display
 suites owned by other users on other hosts, including task state totals if the
-public access level permits that (see~\ref{PublicAccess}). Clicking on a remote
-suite in ``gscan`` will open a ``cylc gui`` to connect to that
+public access level permits that (see :ref:`PublicAccess`). Clicking on a
+remote suite in ``gscan`` will open a ``cylc gui`` to connect to that
 suite. This will give you full control, if you have the suite auth files
 installed; or it will display full read only information if the public access
 level allows that.
@@ -685,16 +645,13 @@ Task States Explained
 
 As a suite runs, its task proxies may pass through the following states:
 
-.. todo::
-   refs:
-
 - **waiting** - still waiting for prerequisites (e.g. dependence on
   other tasks, and clock triggers) to be satisfied.
 - **held** - will not be submitted to run even if all prerequisites
   are satisfied, until released/un-held.
 - **queued** - ready to run (prerequisites satisfied) but
   temporarily held back by an *internal cylc queue*
-  (see~\ref{InternalQueues}).
+  (see :ref:`InternalQueues`).
 - **ready** - ready to run (prerequisites satisfied) and
   handed to cylc's job submission sub-system.
 - **submitted** - submitted to run, but not executing yet
@@ -716,10 +673,10 @@ As a suite runs, its task proxies may pass through the following states:
 - **runahead** - will not have prerequisites checked (and so
   automatically held, in effect) until the rest of the suite catches up
   sufficiently.  The amount of runahead allowed is configurable - see
-  ~\ref{RunaheadLimit}.
+  :ref:`RunaheadLimit`.
 - **expired** - will not be submitted to run, due to falling too far
   behind the wall-clock relative to its cycle point -
-  see~\ref{ClockExpireTasks}.
+  see :ref:`ClockExpireTasks`.
 
 
 What The Suite Control GUI Shows
@@ -740,14 +697,12 @@ nodes just flesh out the graph structure. Groups of them may be cut out and
 replaced by single *scissor nodes* in sections of the graph that are
 currently inactive.
 
-.. todo::
-   refs:
 
 Network Connection Timeouts
 ---------------------------
 
 A connection timeout can be set in site and user global config files
-(see~\ref{SiteAndUserConfiguration}) so that messaging commands
+(see :ref:`SiteAndUserConfiguration`) so that messaging commands
 cannot hang indefinitely if the suite is not responding (this can be
 caused by suspending a suite with Ctrl-Z) thereby preventing the task
 from completing. The same can be done on the command line for other
@@ -759,28 +714,22 @@ suite-connecting user commands, with the ``--comms-timeout`` option.
 Runahead Limiting
 -----------------
 
-.. todo::
-   refs:
-
 Runahead limiting prevents the fastest tasks in a suite from getting too far
 ahead of the slowest ones. Newly spawned tasks are released to the task pool
 only when they fall below the runahead limit. A low runhead limit can prevent
 cylc from interleaving cycles, but it will not stall a suite unless it fails to
-extend out past a future trigger (see~\ref{InterCyclePointTriggers}).
+extend out past a future trigger (see :ref:`InterCyclePointTriggers`).
 A high runahead limit may allow fast tasks that are not constrained by
 dependencies or clock-triggers to spawn far ahead of the pack, which could have
 performance implications for the suite server program when running very large
 suites.  Succeeded and failed tasks are ignored when computing the runahead
 limit.
 
-.. todo::
-   refs:
-
 The preferred runahead limiting mechanism restricts the number of consecutive
 active cycle points. The default value is three active cycle points;
-see~\ref{max active cycle points}. Alternatively the interval between the
+see :ref:`max active cycle points`. Alternatively the interval between the
 slowest and fastest tasks can be specified as hard limit;
-see~\ref{runahead limit}.
+see :ref:`runahead limit`.
 
 
 .. _InternalQueues:
@@ -832,7 +781,7 @@ running two task trees side by side (as seen in the graph GUI) each
 limited to 2 and 3 tasks respectively:
 
 .. todo::
-   refs:
+   add-ins:
 
 ADD-IN: \lstinputlisting{../../../etc/examples/queues/suite.rc}
 
@@ -842,18 +791,12 @@ ADD-IN: \lstinputlisting{../../../etc/examples/queues/suite.rc}
 Automatic Task Retry On Failure
 -------------------------------
 
-.. todo::
-   refs:
-
-See also~\ref{RefRetries} in the *Suite.rc Reference*.
-
-.. todo::
-   refs:
+See also :ref:`RefRetries`.
 
 Tasks can be configured with a list of "retry delay" intervals, as
 ISO 8601 durations. If the task job fails it will go into the *retrying*
 state and resubmit after the next configured delay interval. An example is
-shown in the suite listed below under~\ref{EventHandling}.
+shown in the suite listed below under :ref:`EventHandling`.
 
 If a task with configured retries is *killed* (by ``cylc kill`` or
 via the GUI) it goes to the *held* state so that the operator can decide
@@ -866,11 +809,7 @@ sequence by manually resetting it to the *failed* state.
 Task Event Handling
 -------------------
 
-.. todo::
-   refs:
-
-See also~\ref{SuiteEventHandling} and~\ref{TaskEventHandling} in the
-*Suite.rc Reference*.
+See also :ref:`SuiteEventHandling` and :ref:`TaskEventHandling`.
 
 Cylc can call nominated event handlers - to do whatever you like - when certain
 suite or task events occur. This facilitates centralized alerting and automated
@@ -910,21 +849,15 @@ These can be configured using the settings:
 - ``[[[events]]]mail from``
 - ``[[[events]]]mail smtp``.
 
-.. todo::
-   refs:
-
 By default, a cylc suite will send you no more than one task event email every
 5 minutes - this is to prevent your inbox from being flooded by emails should a
 large group of tasks all fail at similar time.
-See ~\ref{task-event-mail-interval} for details.
-
-.. todo::
-   refs:
+See :ref:`task-event-mail-interval` for details.
 
 Event handlers can be located in the suite ``bin/`` directory;
 otherwise it is up to you to ensure their location is in ``$PATH`` (in
 the shell in which the suite server program runs). They should require little
-resource and return quickly - see~\ref{Managing External Command Execution}.
+resource and return quickly - see :ref:`Managing External Command Execution`.
 
 Task event handlers can be specified using the
 ``[[[events]]]<event> handler`` settings, where
@@ -954,13 +887,10 @@ lines or command line templates (see below) and the latter is a list of events
 for which these commands should be invoked. (The name of a registered task
 output can also be used as an event name in this case.)
 
-.. todo::
-   refs:
-
 Event handler arguments can be constructed from various templates
 representing suite name; task ID, name, cycle point, message, and submit
 number name; and any suite or task ``[meta]`` item.
-See~\ref{SuiteEventHandling} and~\ref{TaskEventHandling} for options.
+See :ref:`SuiteEventHandling` and :ref:`TaskEventHandling` for options.
 
 If no template arguments are supplied the following default command line
 will be used:
@@ -980,11 +910,8 @@ For an explanation of the substitution syntax, see
 <https://docs.python.org/2/library/stdtypes.html#string-formatting>`_
 in the Python documentation.
 
-.. todo::
-   refs:
-
 The retry event occurs if a task fails and has any remaining retries
-configured (see~\ref{TaskRetries}).
+configured (see :ref:`TaskRetries`).
 The event handler will be called as soon as the task fails, not after
 the retry delay period when it is resubmitted.
 
@@ -1076,17 +1003,14 @@ to update them after any change that affects triggering times.*
 Managing External Command Execution
 -----------------------------------
 
-.. todo::
-   refs:
-
 Job submission commands, event handlers, and job poll and kill commands, are
 executed by the suite server program in a "pool" of asynchronous
 subprocesses, in order to avoid holding the suite up. The process pool is
-actively managed to limit it to a configurable size (\ref{process pool size}).
+actively managed to limit it to a configurable size (:ref:`process pool size`).
 Custom event handlers should be light-weight and quick-running because they
 will tie up a process pool member until they complete, and the suite will
 appear to stall if the pool is saturated with long-running processes. Processes
-are killed after a configurable timeout (\ref{process pool timeout}) however,
+are killed after a configurable timeout (:ref:`process pool timeout`) however,
 to guard against rogue commands that hang indefinitely. All process kills are
 logged by the suite server program. For killed job submissions the associated
 tasks also go to the *submit-failed* state.
@@ -1120,13 +1044,10 @@ requeued, uses ``cylc reset`` to reset the task to the submitted state.
 Manual Task Triggering and Edit-Run
 -----------------------------------
 
-.. todo::
-   refs:
-
 Any task proxy currently present in the suite can be manually triggered at any
 time using the ``cylc trigger`` command, or from the right-click task
 menu in gcylc. If the task belongs to a limited internal queue
-(see~\ref{InternalQueues}), this will queue it; if not, or if it is already
+(see :ref:`InternalQueues`), this will queue it; if not, or if it is already
 queued, it will submit immediately.
 
 With ``cylc trigger --edit`` (also in the gcylc right-click task menu)
@@ -1229,11 +1150,8 @@ the command line:
    $ cylc run --mode=dummy SUITE
    $ cylc restart --mode=dummy SUITE
 
-.. todo::
-   refs:
-
 You can get specified tasks to fail in these modes, for more flexible suite
-testing. See Section~\ref{suiterc-sim-config} for simulation configuration.
+testing. See :ref:`suiterc-sim-config` for simulation configuration.
 
 
 Proportional Simulated Run Length
@@ -1253,16 +1171,13 @@ need to be changed for the dummy jobs.  If you need to dummy-run jobs on a
 batch scheduler manually comment out ``script`` items and modify
 directives in your live suite, or else use a custom live mode test suite.
 
-.. todo::
-   refs:
-
 .. note::
 
    The dummy modes ignore all configured task ``script`` items
    including ``init-script``. If your ``init-script`` is required
    to run even dummy tasks on a job host, note that host environment
    setup should be done
-   elsewhere - see~\ref{Configure Site Environment on Job Hosts}.
+   elsewhere - see :ref:`Configure Site Environment on Job Hosts`.
 
 
 Restarting Suites With A Different Run Mode?
@@ -1349,12 +1264,9 @@ you wish:
 Triggering Off Of Tasks In Other Suites
 ---------------------------------------
 
-.. todo::
-   refs:
-
 .. note::
 
-   Please read External Triggers (\ref{External Triggers}) before using
+   Please read :ref:`External Triggers` before using
    the older inter-suite triggering mechanism described in this section.
 
 The ``cylc suite-state`` command interrogates suite run databases. It
@@ -1545,15 +1457,12 @@ The information logged here includes:
   etc.) suite shutdown time and reasons (AUTOMATIC means "all tasks finished
   and nothing else to do")
 
-.. todo::
-   refs:
-
 .. note::
 
    Suite log files are primarily intended for human eyes. If you need
    to have an external system to monitor suite events automatically,
    interrogate the sqlite *suite run database*
-   (see~\ref{Suite Run Databases}) rather than parse the log files.
+   (see :ref:`Suite Run Databases`) rather than parse the log files.
 
 
 .. _Suite Run Databases:
@@ -1607,12 +1516,9 @@ are:
 - re-install from source, and warm start from the beginning of the
   current cycle point
 
-.. todo::
-   refs:
-
-A warm start (see~\ref{Warm Start}) does not need a suite state checkpoint, but
-it wipes out prior run history, and it could re-run a significant number of
-tasks that had already completed. 
+A warm start (see :ref:`Warm Start`) does not need a suite state
+checkpoint, but it wipes out prior run history, and it could re-run
+a significant number of tasks that had already completed.
 
 To restart the suite, the critical Cylc files that must be restored are:
 
@@ -1720,11 +1626,8 @@ caveat will be removed in a future version, currently Cylc will not attempt to
 auto shutdown-restart suites which meet this criterion but will log a critical
 error message to alert the user.
 
-.. todo::
-   refs:
-
 See the ``[suite servers]`` configuration section
-(\ref{global-suite-servers}) for more details.
+(:ref:`global-suite-servers`) for more details.
 
 
 .. [3] Late notification of clock-triggered tasks is not very useful in

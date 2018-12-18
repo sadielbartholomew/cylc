@@ -2,7 +2,7 @@ Background
 ==========
 
 
-.. _Workflows-For-Cycling-Systems:
+.. _Workflows For Cycling Systems:
 
 Workflows For Cycling Systems
 -----------------------------
@@ -20,7 +20,7 @@ Cylc provides two ways of constructing workflows for cycling systems:
 *cycling workflows* and *parameterized tasks*.
 
 
-.. _Cycling-Workflows:
+.. _Cycling Workflows:
 
 Cycling Workflows
 ^^^^^^^^^^^^^^^^^
@@ -43,7 +43,7 @@ This is the only sensible way to run very large suites or operational suites
 that need to continue cycling indefinitely. The cycling is configured with
 standards-based ISO 8601 date-time *recurrence expressions*. Multiple
 cycling sequences can be used at once in the same suite. See
-Section~\ref{ConfiguringScheduling}.
+:ref:`ConfiguringScheduling`.
 
 
 .. _Parameterized-Tasks-as-a-Proxy-for-Cycling:
@@ -58,8 +58,8 @@ It is also possible to run cycling jobs with a pre-defined static workflow in
 which each instance of a cycling job is represented by *a different task*:
 as far as the abstract workflow is concerned there is no cycling. The sequence
 of tasks can be constructed efficiently, however, using cylc's built-in suite
-parameters (\ref{Parameterized Cycling}) or explicit Jinja2 loops
-(\ref{Jinja2}).
+parameters (:ref:`Parameterized Cycling`) or explicit Jinja2 loops
+(:ref:`Jinja`).
 
 For example, to run ``model.exe`` 12 times on a monthly cycle we could
 loop over an integer parameter ``R = 0, 1, 2, ..., 11`` to define tasks

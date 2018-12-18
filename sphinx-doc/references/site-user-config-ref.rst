@@ -3,22 +3,14 @@
 Global (Site, User) Config File Reference
 =========================================
 
-.. todo::
-   refs:
-
 This section defines all legal items and values for cylc site and
-user config files. See *Site And User Config Files*
-(Section~\ref{SiteAndUserConfiguration}) for file locations, intended
-usage, and how to generate the files using the
+user config files. See :ref:`SiteAndUserConfiguration` for file locations,
+intended usage, and how to generate the files using the
 ``cylc get-site-config`` command.
-
-.. todo::
-   refs:
 
 *As for suite configurations, Jinja2 expressions can be embedded in
 site and user config files to generate the final result parsed by cylc.*
-Use of Jinja2 in suite configurations is documented in
-Section~\ref{Jinja2}.
+Use of Jinja2 in suite configurations is documented in :ref:`Jinja`.
 
 
 Top Level Items
@@ -40,12 +32,9 @@ automatically on exit. Leave unset for the default (usually ``$TMPDIR``).
 process pool size
 ^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
-Maximum number of concurrent processes used to execute external job submission,
-event handlers, and job poll and kill commands - see~\ref{Managing External
-Command Execution}.
+Maximum number of concurrent processes used to execute external job
+submission, event handlers, and job poll and kill commands - see
+:ref:`Managing External Command Execution`.
 
 - *type*: integer
 - *default*: 4
@@ -56,11 +45,8 @@ Command Execution}.
 process pool timeout
 ^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Interval after which long-running commands in the process pool will be killed -
-see~\ref{Managing External Command Execution}.
+see :ref:`Managing External Command Execution`.
 
 - *type*: ISO 8601 duration/interval representation (e.g.
   ``PT10S``, 10 seconds, or ``PT1M``, 1 minute).
@@ -82,14 +68,11 @@ safety measure, however, so command prompts are disabled by default.
 enable run directory housekeeping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 The suite run directory tree is created anew with every suite start
 (not restart) but output from the most recent previous runs can be
 retained in a rolling archive. Set length to 0 to keep no backups.
 **This is incompatible with current Rose suite housekeeping** (see
-Section~\ref{SuiteStorageEtc} for more on Rose) so it is disabled by
+:ref:`SuiteStorageEtc` for more on Rose) so it is disabled by
 default, in which case new suite run files will overwrite existing ones
 in the same run directory tree. Rarely, this can result in incorrect
 polling results due to the presence of old task status files.
@@ -417,7 +400,7 @@ The sort order for tasks in the monitor view.
 -------
 
 The [hosts] section configures some important host-specific settings for
-the suite host (`localhost') and remote task hosts.
+the suite host ("localhost") and remote task hosts.
 
 .. note::
 
@@ -607,15 +590,12 @@ environment.
 [hosts] ``->`` [[HOST]] ``->`` cylc executable
 """"""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 The ``cylc`` executable on a remote host.
 
 .. note::
 
    This should normally point to the cylc multi-version wrapper
-   (see~\ref{CUI}) on the host, not ``bin/cylc`` for a specific
+   (see :ref:`CUI`) on the host, not ``bin/cylc`` for a specific
    installed version.
 
 Specify a full path if ``cylc`` is not in ``\$PATH`` when it is
@@ -651,11 +631,8 @@ to be copied from the suite server program to a job.
 [hosts] ``->`` [[HOST]] ``->`` retrieve job logs
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
-Global default for the~\ref{runtime-remote-retrieve-job-logs} setting for the
-specified host.
+Global default for the :ref:`runtime-remote-retrieve-job-logs` setting for
+the specified host.
 
 
 [hosts] ``->`` [[HOST]] ``->`` retrieve job logs command
@@ -671,30 +648,21 @@ from a remote host, you can use this setting to specify a suitable command.
 [hosts] ``->`` [[HOST]] ``->`` retrieve job logs max size
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
-Global default for the~\ref{runtime-remote-retrieve-job-logs-max-size}
+Global default for the :ref:`runtime-remote-retrieve-job-logs-max-size`
 setting for the specified host.
 
 
 [hosts] ``->`` [[HOST]] ``->`` retrieve job logs retry delays
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
-Global default for the~\ref{runtime-remote-retrieve-job-logs-retry-delays}
+Global default for the :ref:`runtime-remote-retrieve-job-logs-retry-delays`
 setting for the specified host.
 
 
 [hosts] ``->`` [[HOST]] ``->`` task event handler retry delays
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
-Host specific default for the~\ref{runtime-events-handler-retry-delays}
+Host specific default for the :ref:`runtime-events-handler-retry-delays`
 setting.
 
 
@@ -714,12 +682,9 @@ unlikely to need to override this.
 [hosts] ``->`` [[HOST]] ``->`` [[[batch systems]]]
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 Settings for particular batch systems on HOST. In the subsections below, SYSTEM
 should be replaced with the cylc batch system handler name that represents the
-batch system (see~\ref{RuntimeJobSubMethods}).
+batch system (see :ref:`RuntimeJobSubMethods`).
 
 
 .. _err-tailer:
@@ -727,13 +692,10 @@ batch system (see~\ref{RuntimeJobSubMethods}).
 [hosts] ``->`` [[HOST]] ``->`` [[[batch systems]]] ``->`` [[[[SYSTEM]]]] ``->`` err tailer
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-.. todo::
-   refs:
-
 A command template (with ``%(job_id)s`` substitution) that can be used
 to tail-follow the stderr stream of a running job if SYSTEM does
 not use the normal log file location while the job is running.  This setting
-overrides~\ref{tail-command-template} above.
+overrides :ref:`tail-command-template` above.
 
 - *type*: string
 - *default*: (none)
@@ -756,17 +718,14 @@ overrides~\ref{tail-command-template} above.
 [hosts] ``->`` [[HOST]] ``->`` [[[batch systems]]] ``->`` [[[[SYSTEM]]]] ``->`` out tailer
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-.. todo::
-   refs:
-
 A command template (with ``%(job_id)s`` substitution) that can be used
 to tail-follow the stdout stream of a running job if SYSTEM does
 not use the normal log file location while the job is running.  This setting
-overrides~\ref{tail-command-template} above.
+overrides :ref:`tail-command-template` above.
 
 - *type*: string
 - *default*: (none)
-- *example*: see~\ref{err-tailer}
+- *example*: see :ref:`err-tailer`
 
 
 [hosts] ``->`` [[HOST]] ``->`` [[[batch systems]]] ``->`` [[[[SYSTEM]]]] ``->`` err viewer
@@ -776,12 +735,9 @@ A command template (with ``%(job_id)s`` substitution) that can be used
 to view the stderr stream of a running job if SYSTEM does
 not use the normal log file location while the job is running.
 
-.. todo::
-   refs:
-
 - *type*: string
 - *default*: (none)
-- *example*: see~\ref{err-tailer}
+- *example*: see :ref:`err-tailer`
 
 
 [hosts] ``->`` [[HOST]] ``->`` [[[batch systems]]] ``->`` [[[[SYSTEM]]]] ``->`` out viewer
@@ -791,12 +747,9 @@ A command template (with ``%(job_id)s`` substitution) that can be used
 to view the stdout stream of a running job if SYSTEM does
 not use the normal log file location while the job is running.
 
-.. todo::
-   refs:
-
 - *type*: string
 - *default*: (none)
-- *example*: see~\ref{err-tailer}
+- *example*: see :ref:`err-tailer`
 
 
 .. _JobNameLengthMaximum:
@@ -864,10 +817,7 @@ any given time from those configured.
 [suite servers] ``->`` auto restart delay
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
-Relates to Cylc's auto stop-restart mechanism (see~\ref{auto-stop-restart}).
+Relates to Cylc's auto stop-restart mechanism (see :ref:`auto-stop-restart`).
 When a host is set to automatically shutdown/restart it will first wait a
 random period of time between zero and ``auto restart delay``
 seconds before beginning the process. This is to prevent large numbers
@@ -880,12 +830,9 @@ of suites from restarting simultaneously.
 [suite servers] ``->`` condemned hosts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Hosts specified in ``condemned hosts`` will not be considered as suite
 run hosts. If suites are already running on ``condemned hosts`` they
-will be automatically shutdown and restarted (see~\ref{auto-stop-restart}).
+will be automatically shutdown and restarted (see :ref:`auto-stop-restart`).
 
 - *type*: comma-separated list of host names and/or IP addresses.
 - *default*: (none)
@@ -1092,10 +1039,7 @@ if you have to use the *hardwired* self-identification method.
 [task events]
 -------------
 
-.. todo::
-   refs:
-
-Global site/user defaults for~\ref{TaskEventHandling}.
+Global site/user defaults for :ref:`TaskEventHandling`.
 
 
 [test battery]
@@ -1187,42 +1131,31 @@ Default values for entries in the suite.rc ``[cylc]`` section.
 [cylc] ``->`` UTC mode
 ^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Allows you to set a default value for UTC mode in a suite at the site level.
-See ~\ref{UTC-mode} for details.
+See :ref:`UTC-mode` for details.
 
 
 [cylc] ``->`` health check interval
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Site default suite health check interval.
-See ~\ref{health-check-interval} for details.
+See :ref:`health-check-interval` for details.
 
 
 [cylc] ``->`` task event mail interval
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Site default task event mail interval.
-See ~\ref{task-event-mail-interval} for details.
+See :ref:`task-event-mail-interval` for details.
 
+
+.. _SiteCylcHooks:
 
 [cylc] ``->`` [[events]]
 ^^^^^^^^^^^^^^^^^^^^^^^^
-\label{SiteCylcHooks}
-
-.. todo::
-   refs:
 
 You can define site defaults for each of the following options, details
-of which can be found under ~\ref{SuiteEventHandling}:
+of which can be found under :ref:`SuiteEventHandling`:
 
 
 [cylc] ``->`` [[events]] ``->`` handlers
@@ -1298,18 +1231,12 @@ of which can be found under ~\ref{SuiteEventHandling}:
 [authentication]
 ----------------
 
-.. todo::
-   refs:
-
 Authentication of client programs with suite server programs can be configured
-here, and overridden in suites if necessary (see~\ref{SuiteAuth}).
-
-.. todo::
-   refs:
+here, and overridden in suites if necessary (see :ref:`SuiteAuth`).
 
 The suite-specific passphrase must be installed on a user's account to
-authorize full control privileges (see~\ref{tutPassphrases}
-and~\ref{ConnectionAuthentication}). In the future we plan to move to a more
+authorize full control privileges (see :ref:`tutPassphrases`
+and :ref:`ConnectionAuthentication`). In the future we plan to move to a more
 traditional user account model so that each authorized user can have their own
 password.
 

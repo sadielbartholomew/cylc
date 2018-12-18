@@ -54,7 +54,7 @@ release = '7.8.0'  # The full version, including alpha/beta/rc tags.
 exclude_patterns = ['_build']
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'manni'
 
 # Enable automatic numbering of any captioned figures, tables & code blocks.
 numfig = True
@@ -62,7 +62,9 @@ numfig = True
 
 # -- Options for HTML output ----------------------------------------------
 
-# The builtin HTML theme to build upon and customisations to it.
+# The builtin HTML theme to build upon, with customisations to it. Notably
+# customise with a white 'sticky' sidebar; make headings & links text the Cylc
+# logo colours & make code block background the logo green made much lighter.
 # html_theme = "classic" -> not required to set, as this is the default.
 html_theme_options = {
     "stickysidebar": True,

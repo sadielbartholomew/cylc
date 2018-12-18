@@ -3,13 +3,10 @@
 Global (Site, User) Configuration Files
 =======================================
 
-.. todo::
-   refs:
-
 Cylc site and user global configuration files contain settings that affect all
 suites. Some of these, such as the range of network ports used by cylc,
 should be set at site level. Legal items, values, and system defaults are
-documented in (\ref{SiteRCReference}).
+documented in (:ref:`SiteRCReference`).
 
 .. code-block:: bash
 

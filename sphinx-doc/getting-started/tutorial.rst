@@ -20,21 +20,16 @@ cylc on suite configurations:
 		terminal = vim
 		gui = gvim -f
 
-.. todo::
-  refs:
-
 - For more on site and user global config files
-  see~\ref{SiteAndUserConfiguration} and~\ref{SiteRCReference}.
+  see :ref:`SiteAndUserConfiguration` and~:ref:`SiteRCReference`.
 
-.. _Configure-Environment-on-Job-Hosts:
+
+.. _Configure Environment on Job Hosts:
 
 Configure Environment on Job Hosts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-  ref:
-
-See~\ref{Configure Site Environment on Job Hosts} for information.
+See :ref:`Configure Site Environment on Job Hosts` for information.
 
 
 .. _CUI:
@@ -42,12 +37,9 @@ See~\ref{Configure Site Environment on Job Hosts} for information.
 User Interfaces
 ---------------
 
-.. todo::
-  ref:
-
 You should have access to the cylc command line (CLI) and graphical (GUI) user
 interfaces once cylc has been installed as described in
-Section~\ref{InstallCylc}.
+Section :ref:`InstallCylc`.
 
 Command Line Interface (CLI)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -61,11 +53,7 @@ and their help documentation.
 	$ cylc help       # Top level command help.
 	$ cylc run --help # Example command-specific help.
 
-
-.. todo::
-  ref:
-
-Command help transcripts are printed in~\ref{CommandReference} and are
+Command help transcripts are printed in :ref:`CommandReference` and are
 available from the GUI Help menu.
 
 Cylc is *scriptable* - the error status returned by commands can be
@@ -85,10 +73,6 @@ GUI does not affect the suite itself.
 	$ cylc gui & # Single suite control GUI.
 	$ cylc gscan & # Multi-suite monitor GUI.
 
-
-.. todo::
-  ref:
-
 Clicking on a suite in gscan, shown in :ref:`Figure X <fig-gscan>`, opens a
 gcylc instance for it.
 
@@ -100,8 +84,8 @@ files (the main file format extension is section nesting). These reside
 in *suite configuration directories* that may also contain a
 ``bin`` directory and any other suite-related files.
 
-- For more on the suite configuration file format, see~\ref{SuiteDefinition}
-  and~\ref{SuiteRCReference}.
+- For more on the suite configuration file format, see :ref:`SuiteDefinition`
+  and :ref:`SuiteRCReference`.
 
 Suite Registration
 ------------------
@@ -143,11 +127,8 @@ Possession of a suite's passphrase file gives full control over it.
 Without it, the information available to a client is determined by the suite's
 public access privilege level.
 
-.. todo::
-  ref:
-
 For more on connection authentication, suite passphrases, and public access,
-see~\ref{ConnectionAuthentication}.
+see :ref:`ConnectionAuthentication`.
 
 
 .. _ImportTheExampleSuites:
@@ -245,11 +226,8 @@ information and exits).
 Editing Suites
 --------------
 
-.. todo::
-   ref:
-
 The text editor invoked by Cylc on suite configurations is determined
-by cylc site and user global config files, as shown above in~\ref{CUI}.
+by cylc site and user global config files, as shown above in :ref:`CUI`.
 Check that you have renamed the tutorial examples suites as described
 just above and open the *Hello World* suite in your text editor:
 
@@ -463,11 +441,8 @@ submitted to external batch queuing systems like ``at``,
 ``PBS``, ``SLURM``, ``Moab``, or ``LoadLeveler``, are displayed as
 *submitted* in the cylc GUI until they start executing.
 
-.. todo::
-   refs.
-
-- For more on task job scripts, see~\ref{JobScripts}.
-- For more on batch systems, see~\ref{AvailableMethods}.
+- For more on task job scripts, see :ref:`JobScripts`.
+- For more on batch systems, see :ref:`AvailableMethods`.
 
 
 Locating Suite And Task Output
@@ -542,13 +517,11 @@ with the ``cylc cat-log`` command:
 	$ cylc cat-log -o tut/oneoff/basic hello.1   # task stdout log
 	$ cylc cat-log -e tut/oneoff/basic hello.1   # task stderr log
 
-.. todo::
-   refs.
-
 - For a web-based interface to suite and task logs (and much more),
-  see *Rose* in~\ref{SuiteStorageEtc}.
+  see *Rose* in :ref:`SuiteStorageEtc`.
 - For more on environment variables supplied to tasks, such as
-  ``$CYLC_SUITE_SHARE_DIR``, see~\ref{TaskExecutionEnvironment}.
+  ``$CYLC_SUITE_SHARE_DIR``, see :ref:`TaskExecutionEnvironment`.
+
 
 Viewing Suite Logs via Web Browser: Cylc Review
 -----------------------------------------------
@@ -565,14 +538,11 @@ Cylc Review. It displays suite information in web pages, as shown in
 
     Screenshot of a Cylc Review web page
 
-
-.. todo::
-   refs.
-
 If a Cylc Review server is provided at your site, you can open the Cylc
 Review page for a suite by running the ``cylc review`` command.
-See~\ref{HostsforCylcReview} for requirements and~\ref{ConfiguringCylcReview}
-for configuration steps for setting up a host to run the service at your site.
+See :ref:`HostsforCylcReview` for requirements and
+:ref:`ConfiguringCylcReview` for configuration steps for setting up a
+host to run the service at your site.
 
 Otherwise an ad-hoc web server can be set up using the
 ``cylc review start`` command argument.
@@ -593,13 +563,10 @@ Connectivity requirements:
 Configuring Cylc Review
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs.
-
 Cylc Review can provide an intranet web service at your site for users to
 view their suite logs using a web browser. Depending on settings at your
 site, you may or may not be able to set up this service
-(see~\ref{HostsforCylcReview}).
+(see :ref:`HostsforCylcReview`).
 
 You can start an ad-hoc Cylc Review web server by running:
 
@@ -632,11 +599,8 @@ Remote Tasks
 
 suite: ``tut/oneoff/remote``
 
-.. todo::
-   refs.
-
 The ``hello`` task in the first two tutorial suites defaults to
-running on the suite host~\ref{RemoteSuites}. To make it run on a different
+running on the suite host :ref:`RemoteSuites`. To make it run on a different
 host instead change its runtime configuration as in ``tut/oneoff/remote``:
 
 .. code-block:: cylc
@@ -656,7 +620,7 @@ A task remote account must satisfy several requirements:
 - Non-interactive ssh must be enabled from the account running the suite
   server program to the account for submitting (and managing) the remote
   task job.
-- Network settings must allow communication {\em back} from the remote task
+- Network settings must allow communication *back* from the remote task
   job to the suite, either by network ports or ssh, unless the last-resort one
   way *task polling* communication method is used.
 - Cylc must be installed and runnable on the task remote account. Other
@@ -740,14 +704,10 @@ regularly, you should try the following:
 - Adjust the size limit with tolerance to the expected size of STDOUT or
   STDERR.
 
-
-.. todo::
-   refs.
-
-- For more on remote tasks see~\ref{RunningTasksOnARemoteHost}
-- For more on task communications, see~\ref{TaskComms}.
+- For more on remote tasks see :ref:`RunningTasksOnARemoteHost`
+- For more on task communications, see :ref:`TaskComms`.
 - For more on suite passphrases and authentication,
-  see~\ref{tutPassphrases} and~\ref{ConnectionAuthentication}.
+  see :ref:`tutPassphrases` and :ref:`ConnectionAuthentication`.
 
 
 Task Triggering
@@ -859,11 +819,8 @@ succeeds, remove ``really_goodbye`` from the suite.
 Try running ``tut/oneoff/suicide``, which also configures
 the ``hello`` task's runtime to make it fail, to see how this works.
 
-.. todo::
-   refs.
-
-- For more on suite dependency graphs see~\ref{ConfiguringScheduling}.
-- For more on task triggering see~\ref{TriggerTypes}.
+- For more on suite dependency graphs see :ref:`ConfiguringScheduling`.
+- For more on task triggering see :ref:`TriggerTypes`.
 
 
 Runtime Inheritance
@@ -896,10 +853,7 @@ customize with different values of the environment variable
    implicit; from other parents an explicit ``inherit = PARENT``
    is required, as shown below.
 
-.. todo::
-   refs.
-
-- For more on runtime inheritance, see~\ref{NIORP}.
+- For more on runtime inheritance, see :ref:`NIORP`.
 
 Triggering Families
 -------------------
@@ -1020,10 +974,7 @@ two-member family:
 
 Experiment with ``tut/oneoff/ftrigger2`` to see how this works.
 
-.. todo::
-   refs.
-
-- For more on family triggering, see~\ref{FamilyTriggers}.
+- For more on family triggering, see :ref:`FamilyTriggers`.
 
 
 Suite Visualization
@@ -1207,13 +1158,10 @@ constraints to the suite to only allow initial cycle points at ``00`` or
 .. todo::
    Orig docs note says: 'Runahead factor now'.
 
-.. todo::
-   refs.
-
 - For a comprehensive description of ISO 8601 based date-time cycling,
-  see~\ref{AdvancedCycling}
+  see :ref:`AdvancedCycling`
 - For more on runahead limiting in cycling suites,
-  see~\ref{RunaheadLimit}.
+  see :ref:`RunaheadLimit`.
 
 
 .. _TutInterCyclePointTriggers:
@@ -1355,13 +1303,9 @@ actually look like:
 
     The ``tut/cycling/three`` suite
 
-
-.. todo::
-   refs.
-
 - ``R1`` tasks can also be used to make something special
   happen at suite shutdown, or at any single cycle point throughout the
-  suite run. For a full primer on cycling syntax, see~\ref{AdvancedCycling}.
+  suite run. For a full primer on cycling syntax, see :ref:`AdvancedCycling`.
 
 
 .. _TutInteger:
@@ -1405,11 +1349,9 @@ called ``stop`` in the final two cycles. The ``P`` character
 denotes period (interval) just like in the date-time notation.
 ``R/1/P2`` would generate the sequence of points ``1,3,5,...``.
 
-.. todo::
-   refs.
-
 - For more on integer cycling, including a more realistic usage example
-  see ~\ref{IntegerCycling}.
+  see :ref:`IntegerCycling`.
+
 
 Jinja2
 ------
@@ -1510,9 +1452,6 @@ Experiment with ``tut/oneoff/retry`` to see how this works.
 Other Users' Suites
 -------------------
 
-.. todo::
-  21 x ref to convert in this sec.
-
 If you have read access to another user's account (even on another host)
 it is possible to use ``cylc monitor`` to look at their suite's
 progress without full shell access to their account. To do this, you
@@ -1522,7 +1461,7 @@ will need to copy their suite passphrase to
 
    $HOME/.cylc/SUITE_OWNER@SUITE_HOST/SUITE_NAME/passphrase
 
-(use of the host and owner names is optional here - see~\ref{passphrases})
+(use of the host and owner names is optional here - see :ref:`passphrases`)
 *and* also retrieve the port number of the running suite from:
 
 .. code-block:: bash
@@ -1537,7 +1476,8 @@ Once you have this information, you can run
 
 to view the progress of their suite.
 
-Other suite-connecting commands work in the same way; see~\ref{RemoteControl}.
+Other suite-connecting commands work in the same way; see
+:ref:`RemoteControl`.
 
 Other Things To Try
 -------------------
@@ -1547,9 +1487,6 @@ simple dummy suite. You can write your own, or start from one of the
 example suites in ``/path/to/cylc/examples`` (see use of
 ``cylc import-examples`` above) - they all run "out the box"
 and can be copied and modified at will.
-
-.. todo::
-   1 x ref to convert near end of bullets
 
 - Change the suite runahead limit in a cycling suite.
 - Stop a suite mid-run with ``cylc stop``, and restart
@@ -1565,6 +1502,6 @@ and can be copied and modified at will.
   with ``cylc trigger``.
 - Use an *internal queue* to prevent more than an alotted number
   of tasks from running at once even though they are ready -
-  see~\ref{InternalQueues}.
+  see :ref:`InternalQueues`.
 - Configure task event hooks to send an email, or shut the suite down,
   on task failure.

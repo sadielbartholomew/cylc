@@ -3,18 +3,12 @@
 Task Job Submission and Management
 ==================================
 
-.. todo::
-   refs:
-
 For the requirements a command, script, or program, must fulfill in order
-to function as a cylc task, see~\ref{TaskImplementation}.
+to function as a cylc task, see :ref:`TaskImplementation`.
 This section explains how tasks are submitted by the suite server program when
 they are ready to run, and how to define new batch system handlers.
 
-.. todo::
-   refs:
-
-When a task is ready cylc generates a job script (see~\ref{JobScripts}). The
+When a task is ready cylc generates a job script (see :ref:`JobScripts`). The
 job script is submitted to run by the *batch system* chosen for
 the task. Different tasks can use different batch systems.  Like
 other runtime properties, you can set a suite default batch system and
@@ -37,7 +31,7 @@ Supported Job Submission Methods
 --------------------------------
 
 Cylc supports a number of commonly used batch systems.
-See~\ref{CustomJobSubmissionMethods} for how to add new job
+See :ref:`CustomJobSubmissionMethods` for how to add new job
 submission methods.
 
 
@@ -292,16 +286,13 @@ For batch systems that use job file directives (PBS, Loadleveler,
 etc.) default directives are provided to set the job name, stdout and stderr
 file paths, and the execution time limit (if specified).
 
-.. todo::
-   refs:
-
 Cylc constructs the job name string using a combination of the task ID and the
 suite name. PBS fails a job submit if the job name in ``-N name`` is
 too long. For version 12 or below, this is 15 characters. For version 13, this
 is 236 characters. The default setting will truncate the job name string to 15
 characters. If you have PBS 13 at your site, you should modify your site's
 global configuration file to allow the job name to be longer. (See also
-Section~\ref{JobNameLengthMaximum}.) For example:
+:ref:`JobNameLengthMaximum`.) For example:
 
 .. code-block:: cylc
 
@@ -423,10 +414,7 @@ your suite.rc file:
 			   # until all job steps have completed:
 			   batch submit command template = llsubmit -s %(job)s
 
-.. todo::
-   refs:
-
-As explained in~\ref{SuiteRCReference}
+As explained in :ref:`SuiteRCReference`
 the template's \%(job)s will be substituted by the job file path.
 
 
@@ -446,20 +434,14 @@ problems that prevent task messages from getting back to the suite host.
 Tasks can be polled on demand by right-clicking on them in gcylc or using the
 ``cylc poll`` command.
 
-.. todo::
-   refs:
-
 Tasks are polled automatically, once, if they timeout while queueing in a
-batch scheduler and submission timeout is set. (See~\ref{TaskEventHandling} for
-how to configure timeouts).
-
-.. todo::
-   refs:
+batch scheduler and submission timeout is set. (See :ref:`TaskEventHandling`
+for how to configure timeouts).
 
 Tasks are polled multiple times, where necessary, when they exceed their
 execution time limits. These are normally set with some initial delays to allow
 the batch systems to kill the jobs.
-(See~\ref{ExecutionTimeLimitPollingIntervals} for how to configure the polling
+(See :ref:`ExecutionTimeLimitPollingIntervals` for how to configure the polling
 intervals).
 
 Any tasks recorded in the *submitted* or *running* states at suite
@@ -471,17 +453,14 @@ hosts that are known to be flaky, or as the sole method of determining task
 status on hosts that do not allow task messages to be routed back to the suite
 host.
 
-.. todo::
-   refs:
-
 To use polling instead of task-to-suite messaging set
 ``task communication method = poll``
-in cylc site and user global config (see~\ref{task_comms_method}).
+in cylc site and user global config (see :ref:`task_comms_method`).
 The default polling intervals can be overridden for all suites there too
-(see~\ref{submission_polling} and~\ref{execution_polling}), or in specific
+(see :ref:`submission_polling` and :ref:`execution_polling`), or in specific
 suite configurations (in which case polling will be done regardless of the
 task communication method configured for the host;
-see~\ref{SubmissionPollingIntervals} and~\ref{ExecutionPollingIntervals}).
+see :ref:`SubmissionPollingIntervals` and :ref:`ExecutionPollingIntervals`).
 
 Note that regular polling is not as efficient as task messaging in updating
 task status, and it should be used sparingly in large suites.
@@ -583,11 +562,9 @@ batch system handler to change the directive prefix from ``#PBS`` to
 
    BATCH_SYSTEM_HANDLER = QSUBHandler()
 
-.. todo::
-  refs:
-
-If this is in the Python search path (see~\ref{Where To Put Batch System
-Handler Modules} below) you can use it by name in suite configurations:
+If this is in the Python search path (see
+:ref:`Where To Put Batch System Handler Modules` below) you can use it by
+name in suite configurations:
 
 .. code-block:: cylc
 

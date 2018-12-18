@@ -200,17 +200,14 @@ installation methods used and is outside of the scope of this document.
 Create A Site Config File
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   translate refs below.
-
 Site and user global config files define some important parameters that affect
 all suites, some of which may need to be customized for your site.
-See~\ref{SiteAndUserConfiguration} for how to generate an initial site file and
+See :ref:`SiteAndUserConfiguration` for how to generate an initial site file and
 where to install it. All legal site and user global config items are defined
-in~\ref{SiteRCReference}.
+in :ref:`SiteRCReference`.
 
 
-.. _Configure-Site-Environment-on-Job-Hosts:
+.. _Configure Site Environment on Job Hosts:
 
 Configure Site Environment on Job Hosts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

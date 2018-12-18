@@ -3,18 +3,15 @@
 Suite Configuration
 ===================
 
-.. todo::
-   refs:
-
 Cylc suites are defined in structured, validated, *suite.rc* files
 that concisely specify the properties of, and the relationships
 between, the various tasks managed by the suite. This section of the
 User Guide deals with the format and content of the suite.rc file,
 including task definition. Task implementation - what's required of the
 real commands, scripts, or programs that do the processing that the
-tasks represent - is covered in~\ref{TaskImplementation}; and
+tasks represent - is covered in :ref:`TaskImplementation`; and
 task job submission - how tasks are submitted to run - is
-in~\ref{TaskJobSubmission}.
+in :ref:`TaskJobSubmission`.
 
 
 .. _SuiteDefinitionDirectories:
@@ -23,9 +20,6 @@ Suite Configuration Directories
 -------------------------------
 
 A cylc *suite configuration directory* contains:
-
-.. todo::
-   refs:
 
 - **A suite.rc file**: this is the suite configuration.
 
@@ -45,9 +39,9 @@ A cylc *suite configuration directory* contains:
 - **A ``lib/python/`` sub-directory** (optional)
 
   - For custom job submission modules
-    (see~\ref{CustomJobSubmissionMethods})
+    (see :ref:`CustomJobSubmissionMethods`)
     and local Python modules imported by custom Jinja2 filters,
-    tests and globals (see~\ref{CustomJinja2Filters}).
+    tests and globals (see :ref:`CustomJinja2Filters`).
 
 - **Any other sub-directories and files** - documentation,
   control files, etc. (optional)
@@ -56,7 +50,7 @@ A cylc *suite configuration directory* contains:
     revision control possible.
   - Portable access to files here, for running tasks, is
     provided through ``$CYLC_SUITE_DEF_PATH``
-    (see~\ref{TaskExecutionEnvironment}).
+    (see :ref:`TaskExecutionEnvironment`).
   - Ignored by cylc, but the entire suite configuration
     directory tree is copied when you copy a
     suite using cylc commands.
@@ -89,15 +83,13 @@ Suite.rc File Overview
 
 Suite.rc files are an extended-INI format with section nesting.
 
-.. todo::
-   refs:
-
 Embedded template processor expressions may also be used in the file, to
 programatically generate the final suite configuration seen by
 cylc. Currently the `Jinja2 <http://jinja.pocoo.org/docs>`_ and
-`EmPy <http://www.alcyone.com/software/empy>`_ template processors are supported;
-see~\ref{Jinja2} and~\ref{EmPy} for examples. In the future cylc may provide
-a plug-in interface to allow use of other template engines too.
+`EmPy <http://www.alcyone.com/software/empy>`_ template processors are
+supported; see :ref:`Jinja` and :ref:`EmPylabel` for examples. In the future
+cylc may provide a plug-in interface to allow use of other template
+engines too.
 
 
 .. _Syntax:
@@ -129,10 +121,7 @@ The following defines legal suite.rc syntax:
 - **Include-files** ``%include inc/foo.rc`` can be
   used as a verbatim inlining mechanism.
 
-.. todo::
-   refs:
-
-Suites that embed templating code (see~\ref{Jinja2} and~\ref{EmPy}) must
+Suites that embed templating code (see :ref:`Jinja` and :ref:`EmPylabel`) must
 process to raw suite.rc syntax.
 
 
@@ -172,10 +161,7 @@ the file. See ``cylc prep edit --help`` for more information.
 Include-Files via Jinja2
 """"""""""""""""""""""""
 
-.. todo::
-   refs:
-
-Jinja2 (\ref{Jinja2}) also has template inclusion functionality.
+Jinja2 (:ref:`Jinja`) also has template inclusion functionality.
 
 
 .. _SyntaxHighlighting:
@@ -224,16 +210,13 @@ configuration items grouped under several top level section headings:
 Validation
 ^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Cylc suite.rc files are automatically validated against a specification
 that defines all legal entries, values, options, and defaults. This
 detects formatting errors, typographic errors, illegal items and illegal
 values prior to run time. Some values are complex strings that require
 further parsing by cylc to determine their correctness (this is also
-done during validation). All legal entries are documented in the
-*Suite.rc Reference* (\ref{SuiteRCReference}).
+done during validation). All legal entries are documented in
+(:ref:`SuiteRCReference`).
 
 The validator reports the line numbers of detected errors. Here's an
 example showing a section heading with a missing right bracket:
@@ -286,9 +269,6 @@ vary depending on the particular cycle point:
 		   [[[T06,T18]]] # hours
 			   graph = "C => X"
 
-.. todo::
-   fig refs:
-
 :ref:`Figure X <fig-dep-eg-1>` shows the complete suite.rc listing alongside
 the suite graph. This is a complete, valid, runnable suite (it will
 use default task runtime properties such as ``script``).
@@ -339,9 +319,6 @@ Multiline graph strings may contain:
 Interpreting Graph Strings
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Suite dependency graphs can be broken down into pairs in which the left
 side (which may be a single task or family, or several that are
 conditionally related) defines a trigger for the task or family on the
@@ -349,7 +326,7 @@ right. For instance the "word graph" *C triggers off B which
 triggers off A* can be deconstructed into pairs *C triggers off B*
 and *B triggers off A*. In this section we use only the default
 trigger type, which is to trigger off the upstream task succeeding;
-see~\ref{TriggerTypes} for other available triggers.
+see :ref:`TriggerTypes` for other available triggers.
 
 In the case of cycling tasks, the triggers defined by a graph string are
 valid for cycle points matching the list of hours specified for the
@@ -375,9 +352,6 @@ left side of a pair:
 		   [[[T00,T12]]]
 			   graph = "A[-PT12H] => B"
 
-.. todo::
-   refs:
-
 This means B[time] triggers off A[time-PT12H] (12 hours before) for cycle
 points with hours matching ``00`` or ``12``. ``time`` is implicit because
 this keeps graphs clean and concise, given that the
@@ -386,7 +360,7 @@ depend only on others with the same cycle point. Cycle point offsets can only
 appear on the left of a pair, because a pairs define triggers for the right
 task at cycle point ``time``. However, ``A => B[-PT6H]``, which is
 illegal, can be reformulated as a *future trigger*
-``A[+PT6H] => B`` (see~\ref{InterCyclePointTriggers}). It is also
+``A[+PT6H] => B`` (see :ref:`InterCyclePointTriggers`). It is also
 possible to combine multiple offsets within a cycle point offset e.g.
 
 .. code-block:: cylc
@@ -491,9 +465,6 @@ to generate the final graph.
 One-off (Non-Cycling)
 """""""""""""""""""""
 
-.. todo::
-   fig refs:
-
 :ref:`Figure X <fig-test1>` shows a small suite of one-off non-cycling
 tasks; these all share a single cycle point (``1``) and don't spawn
 successors (once they're all finished the suite just exits). The integer
@@ -517,9 +488,6 @@ successors (once they're all finished the suite just exits). The integer
 
 Cycling Graphs
 """"""""""""""
-
-.. todo::
-   refs:
 
 For cycling tasks the graph section heading defines a sequence of cycle points
 for which the subsequent graph section is valid. :ref:`Figure X <fig-test2>`
@@ -562,11 +530,8 @@ initial cycle point". Cylc allows you to start (or end) at any particular
 time, repeat at whatever frequency you like, and even optionally limit the
 number of repetitions.
 
-.. todo::
-   refs:
-
 Graph section heading can also be used with integer cycling see
-\ref{IntegerCycling}.
+:ref:`IntegerCycling`.
 
 
 Syntax Rules
@@ -862,7 +827,7 @@ Advanced Starting Up
 """"""""""""""""""""
 
 Dependencies that are only valid at the initial cycle point can be written
-using the ``R1`` notation (e.g. as in~\ref{initial-non-repeating-r1-tasks}.
+using the ``R1`` notation (e.g. as in :ref:`initial-non-repeating-r1-tasks`.
 For example:
 
 .. code-block:: cylc
@@ -910,9 +875,6 @@ a single ``prep`` task, at a single cycle.
 
 We can write this using a special case of the ``task[-interval]`` syntax -
 if the interval is null, this implies the task at the initial cycle point.
-
-.. todo::
-   refs:
 
 For example, we can write our suite like :ref:`Figure X <fig-test4>`.
 
@@ -985,16 +947,10 @@ that has one-off dependencies with other task sets at different cycles.
 			   foo = "color=red"
 			   bar = "color=orange"
 
-.. todo::
-   refs:
-
 A different kind of requirement is displayed in :ref:`Figure X <fig-test5>`.
 Usually, we want to specify additional tasks and dependencies at the initial
 cycle point. What if we want our first cycle point to be entirely special,
 with some tasks missing compared to subsequent cycle points?
-
-.. todo::
-   refs:
 
 In :ref:`Figure X <fig-test5>`, ``bar`` will not be run at the initial
 cycle point, but will still run at subsequent cycle points.
@@ -1071,10 +1027,7 @@ where suite initial and final cycle points can be assumed. Some examples:
 Example
 '''''''
 
-.. todo::
-   refs:
-
-The tutorial illustrates integer cycling in~\ref{TutInteger}, and
+The tutorial illustrates integer cycling in :ref:`TutInteger`, and
 ``<cylc-dir>/etc/examples/satellite/`` is a
 self-contained example of a realistic use for integer cycling. It simulates
 the processing of incoming satellite data: each new dataset arrives after a
@@ -1102,11 +1055,8 @@ shown in :ref:`Figure X <fig-satellite>`.
 Advanced Integer Cycling Syntax
 '''''''''''''''''''''''''''''''
 
-.. todo::
-   refs:
-
 The same syntax used to reference the initial and final cycle points
-(introduced in~\ref{referencing-the-initial-and-final-cycle-points}) for
+(introduced in :ref:`referencing-the-initial-and-final-cycle-points`) for
 use with date-time cycling can also be used for integer cycling. For
 example you can write:
 
@@ -1117,10 +1067,7 @@ example you can write:
    [[[ R3/^/P2 ]]]  # Run three times with step two starting at the
 					# initial cycle point
 
-.. todo::
-   refs:
-
-Likewise the syntax introduced in~\ref{excluding-dates} for excluding
+Likewise the syntax introduced in :ref:`excluding-dates` for excluding
 a particular point from a recurrence also works for integer cycling. For
 example:
 
@@ -1133,11 +1080,8 @@ example:
    [[[ R/+P1/P6!14 ]]]  # Run with step 6 from 1 step after the
 						# initial cycle point but not at point 14
 
-.. todo::
-   refs:
-
 Multiple integer exclusions are also valid in the same way as the syntax
-in~\ref{excluding-dates}. Integer exclusions may be a list of single
+in :ref:`excluding-dates`. Integer exclusions may be a list of single
 integer points, an integer sequence, or a combination of both:
 
 .. code-block:: none
@@ -1166,11 +1110,8 @@ be made to trigger off of the state of other tasks (indicated by a
 ``:state`` qualifier on the upstream task (or family)
 name in the graph) and, and off the clock, and arbitrary external events.
 
-.. todo::
-   refs:
-
 External triggering is relatively more complicated, and is documented
-separately in Section~\ref{External Triggers}.
+separately in :ref:`External Triggers`.
 
 
 Success Triggers
@@ -1205,11 +1146,8 @@ To trigger off the upstream task reporting failure:
    # B triggers if A FAILS:
 	   graph = "A:fail => B"
 
-.. todo::
-   refs:
-
 *Suicide triggers* can be used to remove task ``B`` here if
-``A`` does not fail, see~\ref{SuicideTriggers}.
+``A`` does not fail, see :ref:`SuicideTriggers`.
 
 
 Start Triggers
@@ -1222,9 +1160,6 @@ To trigger off the upstream task starting to execute:
    # B triggers if A STARTS EXECUTING:
 	   graph = "A:start => B"
 
-.. todo::
-   refs:
-
 This can be used to trigger tasks that monitor other tasks once they
 (the target tasks) start executing. Consider a long-running forecast model,
 for instance, that generates a sequence of output files as it runs. A
@@ -1236,7 +1171,7 @@ same time (``foo => model & post``), but depending on
 external queue delays this could result in the monitoring task starting
 to execute first; or a different postprocessing task could be
 triggered off a message output for each data file
-(``model:out1 => post1`` etc.; see~\ref{MessageTriggers}), but this
+(``model:out1 => post1`` etc.; see :ref:`MessageTriggers`), but this
 may not be practical if the
 number of output files is large or if it is difficult to add cylc
 messaging calls to the model.
@@ -1327,9 +1262,6 @@ can only appear on the left [1]_ :
    # C triggers when either A or B finishes:
 	   graph = "A | B => C"
 
-.. todo::
-   refs:
-
 Forecasting suites typically have simple conditional
 triggering requirements, but any valid conditional expression can be
 used, as shown in :ref:`Figure X <fig-conditional>`
@@ -1358,9 +1290,6 @@ used, as shown in :ref:`Figure X <fig-conditional>`
 
 Suicide Triggers
 """"""""""""""""
-
-.. todo::
-   refs:
 
 Suicide triggers take tasks out of the suite. This can be used for
 automated failure recovery. The suite.rc listing and accompanying
@@ -1467,11 +1396,8 @@ is removed from the suite by a suicide trigger, a warning will be logged.
 Family Triggers
 """""""""""""""
 
-.. todo::
-   refs:
-
 Families defined by the namespace inheritance hierarchy
-(~\ref{NIORP}) can be used in the graph trigger whole groups of
+(:ref:`NIORP`) can be used in the graph trigger whole groups of
 tasks at the same time (e.g. forecast model ensembles and groups of
 tasks for processing different observation types at the same time) and
 for triggering downstream tasks off families as a whole. Higher level
@@ -1493,9 +1419,11 @@ To trigger an entire task family at once:
 	   [[FAM]]    # a family (because others inherit from it)
 	   [[m1,m2]]  # family members (inherit from namespace FAM)
 		   inherit = FAM
-   \end{lstlisting}
-   This is equivalent to:
-   \begin{lstlisting}
+
+This is equivalent to:
+
+.. code-block:: cylc
+
    [scheduling]
 	   [[dependencies]]
 		   graph = "foo => m1 & m2"
@@ -1604,15 +1532,14 @@ kind of relationship in cylc:
 	   [[PT6H]]
 		   # B triggers off A in the previous cycle point
 		   graph = "A[-PT6H] => B"
-   \end{lstlisting}
-   inter-cycle and trigger type (or message trigger) notation can be
-   combined:
-   \begin{lstlisting}
-	   # B triggers if A in the previous cycle point fails:
-	   graph = "A[-PT6H]:fail => B"
 
-.. todo::
-   refs:
+inter-cycle and trigger type (or message trigger) notation can be
+combined:
+
+.. code-block:: cylc
+
+   # B triggers if A in the previous cycle point fails:
+   graph = "A[-PT6H]:fail => B"
 
 At suite start-up inter-cycle triggers refer to a previous cycle point
 that does not exist. This does not cause the dependent task to wait
@@ -1624,8 +1551,8 @@ restart files, for instance, then an initial set of restart files has to be
 generated somehow or the first model task will presumably fail with
 missing input files. There are several ways to handle this in cylc
 using different kinds of one-off (non-cycling) tasks that run at suite
-start-up. They are illustrated in the Tutorial
-(\ref{TutInterCyclePointTriggers}); to summarize here briefly:
+start-up. They are illustrated in :ref:`TutInterCyclePointTriggers`; to
+summarize here briefly:
 
 - ``R1`` tasks (recommended):
 
@@ -1806,12 +1733,9 @@ other tasks beyond the final point.
 Clock Triggers
 """"""""""""""
 
-.. todo::
-   refs:
-
 .. note::
 
-   Please read External Triggers (\ref{External Triggers}) before
+   Please read External Triggers (:ref:`External Triggers`) before
    using the older clock triggers described in this section.
 
 By default, date-time cycle points are not connected to the real time "wall
@@ -1849,9 +1773,6 @@ point, have already passed.
 Clock-Expire Triggers
 """""""""""""""""""""
 
-.. todo::
-   refs:
-
 Tasks can be configured to *expire* - i.e. to skip job submission and
 enter the *expired* state - if they are too far behind the wall clock when
 they become ready to run, and other tasks can trigger off this. As a possible
@@ -1860,7 +1781,7 @@ overwrite the previous set: if the task is delayed by more than one cycle there
 may be no point in running it because the freshly copied files will just be
 overwritten immediately by the next task instance as the suite catches back up
 to real time operation. Clock-expire tasks are configured like clock-trigger
-tasks, with a date-time offset relative to cycle point (\ref{ClockExpireRef}).
+tasks, with a date-time offset relative to cycle point (:ref:`ClockExpireRef`).
 The offset should be positive to make the task expire if the wall-clock time
 has gone beyond the cycle point. Triggering off an expired task typically
 requires suicide triggers to remove the workflow that runs if the task has not
@@ -1886,10 +1807,7 @@ workflow is skipped, if it is more than one day behind the wall-clock (see also
 External Triggers
 """""""""""""""""
 
-.. todo::
-   refs:
-
-This is a substantial topic, documented in Section~\ref{External Triggers}.
+This is a substantial topic, documented in :ref:`External Triggers`.
 
 
 .. _ModelRestartDependencies:
@@ -1952,12 +1870,9 @@ to be written as shorthand for this:
 task exists at these cycle points but has no prerequisites - although other
 prerequisites may be defined for it in other parts of the graph).
 
-.. todo::
-   refs:
-
 *Cylc does not infer the existence of the upstream task in offset
 triggers* like ``foo[-P1D] => bar`` because, as explained in
-Section~\ref{cylc-6-migration-implicit-cycling}, a typo in the offset interval
+:ref:`cylc-6-migration-implicit-cycling`, a typo in the offset interval
 should generate an error rather than silently creating tasks on an erroneous
 cycling sequence.
 
@@ -2037,9 +1952,6 @@ cycle point:
 			   # ERROR
 			   graph = foo[-P1Y] => bar
 
-.. todo::
-   refs:
-
 .. note::
 
    ``cylc graph`` will display un-satisfiable inter-cycle
@@ -2067,22 +1979,16 @@ run, in a *multiple inheritance hierarchy* of *namespaces* culminating in
 individual tasks. This allows all common configuration detail to be
 factored out and defined in one place.
 
-.. todo::
-   refs:
-
-Any namespace can configure any or all of the items defined in the
-*Suite.rc Reference* (\ref{SuiteRCReference}).
+Any namespace can configure any or all of the items defined in
+:ref:`SuiteRCReference`.
 
 Namespaces that do not explicitly inherit from others automatically
 inherit from the *root* namespace (below).
 
-.. todo::
-   refs:
-
 Nested namespaces define *task families* that can be used in the
 graph as convenient shorthand for triggering all member tasks at once,
 or for triggering other tasks off all members at once -
-see~\ref{FamilyTriggers}. Nested namespaces can be
+see :ref:`FamilyTriggers`. Nested namespaces can be
 progressively expanded and collapsed in the dependency graph viewer, and
 in the gcylc graph and text views. Only the first parent of each
 namespace (as for single-inheritance) is used for suite visualization
@@ -2094,24 +2000,17 @@ Namespace Names
 
 Namespace names may contain letters, digits, underscores, and hyphens.
 
-.. todo::
-   refs:
-
-
 .. note::
 
    *Task names need not be hardwired into task implementations*
    because task and suite identity can be extracted portably from the task
    execution environment supplied by the suite server program
-   (\ref{TaskExecutionEnvironment}) - then to rename a task you can just change
-   its name in the suite configuration.
+   (:ref:`TaskExecutionEnvironment`) - then to rename a task you can
+   just change its name in the suite configuration.
 
 
 Root - Runtime Defaults
 ^^^^^^^^^^^^^^^^^^^^^^^
-
-.. todo::
-   refs:
 
 The root namespace, at the base of the inheritance hierarchy,
 provides default configuration for all tasks in the suite.
@@ -2119,8 +2018,8 @@ Most root items are unset by default, but some have default values
 sufficient to allow test suites to be defined by dependency graph alone.
 The *script* item, for example, defaults to code that
 prints a message then sleeps for between 1 and 15 seconds and
-exits. Default values are documented with each item in~\ref{SuiteRCReference}.
-You can override the defaults or
+exits. Default values are documented with each item in
+:ref:`SuiteRCReference`. You can override the defaults or
 provide your own defaults by explicitly configuring the root namespace.
 
 
@@ -2146,12 +2045,9 @@ argument that identifies the calling task name:
 	   [[m1, m2, m3]]
 		   inherit = ENSEMBLE
 
-.. todo::
-   refs:
-
 For large ensembles template processing can be used to
 automatically generate the member names and associated dependencies
-(see~\ref{Jinja2} and~\ref{EmPy}).
+(see :ref:`Jinja` and :ref:`EmPylabel`).
 
 
 Runtime Inheritance - Single
@@ -2246,13 +2142,10 @@ namespace structure through from root from the beginning).
 Task Execution Environment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 The task execution environment contains suite and task identity variables
 provided by the suite server program, and user-defined environment variables.
 The environment is explicitly exported (by the task job script) prior to
-executing the task ``script`` (see~\ref{TaskJobSubmission}).
+executing the task ``script`` (see :ref:`TaskJobSubmission`).
 
 Suite and task identity are exported first, so that user-defined
 variables can refer to them. Order of definition is preserved throughout
@@ -2418,19 +2311,13 @@ directory as a share space for tasks. The location is available to tasks as
 ``$CYLC_SUITE_SHARE_DIR``. In a cycling suite, output files are
 typically held in cycle point sub-directories of the suite share directory.
 
-.. todo::
-   refs:
-
 The top level share and work directory (below) location can be changed
 (e.g. to a large data area) by a global config setting
-(see~\ref{workdirectory}).
+(see :ref:`workdirectory`).
 
 
 Task Work Directories
 """""""""""""""""""""
-
-.. todo::
-   refs:
 
 Task job scripts are executed from within *work directories* created
 automatically under the suite run directory. A task can get its own work
@@ -2439,26 +2326,20 @@ it does not ``cd`` elsewhere at runtime). By default the location
 contains task name and cycle point, to provide a unique workspace for every
 instance of every task. This can be overridden in the suite configuration,
 however, to get several tasks to share the same work directory
-(see~\ref{worksubdirectory}).
-
-.. todo::
-   refs:
+(see :ref:`worksubdirectory`).
 
 The top level work and share directory (above) location can be changed
 (e.g. to a large data area) by a global config setting
-(see~\ref{workdirectory}).
+(see :ref:`workdirectory`).
 
 
 Environment Variable Evaluation
 """""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 Variables in the task execution environment are not evaluated in the
 shell in which the suite is running prior to submitting the task. They
 are written in unevaluated form to the job script that is submitted by
-cylc to run the task (\ref{JobScripts}) and are therefore
+cylc to run the task (:ref:`JobScripts`) and are therefore
 evaluated when the task begins executing under the task owner account
 on the task host. Thus ``$HOME``, for instance, evaluates at
 run time to the home directory of task owner on the task host.
@@ -2513,11 +2394,8 @@ For this to work:
 - the suite configuration directory, or some fraction of its
   content, can be installed on the task host, if needed.
 
-.. todo::
-   refs:
-
 To learn how to give remote tasks access to cylc,
-see~\ref{HowTasksGetAccessToCylc}.
+see :ref:`HowTasksGetAccessToCylc`.
 
 Tasks running on the suite host under another user account are treated as
 remote tasks.
@@ -2529,13 +2407,10 @@ the root namespace, or per family, or for individual tasks.
 Dynamic Host Selection
 """"""""""""""""""""""
 
-.. todo::
-   refs:
-
 Instead of hardwiring host names into the suite configuration you can
 specify a shell command that prints a hostname, or an environment
 variable that holds a hostname, as the value of the host config item.
-See~\ref{DynamicHostSelection}.
+See :ref:`DynamicHostSelection`.
 
 
 Remote Task Log Directories
@@ -2543,7 +2418,7 @@ Remote Task Log Directories
 
 Task stdout and stderr streams are written to log files in a
 suite-specific sub-directory of the *suite run directory*, as
-explained in~\ref{WhitherStdoutAndStderr}. For remote tasks
+explained in :ref:`WhitherStdoutAndStderr`. For remote tasks
 the same directory is used, but *on the task host*.
 Remote task log directories, like local ones, are created on the fly, if
 necessary, during job submission.
@@ -2554,13 +2429,10 @@ necessary, during job submission.
 Visualization
 -------------
 
-.. todo::
-   refs:
-
 The visualization section of a suite configuration is used to configure
 suite graphing, principally graph node (task) and edge (dependency
 arrow) style attributes. Tasks can be grouped for the purpose of
-applying common style attributes. See~\ref{SuiteRCReference} for details.
+applying common style attributes. See :ref:`SuiteRCReference` for details.
 
 
 Collapsible Families In Suite Graphs
@@ -2581,9 +2453,6 @@ In the gcylc graph view, nodes outside of the main graph (such as the
 members of collapsed families) are plotted as rectangular nodes to
 the right if they are doing anything interesting (submitted, running,
 failed).
-
-.. todo::
-   refs:
 
 :ref:`Figure X <fig-namespaces>` illustrates successive expansion of nested
 task families in the *namespaces* example suite.
@@ -2639,12 +2508,9 @@ include:
 - splitting a long model run into smaller steps or ``chunks``
   (parameterized cycling)
 
-.. todo::
-   refs:
-
 .. note::
 
-   This can be done with Jinja2 loops too (Section~\ref{Jinja2})
+   This can be done with Jinja2 loops too (:ref:`Jinja`)
    but parameterization is much cleaner (nested loops can seriously reduce
    the clarity of a suite configuration).*
 
@@ -2729,10 +2595,7 @@ overridden if need be:
 	   [[parameter templates]]
 		   run = -R%(run)s  # Make foo<run> expand to foo-R1 etc.
 
-.. todo::
-   refs:
-
-(See~\ref{RefParameterTemplates} for more on the string template syntax.)
+(See :ref:`RefParameterTemplates` for more on the string template syntax.)
 
 Any number of parameters can be used at once. This parameterization:
 
@@ -2799,9 +2662,6 @@ Here's a more complex graph using two parameters (``[runtime]`` omitted):
    %                init_run1 => model_run1_dog => post_run2_dog => wrap_run1
    %            prep => init_run2 => model_run2_cat => post_run2_cat => wrap_run2 => done
    %                init_run2 => model_run2_dog => post_run2_dog => wrap_run2"""
-
-.. todo::
-   fig refs:
 
 :ref:`Figure X <fig-params-1>` shows the result as visualized by
 ``cylc graph``.
@@ -3061,10 +2921,7 @@ Family names can be parameterized too, just like task names:
    # Result: family RUN_r1 contains model_r1 and post_proc_r1,
    #         family RUN_r2 contains model_r2 and post_proc_r1, etc.
 
-.. todo::
-   refs:
-
-As described in Section~\ref{FamilyTriggers} family names can be used to
+As described in :ref:`FamilyTriggers` family names can be used to
 trigger all members at once:
 
 .. code-block:: cylc
@@ -3104,11 +2961,8 @@ Family names are still needed in the graph, however, to succinctly express
 
    graph = "FAM1:succeed-any => FAM2"
 
-.. todo::
-   refs:
-
 (Direct all-to-all and any-to-all family triggering is not recommended for
-efficiency reasons though - see Section~\ref{EfficientInterFamilyTriggering}).
+efficiency reasons though - see :ref:`EfficientInterFamilyTriggering`).
 
 For family *member-to-member* triggering use parameterized members.
 For example, if family ``OBS_GET`` has members ``get<obs>`` and
@@ -3132,15 +2986,13 @@ expands to:
 Parameterized Cycling
 ^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Two ways of constructing cycling systems are described and contrasted in
-Section~\ref{Workflows For Cycling Systems}.  For most purposes use of a proper
-*cycling workflow* is recommended, wherein cylc incrementally generates the
-date-time sequence and extends the workflow, potentially indefinitely, at run
-time. For smaller systems of finite duration, however, parameter expansion
-can be used to generate a sequence of pre-defined tasks as a proxy for cycling.
+:ref:`Workflows For Cycling Systems`.  For most purposes use of
+a proper *cycling workflow* is recommended, wherein cylc incrementally
+generates the date-time sequence and extends the workflow, potentially
+indefinitely, at run time. For smaller systems of finite duration, however,
+parameter expansion can be used to generate a sequence of pre-defined tasks
+as a proxy for cycling.
 
 Here's a cycling workflow of two-monthly model runs for one year,
 with previous-instance model dependence (e.g. for model restart files):
@@ -3180,9 +3032,6 @@ And here's how to do the same thing with parameterized tasks:
    OFFSET_MONTHS=(( (CYLC_TASK_PARAM_chunk - 1)*INTERVAL_MONTHS ))
    OFFSET=P${OFFSET_MONTHS}M  # e.g. P4M for chunk=3
    run-model $(cylc cyclepoint --offset=$OFFSET $INITIAL_POINT)"""
-
-.. todo::
-   refs:
 
 The two workflows are shown together in :ref:`Figure X <fig-eg2>`.
 They both achieve the same result, and both can
@@ -3226,17 +3075,17 @@ point:
 
 .. note::
 
-The inter-cycle trigger connects the first chunk in each cycle point
-to the last chunk in the previous cycle point. Of course it would be simpler
-to just use 3-monthly cycling:
+   The inter-cycle trigger connects the first chunk in each cycle point
+   to the last chunk in the previous cycle point. Of course it would be simpler
+   to just use 3-monthly cycling:
 
-.. code-block:: cylc
+   .. code-block:: cylc
 
-   [scheduling]
-	   initial cycle point = 2020-01
-	   [[dependencies]]
-		   [[[P3M]]]
-			   graph = "model[-P3M] => model"
+	  [scheduling]
+		  initial cycle point = 2020-01
+		  [[dependencies]]
+			  [[[P3M]]]
+				  graph = "model[-P3M] => model"
 
 Here's a possible valid use-case for mixed cycling: consider a portable
 date-time cycling workflow of model jobs that can each take too long to run on
@@ -3286,17 +3135,16 @@ simplifies for ``chunk=1`` to this:
    sometimes need to trigger off earlier cycling tasks.
 
 
-.. _Jinja2-subsec:
+.. _Jinja:
 
 Jinja2
 ------
 
-.. todo::
-   refs:
+.. note::
 
-*This section needs to be revised - the Parameterized Task feature
-introduced in cylc-6.11.0 (see Section~\ref{Parameterized Tasks}) provides
-a cleaner way to auto-generate tasks without coding messy Jinja2 loops.*
+   This section needs to be revised - the Parameterized Task feature
+   introduced in cylc-6.11.0 (see :ref:`Parameterized Tasks`) provides
+   a cleaner way to auto-generate tasks without coding messy Jinja2 loops.
 
 Cylc has built in support for the Jinja2 template processor in suite
 configurations. Jinja2 variables, mathematical expressions, loop control
@@ -3339,9 +3187,6 @@ with standard programming techniques.
     The Jinja2 ensemble example suite graph.
 
 
-.. todo::
-   refs:
-
 The ``jinja2.ensemble`` example, graphed in
 :ref:`Figure X <fig-jinja2-ensemble>`, shows an ensemble of similar tasks
 generated using Jinja2:
@@ -3372,9 +3217,6 @@ Here is the generated suite configuration, after Jinja2 processing:
 			 foo => mem_4 => post_4 => bar
 				   """
 
-.. todo::
-   refs:
-
 And finally, the ``jinja2.cities`` example uses variables,
 includes or excludes special cleanup tasks according to the value of a
 logical flag, and it automatically generates all dependencies and family
@@ -3402,12 +3244,9 @@ ADD-IN: \lstinputlisting{../../../etc/examples/jinja2/cities/suite.rc}
 Accessing Environment Variables With Jinja2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 This functionality is not provided by Jinja2 by default, but cylc
 automatically imports the user environment to template's global namespace
-(see~\ref{CustomJinja2Filters}) in a dictionary structure called
+(see :ref:`CustomJinja2Filters`) in a dictionary structure called
 *environ*. A usage example:
 
 .. code-block:: cylc
@@ -3433,7 +3272,7 @@ Jinja2 has three different namespaces used to separate "globals",
 "filters" and "tests". Globals are template-wide accessible variables
 and functions. Cylc extends this namespace with "environ" dictionary and
 "raise" and "assert" functions for raising exceptions
-(see~\ref{Jinja2RaisingExceptions}).
+(see :ref:`Jinja2RaisingExceptions`).
 
 Filters can be used to modify variable values and are applied using pipe
 notation. For example, the built-in ``trim`` filter strips leading
@@ -3772,7 +3611,7 @@ For better clarity and disambiguation Python modules can be prefixed with
    {% from "__python__.itertools" import product %}
 
 
-.. _EmPy-subsec:
+.. _EmPylabel:
 
 EmPy
 ^^^^
@@ -3800,12 +3639,9 @@ the first line of the suite.rc file:
    #!empy
    # ...
 
-.. todo::
-   refs:
-
 An example suite ``empy.cities`` demostrating its use is shown below.
 It is a translation of ``jinja2.cities`` example from
-Section~\ref{Jinja2} and can be directly compared against it.
+:ref:`Jinja` and can be directly compared against it.
 
 .. todo::
    add-in:
@@ -3848,23 +3684,17 @@ leave these orphaned runtime sections in the suite configuration because it
 allows you to temporarily remove tasks from the suite by simply
 commenting them out of the graph.
 
-.. todo::
-   refs:
-
 To omit a task from the suite at runtime but still leave it fully
 defined and available for use (by insertion or ``cylc submit``)
 use one or both of ``[scheduling][[special task]]`` lists, *include at
-start-up* or *exclude at start-up* (documented in~\ref{IASU}
-and~\ref{EASU}). Then the graph still defines the
+start-up* or *exclude at start-up* (documented in :ref:`IASU`
+and :ref:`EASU`). Then the graph still defines the
 validity of the tasks and their dependencies, but they are not actually
 loaded into the suite at start-up. Other tasks that depend on the
 omitted ones, if any, will have to wait on their insertion at a later
 time or otherwise be triggered manually.
 
-.. todo::
-   refs:
-
-Finally, with Jinja2 (\ref{Jinja2}) you can radically alter
+Finally, with Jinja2 (:ref:`Jinja`) you can radically alter
 suite structure by including or excluding tasks from the ``[scheduling]``
 and ``[runtime]`` sections according to the value of a single logical flag
 defined at the top of the suite.

@@ -16,3 +16,4 @@ User Guide
    external-triggers
    running-suites
    gcylc-graph-view
+   rose

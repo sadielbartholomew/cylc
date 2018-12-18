@@ -3,22 +3,16 @@
 External Triggers
 =================
 
-.. todo::
-  refs:
-
 .. warning::
 
    This is a new capability and its suite configuration
    interface may change somewhat in future releases - see Current
-   Limitations below in~\ref{Current Trigger Function Limitations}.
-
-.. todo::
-  refs:
+   Limitations below in :ref:`Current Trigger Function Limitations`.
 
 External triggers allow tasks to trigger directly off of external events, which
 is often preferable to implementing long-running polling tasks in the workflow.
 The triggering mechanism described in this section replaces an older and less
-powerful one documented in~\ref{Old-Style External Triggers}.
+powerful one documented in :ref:`Old-Style External Triggers`.
 
 If you can write a Python function to check the status of an external
 condition or event, the suite server program can call it at configurable
@@ -42,19 +36,13 @@ throughout the suite run.
 Several built-in external trigger functions are located in
 ``<cylc-dir>/lib/cylc/xtriggers/``:
 
-.. todo::
-  refs:
-
-- clock triggers - see~\ref{Built-in Clock Triggers}
-- inter-suite triggers - see~\ref{Built-in Suite State Triggers}
+- clock triggers - see :ref:`Built-in Clock Triggers`
+- inter-suite triggers - see :ref:`Built-in Suite State Triggers`
 
 Trigger functions are normal Python functions, with certain constraints as
 described below in:
 
-.. todo::
-  refs:
-
-- custom trigger functions - see~\ref{Custom Trigger Functions}
+- custom trigger functions - see :ref:`Custom Trigger Functions`
 
 
 .. _Built-in Clock Triggers:
@@ -62,14 +50,11 @@ described below in:
 Built-in Clock Triggers
 -----------------------
 
-.. todo::
-  refs:
-
 These are more transparent (exposed in the graph) and efficient (shared among
 dependent tasks) than the older clock triggers described
-in~\ref{ClockTriggerTasks}. (However we don't recommend wholesale conversion
+in :ref:`ClockTriggerTasks`. (However we don't recommend wholesale conversion
 to the new method yet, until its interface has stabilized -
-see~\ref{Current Trigger Function Limitations}.)
+see :ref:`Current Trigger Function Limitations`.)
 
 Clock triggers, unlike other trigger functions, are executed synchronously in
 the main process. The clock trigger function signature looks like this:
@@ -133,14 +118,11 @@ the ``[xtriggers]`` section:
 Built-in Suite State Triggers
 -----------------------------
 
-.. todo::
-  refs:
-
 These can be used instead of the older suite state polling tasks described
-in~\ref{SuiteStatePolling} for inter-suite triggering - i.e. to trigger local
+in :ref:`SuiteStatePolling` for inter-suite triggering - i.e. to trigger local
 tasks off of remote task statuses or messages in other suites. (However we
 don't recommend wholesale conversion to the new method yet, until its
-interface has stabilized - see~\ref{Current Trigger Function Limitations}.)
+interface has stabilized - see :ref:`Current Trigger Function Limitations`.)
 
 The suite state trigger function signature looks like this:
 
@@ -180,9 +162,6 @@ suite to emit the *data ready* message.
 
 Some important points to note about this:
 
-.. todo::
-  refs:
-
 - the function call interval, which determines how often the suite
   server program checks the clock, is optional. Here it is
   ``PT10S`` (i.e. 10 seconds, which is also the default value).
@@ -191,8 +170,7 @@ Some important points to note about this:
   suite's public database. 
 - the cycle point argument is supplied by a string template
   ``%(point)s``. The string templates available to trigger function
-  arguments are described in *Custom Trigger Functions* (\ref{Custom
-  Trigger Functions}).
+  arguments are described in :ref:`Custom Trigger Functions`).
 
 The return value of the ``suite_state`` trigger function looks like
 this:
@@ -296,12 +274,9 @@ Function return values should be as follows:
 
   - return ``(True, results)``
 
-.. todo::
-  refs:
-
 where ``results`` is an arbitrary dictionary of information to be
 passed to dependent tasks. How this looks to these tasks is described above
-in *Built-in Suite State Triggers* (\ref{Built-in Suite State Triggers}).
+in :ref:`Built-in Suite State Triggers`.
 
 The suite server program manages trigger functions as follows:
 
@@ -433,18 +408,12 @@ Cylc trigger functions interact with it.
 Old-Style External Triggers (Deprecated)
 ----------------------------------------
 
-.. todo::
-  refs:
-
 .. note::
 
    This mechanism is now technically deprecated by the newer external
-   trigger functions (\ref{External Triggers}). (However we don't recommend
+   trigger functions (:ref:`External Triggers`). (However we don't recommend
    wholesale conversion to the new method yet, until its interface has
-   stabilized - see~\ref{Current Trigger Function Limitations}.)
-
-.. todo::
-  refs:
+   stabilized - see :ref:`Current Trigger Function Limitations`.)
 
 These old-style external triggers are hidden task prerequisites that must be
 satisfied by using the ``cylc ext-trigger`` client command to send an
@@ -456,7 +425,7 @@ with the event to the suite - such as the filename of a new
 externally-generated dataset. When the suite server program receives the event
 notification it will trigger the next instance of any task waiting on that
 trigger (whatever its cycle point) and then broadcast
-(see~\ref{cylc-broadcast}) the event ID to the cycle point of the triggered
+(see :ref:`cylc-broadcast`) the event ID to the cycle point of the triggered
 task as ``$CYLC_EXT_TRIGGER_ID``. Downstream tasks with the same cycle
 point therefore know the new event ID too and can use it, if they need to, to
 identify the same new dataset. In this way a whole workflow can be associated

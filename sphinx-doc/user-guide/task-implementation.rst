@@ -3,13 +3,10 @@
 Task Implementation
 ===================
 
-.. todo::
-   refs:
-
 Existing scripts and executables can be used as cylc tasks without modification
 so long as they return standard exit status - zero on success, non-zero
 for failure - and do not spawn detaching processes internally
-(see~\ref{DetachingJobs}).
+(see :ref:`DetachingJobs`).
 
 
 .. _JobScripts:
@@ -17,13 +14,10 @@ for failure - and do not spawn detaching processes internally
 Task Job Scripts
 ----------------
 
-.. todo::
-   refs:
-
 When the suite dameon determines that a task is ready to run it generates a
 *job script* that embodies the task runtime configuration in the suite.rc
 file, and submits it to the configured job host and batch system
-(see~\ref{TaskJobSubmission}).
+(see :ref:`TaskJobSubmission`).
 
 Task job scripts are written to the suite's job log directory. They can be
 printed with ``cylc cat-log`` or generated and printed with
@@ -47,7 +41,7 @@ outputs and arbitrary messages of different severity levels.
 
 Some types of message - in addition to events like task failure -  can
 optionally trigger execution of event handlers in the suite server program
-(see~\ref{EventHandling}).
+(see :ref:`EventHandling`).
 
 Normal severity messages are printed to ``job.out`` and logged by the
 suite server program:

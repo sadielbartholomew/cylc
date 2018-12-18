@@ -3,13 +3,10 @@
 Suite.rc Reference
 ==================
 
-.. todo:
-   refs:
-
 This appendix defines all legal suite configuration items.
-Embedded Jinja2 code (see~\ref{Jinja2}) must process to a valid
-raw suite.rc file. See also~\ref{SuiteRCFile} for a descriptive
-overview of suite.rc files, including syntax (\ref{Syntax}).
+Embedded Jinja2 code (see :ref:`Jinja`) must process to a valid
+raw suite.rc file. See also :ref:`SuiteRCFile` for a descriptive
+overview of suite.rc files, including syntax (:ref:`Syntax`).
 
 
 Top Level Items
@@ -55,13 +52,10 @@ with the ``cylc show`` command.
 [meta] ``->`` URL
 ^^^^^^^^^^^^^^^^^
 
-.. todo:
-   refs:
-
 A web URL to suite documentation.  If present it can be browsed with the
 ``cylc doc`` command, or from the gcylc Suite menu. The string
 template ``%(suite_name)s`` will be replaced with the actual suite
-name. See also task URLs (\ref{TaskURL}).
+name. See also :ref:`TaskURL`.
 
 - *type*: string (URL)
 - *default*: (none)
@@ -120,15 +114,12 @@ expensive real tasks during suite development.
 [cylc] ``->`` UTC mode
 ^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo:
-   refs:
-
 Cylc runs off the suite host's system clock by default. This item allows
 you to run the suite in UTC even if the system clock is set to local time.
 Clock-trigger tasks will trigger when the current UTC time is equal to
 their cycle point date-time plus offset; other time values used, reported, or
 logged by the suite server program will usually also be in UTC. The default for
-this can be set at the site level (see ~\ref{SiteUTCMode}).
+this can be set at the site level (see :ref:`SiteUTCMode`).
 
 - *type*: boolean
 - *default*: False, unless overridden at site level.
@@ -139,13 +130,10 @@ this can be set at the site level (see ~\ref{SiteUTCMode}).
 [cylc] ``->`` cycle point format
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo:
-   refs:
-
 To just alter the timezone used in the date-time cycle point format, see
-\ref{cycle-point-time-zone}. To just alter the number of expanded year digits
+:ref:`cycle-point-time-zone`. To just alter the number of expanded year digits
 (for years below 0 or above 9999), see
-\ref{cycle-point-num-expanded-year-digits}.
+:ref:`cycle-point-num-expanded-year-digits`.
 
 Cylc usually uses a ``CCYYMMDDThhmmZ`` (``Z`` in the special
 case of UTC) or ``CCYYMMDDThhmm+hhmm`` format (``+`` standing
@@ -211,12 +199,9 @@ This number defaults to 0 (no sign or extra digits used).
 [cylc] ``->`` cycle point time zone
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
-If you set UTC mode to True (\ref{UTC-mode}) then this will default to
+If you set UTC mode to True (:ref:`UTC-mode`) then this will default to
 ``Z``. If you use a custom cycle point format
-(\ref{cycle-point-format}), you should specify the timezone choice (or null
+(:ref:`cycle-point-format`), you should specify the timezone choice (or null
 timezone choice) here as well.
 
 You may set your own time zone choice here, which will be used for all
@@ -233,9 +218,9 @@ also not set), then they will default to the current local time zone.
 
 .. note::
 
-The ISO standard also allows writing the hour and minute separated
-by a ":" (e.g. ``+13:00``) - however, this is not recommended, given
-that the time zone is used as part of task output filenames.
+   The ISO standard also allows writing the hour and minute separated
+   by a ":" (e.g. ``+13:00``) - however, this is not recommended, given
+   that the time zone is used as part of task output filenames.
 
 
 [cylc] ``->`` abort if any task fails
@@ -306,11 +291,8 @@ used for cylc testing and development.
 [cylc] ``->`` [[parameters]]
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Define parameter values here for use in expanding *parameterized tasks* -
-see Section~\ref{Parameterized Tasks}.
+see :ref:`Parameterized Tasks`.
 
 - *type*: list of strings, or an integer range
   ``LOWER..UPPER..STEP`` (two dots, inclusive bounds, "STEP" optional)
@@ -326,12 +308,10 @@ see Section~\ref{Parameterized Tasks}.
 [cylc] ``->`` [[parameter templates]]
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
-Parameterized task names (see previous item, and Section~\ref{Parameterized
-Tasks}) are expanded, for each parameter value, using string templates.  You
-can assign templates to parameter names here, to override the default templates.
+Parameterized task names (see previous item, and :ref:`Parameterized Tasks`)
+are expanded, for each parameter value, using string templates.  You
+can assign templates to parameter names here, to override the default
+templates.
 
 - *type*: a Python-style string template
 - *default} for integer parameters* ``p``:
@@ -356,12 +336,9 @@ can assign templates to parameter names here, to override the default templates.
 [cylc] ``->`` [[events]]
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Cylc has internal "hooks" to which you can attach handlers that are
 called by the suite server program whenever certain events occur. This section
-configures suite event hooks; see~\ref{TaskEventHandling} for
+configures suite event hooks; see :ref:`TaskEventHandling` for
 task event hooks.
 
 Event handler commands can send an email or an SMS, call a pager, intervene in
@@ -414,11 +391,8 @@ following EVENTs occurs:
 - **stalled** - the suite has stalled
 - **inactivity** - the suite is inactive
 
-.. todo::
-   refs:
-
 Default values for these can be set at the site level via the siterc file
-(see ~\ref{SiteCylcHooks}).
+(see :ref:`SiteCylcHooks`).
 
 Item details:
 
@@ -512,13 +486,10 @@ anything accepted by the ``mail`` command.
 [cylc] ``->`` [[events]] ``->`` timeout
 """""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 If a timeout is set and the timeout event is handled, the timeout event
 handler(s) will be called if the suite stays in a stalled state for some period
 of time. The timer is set initially at suite start up. It is possible to set a
-default for this at the site level (see ~\ref{SiteCylcHooks}).
+default for this at the site level (see :ref:`SiteCylcHooks`).
 
 - *type*: ISO 8601 duration/interval representation (e.g. 
   ``PT5S``, 5 seconds, ``PT1S``, 1 second) - minimum 0 seconds.
@@ -531,7 +502,7 @@ default for this at the site level (see ~\ref{SiteCylcHooks}).
 If inactivity is set and the inactivity event is handled, the inactivity event
 handler(s) will be called if there is no activity in the suite for some period
 of time. The timer is set initially at suite start up. It is possible to set a
-default for this at the site level (see ~\ref{SiteCylcHooks}).
+default for this at the site level (see :ref:`SiteCylcHooks`).
 
 - *type*: ISO 8601 duration/interval representation (e.g.  
   ``PT5S``, 5 seconds, ``PT1S``, 1 second) - minimum 0 seconds.
@@ -553,14 +524,11 @@ time.
 [cylc] ``->`` [[events]] ``->`` abort on stalled
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 If this is set to True it will cause the suite to abort with error status
 if it stalls. A suite is considered "stalled" if there are no active,
 queued or submitting tasks or tasks waiting for clock triggers to be met. It is
 possible to set a default for this at the site level
-(see ~\ref{SiteCylcHooks}).
+(see :ref:`SiteCylcHooks`).
 
 - *type*: boolean
 - *default*: False, unless set at the site level.
@@ -569,12 +537,9 @@ possible to set a default for this at the site level
 [cylc] ``->`` [[events]] ``->`` abort on timeout
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 If a suite timer is set (above) this will cause the suite to abort with
 error status if the suite times out while still running. It is possible to set
-a default for this at the site level (see ~\ref{SiteCylcHooks}).
+a default for this at the site level (see :ref:`SiteCylcHooks`).
 
 - *type*: boolean
 - *default*: False, unless set at the site level.
@@ -586,7 +551,7 @@ a default for this at the site level (see ~\ref{SiteCylcHooks}).
 If a suite inactivity timer is set (above) this will cause the suite to abort
 with error status if the suite is inactive for some period while still running.
 It is possible to set a default for this at the site level
-(see ~\ref{SiteCylcHooks}).
+(see :ref:`SiteCylcHooks`).
 
 - *type*: boolean
 - *default*: False, unless set at the site level.
@@ -654,13 +619,10 @@ parser is concerned these are just suite configuration items).
 [cylc] ``->`` [[reference test]]
 """"""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 Reference tests are finite-duration suite runs that abort with non-zero
 exit status if cylc fails, if any task fails, if the suite times
 out, or if a shutdown event handler that (by default) compares the test
-run with a reference run reports failure. See~\ref{AutoRefTests}.
+run with a reference run reports failure. See :ref:`AutoRefTests`.
 
 
 [cylc] ``->`` [[reference test]] ``->`` suite shutdown event handler
@@ -759,29 +721,23 @@ it is not possible to arrive at a sensible default for all suites.
 [cylc] ``->`` [[authentication]]
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Authentication of client programs with suite server programs can be set in the
 global site/user config files and overridden here if necessary.
-See~\ref{GlobalAuth} for more information.
+See :ref:`GlobalAuth` for more information.
 
 
 [cylc] ``->`` [[authentication]] ``->`` public
 """"""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 The client privilege level granted for public access - i.e. no suite passphrase
-required.  See~\ref{GlobalAuth} for legal values.
+required.  See :ref:`GlobalAuth` for legal values.
 
 
 [cylc] ``->`` [[simulation]]
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Suite-level configuration for the *simulation* and *dummy* run modes
-described in Section~\ref{SimulationMode}.
+described in :ref:`SimulationMode`.
 
 
 [cylc] ``->`` [[simulation]] ``->`` disable suite event handlers
@@ -825,24 +781,18 @@ In a cold start each cycling task (unless specifically excluded under
 or with the closest subsequent valid cycle point for the task.  This item can
 be overridden on the command line or in the gcylc suite start panel.
 
-.. todo::
-   refs:
-
 In date-time cycling, if you do not provide time zone information for this,
-it will be assumed to be local time, or in UTC if~\ref{UTC-mode} is set, or in
-the time zone determined by \ref{cycle-point-time-zone} if that is set.
+it will be assumed to be local time, or in UTC if :ref:`UTC-mode` is set, or in
+the time zone determined by :ref:`cycle-point-time-zone` if that is set.
 
 - *type*: ISO 8601 date-time point representation (e.g. 
   ``CCYYMMDDThhmm``, 19951231T0630) or "now".
 - *default*: (none)
 
-.. todo::
-   refs:
-
 The string "now" converts to the current date-time on the suite host (adjusted
 to UTC if the suite is in UTC mode but the host is not) to minute resolution.
 Minutes (or hours, etc.) may be ignored depending on your cycle point format
-(\ref{cycle-point-format}).
+(:ref:`cycle-point-format`).
 
 
 [scheduling] ``->`` final cycle point
@@ -853,12 +803,9 @@ specified. Once all tasks have achieved this state the suite will shut
 down. If this item is provided you can override it on the command line
 or in the gcylc suite start panel.
 
-.. todo::
-   refs:
-
 In date-time cycling, if you do not provide time zone information for this,
-it will be assumed to be local time, or in UTC if \ref{UTC-mode} is set, or in
-the \ref{cycle-point-time-zone} if that is set.
+it will be assumed to be local time, or in UTC if :ref:`UTC-mode` is set, or in
+the :ref:`cycle-point-time-zone` if that is set.
 
 - *type*: ISO 8601 date-time point representation (e.g. 
   ``CCYYMMDDThhmm``, 19951231T1230) or ISO 8601 date-time offset
@@ -908,18 +855,12 @@ command line or in the gcylc suite start panel.
 [scheduling] ``->`` runahead limit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Runahead limiting prevents the fastest tasks in a suite from getting too far
-ahead of the slowest ones, as documented in~\ref{RunaheadLimit}.
-
-.. todo::
-   refs:
+ahead of the slowest ones, as documented in :ref:`RunaheadLimit`.
 
 This config item specifies a hard limit as a cycle interval between the
 slowest and fastest tasks. It is deprecated in favour of the newer default
-limiting by ``max active cycle points`` (\ref{max active cycle points}).
+limiting by ``max active cycle points`` (:ref:`max active cycle points`).
 
 - *type*: Cycle interval string e.g. ``PT12H``
   for a 12 hour limit under ISO 8601 cycling.
@@ -931,17 +872,11 @@ limiting by ``max active cycle points`` (\ref{max active cycle points}).
 [scheduling] ``->`` max active cycle points
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Runahead limiting prevents the fastest tasks in a suite from getting too far
-ahead of the slowest ones, as documented in~\ref{RunaheadLimit}.
-
-.. todo::
-   refs:
+ahead of the slowest ones, as documented in :ref:`RunaheadLimit`.
 
 This config item supersedes the deprecated hard ``runahead limit``
-(\ref{runahead limit}). It allows up to ``N`` (default 3) consecutive
+(:ref:`runahead limit`). It allows up to ``N`` (default 3) consecutive
 cycle points to be active at any time, adjusted up if necessary for
 any future triggering.
 
@@ -954,11 +889,8 @@ any future triggering.
 [scheduling] ``->`` spawn to max active cycle points
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Allows tasks to spawn out to ``max active cycle points``
-(\ref{max active cycle points}), removing restriction that a task has to have
+(:ref:`max active cycle points`), removing restriction that a task has to have
 submitted before its successor can be spawned.
 
 *Important*: This should be used with care given the potential impact of
@@ -978,15 +910,12 @@ predecessor had been submitted.
 [scheduling] ``->`` [[queues]]
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 Configuration of internal queues, by which the number of simultaneously
 active tasks (submitted or running) can be limited, per queue. By
 default a single queue called *default* is defined, with all tasks
 assigned to it and no limit. To use a single queue for the whole suite
 just set the limit on the *default* queue as required.
-See also~\ref{InternalQueues}.
+See also :ref:`InternalQueues`.
 
 
 [scheduling] ``->`` [[queues]] ``->`` [[[\_\_QUEUE\_\_]]]
@@ -1021,11 +950,8 @@ A list of member tasks, or task family names, to assign to this queue
 [scheduling] ``->`` [[xtriggers]]
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 This section is for *External Trigger* function declarations -
-see~\ref{External Triggers}.
+see :ref:`External Triggers`.
 
 
 [scheduling] ``->`` [[xtriggers]] ``->`` \_\_MANY\_\_
@@ -1037,10 +963,7 @@ declarations and corresponding labels for use in the graph:
 - *type*: string: function signature followed by optional call interval
 - *example*: ``trig_1 = my_trigger(arg1, arg2, kwarg1, kwarg2):PT10S``
 
-.. todo::
-   refs:
-
-(See~\ref{External Triggers} for details).
+(See :ref:`External Triggers` for details).
 
 
 [scheduling] ``->`` [[special tasks]]
@@ -1053,15 +976,12 @@ be used in special task lists as shorthand for listing all member tasks.
 [scheduling] ``->`` [[special tasks]] ``->`` clock-trigger
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 .. note::
 
-   Please read External Triggers (\ref{External Triggers}) before
+   Please read :ref:`External Triggers` before
    using the older clock triggers described in this section.
 
-Clock-trigger tasks (see~\ref{ClockTriggerTasks}) wait on a wall clock time
+Clock-trigger tasks (see :ref:`ClockTriggerTasks`) wait on a wall clock time
 specified as an offset from their own cycle point.
 
 - *type*: Comma-separated list of task or family names with
@@ -1081,13 +1001,10 @@ specified as an offset from their own cycle point.
 [scheduling] ``->`` [[special tasks]] ``->`` clock-expire
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 Clock-expire tasks enter the ``expired`` state and skip job submission if too
 far behind the wall clock when they become ready to run.  The expiry time is
 specified as an offset from wall-clock time; typically it should be negative -
-see~\ref{ClockExpireTasks}.
+see :ref:`ClockExpireTasks`.
 
 - *type*: Comma-separated list of task or family names with
   associated date-time offsets expressed as ISO8601 interval strings,
@@ -1104,18 +1021,12 @@ see~\ref{ClockExpireTasks}.
 [scheduling] ``->`` [[special tasks]] ``->`` external-trigger
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 .. note::
 
-   Please read External Triggers (\ref{External Triggers}) before
+   Please read :ref:`External Triggers` before
    using the older mechanism described in this section.
 
-.. todo::
-   refs:
-
-Externally triggered tasks (see~\ref{Old-Style External Triggers}) wait on
+Externally triggered tasks (see :ref:`Old-Style External Triggers`) wait on
 external events reported via the ``cylc ext-trigger`` command. To
 constrain triggers to a specific cycle point, include
 ``$CYLC_TASK_CYCLE_POINT`` in the trigger message string and pass the
@@ -1135,12 +1046,9 @@ cycle point to the ``cylc ext-trigger`` command.
 [scheduling] ``->`` [[special tasks]] ``->`` sequential
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 Sequential tasks automatically depend on their own previous-cycle instance.
 This declaration is deprecated in favour of explicit inter-cycle triggers -
-see~\ref{SequentialTasks}.
+see :ref:`SequentialTasks`.
 
 - *type*: Comma-separated list of task or family names.
 - *default*: (none)
@@ -1185,27 +1093,21 @@ tasks, may be required.
 [scheduling] ``->`` [[dependencies]]
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   refs:
-
 The suite dependency graph is defined under this section.  You can plot
 the dependency graph as you work on it, with ``cylc graph`` or
 by right clicking on the suite in the db viewer.  See
-also~\ref{ConfiguringScheduling}.
+also :ref:`ConfiguringScheduling`.
 
 
 [scheduling] ``->`` [[dependencies]] ``->`` graph
 """""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 The dependency graph for a completely non-cycling suites can go here.
-See also~\ref{GraphDescrip} below and~\ref{ConfiguringScheduling}, for graph
+See also :ref:`GraphDescrip` below and :ref:`ConfiguringScheduling`, for graph
 string syntax.
 
 - *type*: string
-- *example*: (see~\ref{GraphDescrip} below)
+- *example*: (see :ref:`GraphDescrip` below)
 
 
 [scheduling] ``->`` [[dependencies]] ``->`` [[[\_\_RECURRENCE\_\_]]]
@@ -1220,11 +1122,9 @@ our ISO 8601 derived sequence syntax, or similar for integer cycling:
   - integer cycling (stepped by 2): ``[[[P2]]]``
 - *default*: (none)
 
-.. todo::
-   refs:
 
-See~\ref{GraphTypes} for more on recurrence expressions, and how multiple graph
-sections combine.
+See :ref:`GraphTypes` for more on recurrence expressions, and how multiple
+graph sections combine.
 
 
 .. _GraphDescrip:
@@ -1232,11 +1132,8 @@ sections combine.
 [scheduling] ``->`` [[dependencies]] ``->`` [[[\_\_RECURRENCE\_\_]]] ``->`` graph
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-.. todo::
-   refs:
-
 The dependency graph for a given recurrence section goes here. Syntax examples
-follow; see also~\ref{ConfiguringScheduling} and~\ref{TriggerTypes}.
+follow; see also :ref:`ConfiguringScheduling` and :ref:`TriggerTypes`.
 
 - *type*: string
 - *examples*:
@@ -1265,16 +1162,13 @@ follow; see also~\ref{ConfiguringScheduling} and~\ref{TriggerTypes}.
 [runtime]
 ---------
 
-.. todo::
-   refs:
-
 This section is used to specify how, where, and what to execute when
 tasks are ready to run. Common
 configuration can be factored out in a multiple-inheritance hierarchy of
 runtime namespaces that culminates in the tasks of the suite. Order of
 precedence is determined by the C3 linearization algorithm as used to
 find the *method resolution order* in Python language class
-hiearchies. For details and examples see~\ref{NIORP}.
+hiearchies. For details and examples see :ref:`NIORP`.
 
 
 [runtime] ``->`` [[\_\_NAME\_\_]]
@@ -1308,14 +1202,11 @@ for all tasks in the suite.
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` extra log files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 A list of user-defined log files associated with a task. Files defined here
 will appear alongside the default log files in the cylc GUI. Log files
 must reside in the job log directory ``$CYLC_TASK_LOG_DIR`` and ideally
 should be named using the ``$CYLC_TASK_LOG_ROOT`` prefix
-(see~\ref{Task Job Script Variables}).
+(see :ref:`Task Job Script Variables`).
 
 - *type*: Comma-separated list of strings (log file names).
 - *default*: (none)
@@ -1335,15 +1226,12 @@ parents are listed ``root`` is assumed.
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` init-script
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
-Custom script invoked by the task job script before the task execution environment
-is configured - so it does not have access to any suite or task
+Custom script invoked by the task job script before the task execution
+environment is configured - so it does not have access to any suite or task
 environment variables. It can be an external command or script, or inlined
 scripting. The original intention for this item was to allow remote tasks to
 source login scripts to configure their access to cylc, but this should no
-longer be necessary (see~\ref{HowTasksGetAccessToCylc}). See also
+longer be necessary (see :ref:`HowTasksGetAccessToCylc`). See also
 ``env-script``, ``err-script``, ``exit-script``,
 ``pre-script``, ``script``, and ``post-script``.
 
@@ -1462,11 +1350,8 @@ every instance of every task. If several tasks need to exchange files and
 simply read and write from their from current working directory, this item
 can be used to override the default to make them all use the same workspace.
 
-.. todo::
-   refs:
-
 The top level share and work directory location can be changed (e.g. to a
-large data area) by a global config setting (see~\ref{workdirectory}).
+large data area) by a global config setting (see :ref:`workdirectory`).
 
 - *type*: string (directory path, can contain environment variables)
 - *default*: ``$CYLC_TASK_CYCLE_POINT/$CYLC_TASK_NAME``
@@ -1526,14 +1411,11 @@ A multi-line description of this namespace, retrievable from running tasks with 
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[meta]]] ``->`` URL
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-.. todo::
-   refs:
-
 A web URL to task documentation for this suite.  If present it can be browsed
 with the ``cylc doc`` command, or by right-clicking on the task in
 gcylc. The string templates ``%(suite_name)s`` and
 ``%(task_name)s`` will be replaced with the actual suite and task names.
-See also suite URLs (\ref{SuiteURL}).
+See also :ref:`SuiteURL`.
 
 - *type*: string (URL)
 - *default*: (none)
@@ -1585,10 +1467,7 @@ to run.
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[job]]] ``->`` batch system
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-.. todo::
-   refs:
-
-See~\ref{TaskJobSubmission} for how job submission works, and how to define
+See :ref:`TaskJobSubmission` for how job submission works, and how to define
 new handlers for different batch systems. Cylc has a number of built in batch
 system handlers:
 
@@ -1620,12 +1499,9 @@ For ``background`` and ``at``, the job script will be invoked using the ``timeou
 command. For other batch systems, the specified time will be automatically
 translated into the equivalent directive for wall clock limit.
 
-.. todo::
-   refs:
-
 Tasks are polled multiple times, where necessary, when they exceed their
-execution time limits. (See~\ref{ExecutionTimeLimitPollingIntervals} for how to
-configure the polling intervals).
+execution time limits. (See :ref:`ExecutionTimeLimitPollingIntervals` for
+how to configure the polling intervals).
 
     - *type*: ISO 8601 duration/interval representation
     - *example*: ``PT5M``, 5 minutes, ``PT1H``, 1 hour
@@ -1687,10 +1563,7 @@ submission fails.
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[job]]] ``->`` execution retry delays
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-.. todo::
-   refs:
-
-See also~\ref{TaskRetries}.
+See also :ref:`TaskRetries`.
 
 A list of ISO 8601 time duration/intervals after which to resubmit the task
 if it fails. The variable ``$CYLC_TASK_TRY_NUMBER`` in the task
@@ -1713,12 +1586,9 @@ A list of intervals, expressed as ISO 8601 duration/intervals, with optional
 multipliers, after which cylc will poll for status while the task is in the
 submitted state.
 
-.. todo::
-   refs:
-
 For the polling task communication method this overrides the default
 submission polling interval in the site/user config files
-(\ref{SiteAndUserConfiguration}). For default and ssh task communications,
+(:ref:`SiteAndUserConfiguration`). For default and ssh task communications,
 polling is not done by default but it can still be configured here as a
 regular check on the health of submitted tasks.
 
@@ -1744,12 +1614,9 @@ A list of intervals, expressed as ISO 8601 duration/intervals, with optional
 multipliers, after which cylc will poll for status while the task is in the
 running state.
 
-.. todo::
-   refs:
-
 For the polling task communication method this overrides the default
 execution polling interval in the site/user config files
-(\ref{SiteAndUserConfiguration}). For default and ssh task communications,
+(:ref:`SiteAndUserConfiguration`). For default and ssh task communications,
 polling is not done by default but it can still be configured here as a
 regular check on the health of submitted tasks.
 
@@ -1882,11 +1749,8 @@ interpretation on the remote account.
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[events]]]
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 Cylc can call nominated event handlers when certain task events occur. This
-section configures specific task event handlers; see~\ref{SuiteEventHandling}
+section configures specific task event handlers; see :ref:`SuiteEventHandling`
 for suite events.
 
 Event handlers can be located in the suite ``bin/`` directory,
@@ -2099,14 +1963,11 @@ anything accepted by the ``mail`` command.
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[environment]]]
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 The user defined task execution environment. Variables defined here can
 refer to cylc suite and task identity variables, which are exported
 earlier in the task job script, and variable assignment expressions can
 use cylc utility commands because access to cylc is also configured
-earlier in the script.  See also~\ref{TaskExecutionEnvironment}.
+earlier in the script.  See also :ref:`TaskExecutionEnvironment`.
 
 
 .. _AppendixTaskExecutionEnvironment:
@@ -2122,13 +1983,10 @@ expression that is legal in the job submission shell can be used.
 White space around the ``=`` is allowed (as far as cylc's suite.rc
 parser is concerned these are just normal configuration items).
 
-.. todo::
-   refs:
-
 - *type*: string
 - *default*: (none)
 - *legal values*: depends to some extent on the task job
-    submission shell (\ref{JobSubShell}).
+  submission shell (:ref:`JobSubShell`).
 - *examples*, for the bash shell:
 
   - ``FOO = $HOME/bar/baz``
@@ -2187,26 +2045,20 @@ omission from an ``include`` list.
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[parameter environment templates]]]
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 The user defined task execution parameter environment templates. This is only
-relevant for *parameterized tasks* - see Section~\ref{Parameterized Tasks}.
+relevant for *parameterized tasks* - see :ref:`Parameterized Tasks`.
 
 
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[parameter environment templates]]] ``->`` \_\_VARIABLE\_\_
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-.. todo::
-   refs:
-
 Replace ``\_\_VARIABLE\_\_`` with pairs of environment variable
 name and Python string template for parameter substitution. This is only
-relevant for *parameterized tasks* - see Section~\ref{Parameterized Tasks}.
+relevant for *parameterized tasks* - see :ref:`Parameterized Tasks`.
 
-If specified, in addition to the standard ``CYLC\_TASK\_PARAM\_<key>`` variables, the
-job script will also export the named variables specified here, with the
-template strings substituted with the parameter values.
+If specified, in addition to the standard ``CYLC\_TASK\_PARAM\_<key>``
+variables, the job script will also export the named variables specified
+here, with the template strings substituted with the parameter values.
 
 - *type*: string
 - *default*: (none)
@@ -2239,31 +2091,22 @@ Replace ``\_\_DIRECTIVE\_\_`` with each directive assignment, e.g.
 - *type*: string
 - *default*: (none)
 
-.. todo::
-   refs:
-
 Example directives for the built-in batch system handlers are shown
-in~\ref{AvailableMethods}.
+in :ref:`AvailableMethods`.
 
 
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[outputs]]]
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 Register custom task outputs for use in message triggering in this section
-(\ref{MessageTriggers})
+(:ref:`MessageTriggers`)
 
 
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[outputs]]] ``->`` \_\_OUTPUT\_\_
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-.. todo::
-   refs:
-
 Replace ``\_\_OUTPUT\_\_`` with one or more custom task output messages
-(\ref{MessageTriggers}).  The item name is used to select the custom output
+(:ref:`MessageTriggers`).  The item name is used to select the custom output
 message in graph trigger notation.
 
 - *type*: string
@@ -2280,11 +2123,8 @@ message in graph trigger notation.
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[suite state polling]]]
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 Configure automatic suite polling tasks as described
-in~\ref{SuiteStatePolling}. The
+in :ref:`SuiteStatePolling`. The
 items in this section reflect the options and defaults of the
 ``cylc suite-state`` command, except that the target suite name and the
 ``--task``, ``--cycle``, and ``--status`` options are
@@ -2368,11 +2208,8 @@ Run the polling ``cylc suite-state`` command in verbose output mode.
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[simulation]]]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-.. todo::
-   refs:
-
 Task configuration for the suite *simulation* and *dummy* run modes
-described in Section~\ref{SimulationMode}.
+described in :ref:`SimulationMode`.
 
 
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[simulation]]] ``->`` default run length

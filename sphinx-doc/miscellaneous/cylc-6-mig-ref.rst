@@ -37,11 +37,8 @@ which were in seconds, and
 
    [scheduling]runahead limit
 
-.. todo::
-   refs x2.
-
 which was in hours (this is a special case discussed below
-in~\ref{cylc-6-migration-runahead-limit}).
+in :ref:`cylc-6-migration-runahead-limit`).
 
 See :ref:`Table X <cylc-6-migration-timeout-delays-table>`.
 
@@ -63,23 +60,17 @@ See :ref:`Table X <cylc-6-migration-timeout-delays-table>`.
 Runahead Limit
 --------------
 
-.. todo::
-   refs.
-
-See~\ref{runahead limit}.
+See :ref:`runahead limit`.
 
 The ``[scheduling]runahead limit`` setting was written as a number of
 hours in pre-cylc-6 suites. This is now in ISO 8601 format for date-time
 cycling suites, so ``[scheduling]runahead limit=36`` would be written
 ``[scheduling]runahead limit=PT36H``.
 
-.. todo::
-   refs.
-
 There is a new preferred alternative to ``runahead limit``,
 ``[scheduling]max active cycle points``. This allows the user to
 configure how many cycle points can run at once (default ``3``). See
-\ref{max active cycle points}.
+:ref:`max active cycle points`.
 
 
 .. _cylc-6-migration-cycle-point:
@@ -87,7 +78,7 @@ configure how many cycle points can run at once (default ``3``). See
 Cycle Time/Cycle Point
 ----------------------
 
-See~\ref{initial cycle point}.
+See :ref:`initial cycle point`.
 
 The following suite.rc settings have changed name
 (:ref:`Table X <cylc-6-migration-cycle-point-time-table>`):
@@ -133,19 +124,13 @@ easily enough by inserting a ``T`` between the day and the hour digits.
 Cycling
 -------
 
-.. todo::
-   refs.
-
 Special *start-up* and *cold-start* tasks have been removed from cylc 6.
 Instead, use the initial/run-once notation as detailed
-in~\ref{initial-non-repeating-r1-tasks} and~\ref{AdvancedStartingUp}.
-
-.. todo::
-   refs.
+in :ref:`initial-non-repeating-r1-tasks` and :ref:`AdvancedStartingUp`.
 
 *Repeating asynchronous tasks* have also been removed because non date-time
 workflows can now be handled more easily with integer cycling. See for instance
-the satellite data processing example documented in~\ref{IntegerCycling}.
+the satellite data processing example documented in :ref:`IntegerCycling`.
 
 For repeating tasks with hour-based cycling the syntax has only minor changes:
 
