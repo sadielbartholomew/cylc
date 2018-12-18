@@ -17,12 +17,12 @@ override it for specific tasks or families:
 .. code-block:: cylc
 
    [runtime]
-	  [[root]] # suite defaults
-		   [[[job]]]
-			   batch system = loadleveler
-	  [[foo]] # just task foo
-		   [[[job]]]
-			   batch system = at
+      [[root]] # suite defaults
+           [[[job]]]
+               batch system = loadleveler
+      [[foo]] # just task foo
+           [[[job]]]
+               batch system = at
 
 
 .. _AvailableMethods:
@@ -63,13 +63,13 @@ Loadleveler directives can be provided in the suite.rc file:
 .. code-block:: cylc
 
    [runtime]
-	   [[my_task]]
-		   [[[job]]]
-			   batch system = loadleveler
-			   execution time limit = PT10M
-		   [[[directives]]]
-			   foo = bar
-			   baz = qux
+       [[my_task]]
+           [[[job]]]
+               batch system = loadleveler
+               execution time limit = PT10M
+           [[[directives]]]
+               foo = bar
+               baz = qux
 
 These are written to the top of the task job script like this:
 
@@ -106,21 +106,21 @@ LSF directives can be provided in the suite.rc file:
 .. code-block:: cylc
 
    [runtime]
-	   [[my_task]]
-		   [[[job]]]
-			   batch system = lsf
-			   execution time limit = PT10M
-		   [[[directives]]]
-			   -q = foo
+       [[my_task]]
+           [[[job]]]
+               batch system = lsf
+               execution time limit = PT10M
+           [[[directives]]]
+               -q = foo
 
 These are written to the top of the task job script like this:
 
 .. code-block:: bash
 
-	#!/bin/bash
-	# DIRECTIVES
-	#BSUB -q = foo
-	#BSUB -W = 10
+    #!/bin/bash
+    # DIRECTIVES
+    #BSUB -q = foo
+    #BSUB -W = 10
 
 If ``execution time limit`` is specified, it is used to generate the
 ``-W`` directive. Do not specify the ``-W`` directive
@@ -138,14 +138,14 @@ PBS directives can be provided in the suite.rc file:
 .. code-block:: cylc
 
    [runtime]
-	   [[my_task]]
-		   [[[job]]]
-			   batch system = pbs
-			   execution time limit = PT1M
-		   [[[directives]]]
-			   -V =
-			   -q = foo
-			   -l nodes = 1
+       [[my_task]]
+           [[[job]]]
+               batch system = pbs
+               execution time limit = PT1M
+           [[[directives]]]
+               -V =
+               -q = foo
+               -l nodes = 1
 
 These are written to the top of the task job script like this:
 
@@ -175,14 +175,14 @@ very similar to PBS:
 .. code-block:: cylc
 
    [runtime]
-	   [[my_task]]
-		   [[[job]]]
-			   batch system = moab
-			   execution time limit = PT1M
-		   [[[directives]]]
-			   -V =
-			   -q = foo
-			   -l nodes = 1
+       [[my_task]]
+           [[[job]]]
+               batch system = moab
+               execution time limit = PT1M
+           [[[directives]]]
+               -V =
+               -q = foo
+               -l nodes = 1
 
 These are written to the top of the task job script like this:
 
@@ -213,15 +213,15 @@ command.  SGE directives can be provided in the suite.rc file:
 .. code-block:: cylc
 
    [runtime]
-	   [[my_task]]
-		   [[[job]]]
-			   batch system = sge
-			   execution time limit = P1D
-		   [[[directives]]]
-			   -cwd =
-			   -q = foo
-			   -l h_data = 1024M
-			   -l h_rt = 24:00:00
+       [[my_task]]
+           [[[job]]]
+               batch system = sge
+               execution time limit = P1D
+           [[[directives]]]
+               -cwd =
+               -q = foo
+               -l h_data = 1024M
+               -l h_rt = 24:00:00
 
 These are written to the top of the task job script like this:
 
@@ -250,13 +250,13 @@ Submits task job scripts to Simple Linux Utility for Resource Management by the
 .. code-block:: cylc
 
    [runtime]
-	   [[my_task]]
-		   [[[job]]]
-			   batch system = slurm
-			   execution time limit = PT1H
-		   [[[directives]]]
-			   --nodes = 5
-			   --account = QXZ5W2
+       [[my_task]]
+           [[[job]]]
+               batch system = slurm
+               execution time limit = PT1H
+           [[[directives]]]
+               --nodes = 5
+               --account = QXZ5W2
 
 .. note::
 
@@ -297,11 +297,11 @@ global configuration file to allow the job name to be longer. (See also
 .. code-block:: cylc
 
    [hosts]
-	   [[myhpc*]]
-		   [[[batch systems]]]
-			   [[[[pbs]]]]
-				   # PBS 13
-				   job name length maximum = 236
+       [[myhpc*]]
+           [[[batch systems]]]
+               [[[[pbs]]]]
+                   # PBS 13
+                   job name length maximum = 236
 
 
 Directives Section Quirks (PBS, SGE, ...)
@@ -385,13 +385,13 @@ config. E.g.:
 .. code-block:: cylc
 
    [hosts]
-	   [[HOST]]  # <= replace this with a real host name
-		   [[[batch systems]]]
-			   [[[[pbs]]]]
-				   err tailer = qcat -f -e \%(job_id)s
-				   out tailer = qcat -f -o \%(job_id)s
-				   err viewer = qcat -e \%(job_id)s
-				   out viewer = qcat -o \%(job_id)s
+       [[HOST]]  # <= replace this with a real host name
+           [[[batch systems]]]
+               [[[[pbs]]]]
+                   err tailer = qcat -f -e \%(job_id)s
+                   out tailer = qcat -f -o \%(job_id)s
+                   err viewer = qcat -e \%(job_id)s
+                   out viewer = qcat -o \%(job_id)s
 
 
 .. _CommandTemplate:
@@ -407,12 +407,12 @@ your suite.rc file:
 .. code-block:: cylc
 
    [runtime]
-	   [[root]]
-		   [[[job]]]
-			   batch system = loadleveler
-			   # Use '-s' to stop llsubmit returning
-			   # until all job steps have completed:
-			   batch submit command template = llsubmit -s %(job)s
+       [[root]]
+           [[[job]]]
+               batch system = loadleveler
+               # Use '-s' to stop llsubmit returning
+               # until all job steps have completed:
+               batch submit command template = llsubmit -s %(job)s
 
 As explained in :ref:`SuiteRCReference`
 the template's \%(job)s will be substituted by the job file path.
@@ -495,9 +495,9 @@ submission methods. E.g.:
 .. code-block:: cylc
 
    [runtime]
-	   [[task-x]]
-		   [[[job]]]
-			   execution time limit = PT1H
+       [[task-x]]
+           [[[job]]]
+               execution time limit = PT1H
 
 For tasks running with ``background`` or ``at``, their jobs
 will be wrapped using the ``timeout`` command. For all other methods,
@@ -558,7 +558,7 @@ batch system handler to change the directive prefix from ``#PBS`` to
    from cylc.batch_sys_handlers.pbs import PBSHandler
 
    class QSUBHandler(PBSHandler):
-	   DIRECTIVE_PREFIX = "#QSUB "
+       DIRECTIVE_PREFIX = "#QSUB "
 
    BATCH_SYSTEM_HANDLER = QSUBHandler()
 
@@ -569,17 +569,17 @@ name in suite configurations:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   graph = "a"
+       [[dependencies]]
+           graph = "a"
    [runtime]
-	   [[root]]
-		   [[[job]]]
-			   batch system = qsub  # <---!
-			   execution time limit = PT1M
-		   [[[directives]]]
-			   -l nodes = 1
-			   -q = long
-			   -V =
+       [[root]]
+           [[[job]]]
+               batch system = qsub  # <---!
+               execution time limit = PT1M
+           [[[directives]]]
+               -l nodes = 1
+               -q = long
+               -V =
 
 Generate a job script to see the resulting directives:
 

@@ -136,7 +136,7 @@ for the moment you have to interrogate the suite DB, e.g.:
 .. code-block:: bash
 
    $ sqlite3 ~/cylc-run/SUITE-NAME/log/db \
-	   'select * from task_pool_checkpoints where id == 3;'
+       'select * from task_pool_checkpoints where id == 3;'
    3|2012|model|1|running|
    3|2013|pre|0|waiting|
    3|2013|post|0|waiting|
@@ -175,16 +175,16 @@ workflow by coding tasks that run the ``cylc checkpoint`` command:
 .. code-block:: cylc
 
    [scheduling]
-	  [[dependencies]]
-		 [[[PT6H]]]
-			 graph = "pre => model => post => checkpointer"
+      [[dependencies]]
+         [[[PT6H]]]
+             graph = "pre => model => post => checkpointer"
    [runtime]
-	  # ...
-	  [[checkpointer]]
-		 script = """
+      # ...
+      [[checkpointer]]
+         script = """
    wait "${CYLC_TASK_MESSAGE_STARTED_PID}" 2>/dev/null || true
    cylc checkpoint ${CYLC_SUITE_NAME} CP-${CYLC_TASK_CYCLE_POINT}
-				  """
+                  """
 
 .. note::
 
@@ -401,13 +401,13 @@ repeatedly until finished:
 .. code-block:: cylc
 
    [runtime]
-	   [[foo]]
-		   [[[job]]]
-			   # poll every minute in the 'submitted' state:
-			   submission polling intervals = PT1M
-			   # poll one minute after foo starts running, then every 10
-			   # minutes for 50 minutes, then every minute until finished:
-			   execution polling intervals = PT1M, 5*PT10M, PT1M
+       [[foo]]
+           [[[job]]]
+               # poll every minute in the 'submitted' state:
+               submission polling intervals = PT1M
+               # poll one minute after foo starts running, then every 10
+               # minutes for 50 minutes, then every minute until finished:
+               execution polling intervals = PT1M, 5*PT10M, PT1M
 
 A list of intervals with optional multipliers can be used for both
 submission and execution polling, although a single value is probably
@@ -591,9 +591,9 @@ must be installed under your ``$HOME/.cylc/`` directory:
 .. code-block:: bash
 
    $HOME/.cylc/auth/OWNER@HOST/SUITE/
-		 ssl.cert
-		 passphrase
-		 contact  # (optional - see below)
+         ssl.cert
+         passphrase
+         contact  # (optional - see below)
 
 where ``OWNER@HOST`` is the suite host account and ``SUITE``
 is the suite name. Client commands should then be invoked with the
@@ -759,10 +759,10 @@ the whole suite just set the default queue limit:
 .. code-block:: cylc
 
    [scheduling]
-	   [[ queues]]
-		   # limit the entire suite to 5 active tasks at once
-		   [[[default]]]
-			   limit = 5
+       [[ queues]]
+           # limit the entire suite to 5 active tasks at once
+           [[[default]]]
+               limit = 5
 
 To use additional queues just name each one, set their limits, and assign
 members:
@@ -770,10 +770,10 @@ members:
 .. code-block:: cylc
 
    [scheduling]
-	   [[ queues]]
-		   [[[q_foo]]]
-			   limit = 5
-			   members = foo, bar, baz
+       [[ queues]]
+           [[[q_foo]]]
+               limit = 5
+               members = foo, bar, baz
 
 Any tasks not assigned to a particular queue will remain in the default
 queue. The *queues* example suite illustrates how queues work by
@@ -825,17 +825,17 @@ this case.) E.g. to send an email on (submission) failed and retry:
 .. code-block:: cylc
 
    [runtime]
-	   [[foo]]
-		   script = """
-			   test ${CYLC_TASK_TRY_NUMBER} -eq 3
-			   cylc message -- "${CYLC_SUITE_NAME}" "${CYLC_TASK_JOB}" 'oopsy daisy'
-		   """
-		   [[[events]]]
-			   mail events = submission failed, submission retry, failed, retry, oops
-		   [[[job]]]
-			   execution retry delays = PT0S, PT30S
-		   [[[outputs]]]
-			   oops = oopsy daisy
+       [[foo]]
+           script = """
+               test ${CYLC_TASK_TRY_NUMBER} -eq 3
+               cylc message -- "${CYLC_SUITE_NAME}" "${CYLC_TASK_JOB}" 'oopsy daisy'
+           """
+           [[[events]]]
+               mail events = submission failed, submission retry, failed, retry, oops
+           [[[job]]]
+               execution retry delays = PT0S, PT30S
+           [[[outputs]]]
+               oops = oopsy daisy
 
 By default, the emails will be sent to the current user with:
 
@@ -927,30 +927,30 @@ event handlers using the alternate methods:
 .. code-block:: cylc
 
    [runtime]
-	   [[foo]]
-		   script = test ${CYLC_TASK_TRY_NUMBER} -eq 2
-		   [[[events]]]
-			   retry handler = "echo '!!!!!EVENT!!!!!' "
-			   failed handler = "echo '!!!!!EVENT!!!!!' "
-		   [[[job]]]
-			   execution retry delays = PT0S, PT30S
+       [[foo]]
+           script = test ${CYLC_TASK_TRY_NUMBER} -eq 2
+           [[[events]]]
+               retry handler = "echo '!!!!!EVENT!!!!!' "
+               failed handler = "echo '!!!!!EVENT!!!!!' "
+           [[[job]]]
+               execution retry delays = PT0S, PT30S
 
 .. code-block:: cylc
 
    [runtime]
-	   [[foo]]
-		   script = """
-			   test ${CYLC_TASK_TRY_NUMBER} -eq 2
-			   cylc message -- "${CYLC_SUITE_NAME}" "${CYLC_TASK_JOB}" 'oopsy daisy'
-		   """
-		   [[[events]]]
-			   handlers = "echo '!!!!!EVENT!!!!!' "
-			   # Note: task output name can be used as an event in this method
-			   handler events = retry, failed, oops
-		   [[[job]]]
-			   execution retry delays = PT0S, PT30S
-		   [[[outputs]]]
-			   oops = oopsy daisy
+       [[foo]]
+           script = """
+               test ${CYLC_TASK_TRY_NUMBER} -eq 2
+               cylc message -- "${CYLC_SUITE_NAME}" "${CYLC_TASK_JOB}" 'oopsy daisy'
+           """
+           [[[events]]]
+               handlers = "echo '!!!!!EVENT!!!!!' "
+               # Note: task output name can be used as an event in this method
+               handler events = retry, failed, oops
+           [[[job]]]
+               execution retry delays = PT0S, PT30S
+           [[[outputs]]]
+               oops = oopsy daisy
 
 The handler command here - specified with no arguments - is called with the
 default arguments, like this:
@@ -980,11 +980,11 @@ minutes after its cycle point, configure late notification for it like this:
 .. code-block:: cylc
 
    [runtime]
-	  [[forecast]]
-		   script = run-model.sh
-		   [[[events]]]
-			   late offset = PT30M
-			   late handler = my-handler %(message)s
+      [[forecast]]
+           script = run-model.sh
+           [[[events]]]
+               late offset = PT30M
+               late handler = my-handler %(message)s
 
 *Late offset intervals are not computed automatically so be careful
 to update them after any change that affects triggering times.*
@@ -1094,7 +1094,7 @@ or:
 .. code-block:: cylc
 
    [scheduling]
-	   initial cycle point = 20100808T06Z
+       initial cycle point = 20100808T06Z
 
 An initial cycle given on the command line will override one in the
 suite.rc file.
@@ -1230,13 +1230,13 @@ Reference tests can be configured with the following settings:
 .. code-block:: cylc
 
    [cylc]
-	   [[reference test]]
-		   suite shutdown event handler = cylc check-triggering
-		   required run mode = dummy
-		   allow task failures = False
-		   live mode suite timeout = PT5M
-		   dummy mode suite timeout = PT2M
-		   simulation mode suite timeout = PT2M
+       [[reference test]]
+           suite shutdown event handler = cylc check-triggering
+           required run mode = dummy
+           allow task failures = False
+           live mode suite timeout = PT5M
+           dummy mode suite timeout = PT2M
+           simulation mode suite timeout = PT2M
 
 
 Roll-your-own Reference Tests
@@ -1251,12 +1251,12 @@ you wish:
 .. code-block:: cylc
 
    [cylc]
-	   abort if any task fails = True
-	   [[events]]
-		   shutdown handler = cylc check-triggering
-		   timeout = PT5M
-		   abort if shutdown handler fails = True
-		   abort on timeout = True
+       abort if any task fails = True
+       [[events]]
+           shutdown handler = cylc check-triggering
+           timeout = PT5M
+           abort if shutdown handler fails = True
+           abort on timeout = True
 
 
 .. _SuiteStatePolling:
@@ -1285,9 +1285,9 @@ a remote suite called ``other.suite``:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[T00, T12]]]
-			   graph = "my-foo<other.suite::foo> => bar"
+       [[dependencies]]
+           [[[T00, T12]]]
+               graph = "my-foo<other.suite::foo> => bar"
 
 Local task ``my-foo`` will poll for the success of ``foo``
 in suite ``other.suite``, at the same cycle point, succeeding only when
@@ -1304,14 +1304,14 @@ configured if necessary under the local polling task runtime section:
 .. code-block:: cylc
 
    [scheduling]
-	   [[ dependencies]]
-		   [[[T00,T12]]]
-			   graph = "my-foo<other.suite::foo> => bar"
+       [[ dependencies]]
+           [[[T00,T12]]]
+               graph = "my-foo<other.suite::foo> => bar"
    [runtime]
-	   [[my-foo]]
-		   [[[suite state polling]]]
-			   max-polls = 100
-			   interval = PT10S
+       [[my-foo]]
+           [[[suite state polling]]]
+               max-polls = 100
+               interval = PT10S
 
 To poll for the target task to receive a message rather than achieve a state,
 give the message in the runtime configuration (in which case the task status
@@ -1320,9 +1320,9 @@ inferred from the graph syntax will be ignored):
 .. code-block:: cylc
 
    [runtime]
-	   [[my-foo]]
-		   [[[suite state polling]]]
-			   message = "the quick brown fox"
+       [[my-foo]]
+           [[[suite state polling]]]
+               message = "the quick brown fox"
 
 For suites owned by others, or those with run databases in non-standard
 locations, use the ``--run-dir`` option, or in-suite:
@@ -1330,9 +1330,9 @@ locations, use the ``--run-dir`` option, or in-suite:
 .. code-block:: cylc
 
    [runtime]
-	   [[my-foo]]
-		   [[[suite state polling]]]
-			   run-dir = /path/to/top/level/cylc/run-directory
+       [[my-foo]]
+           [[[suite state polling]]]
+               run-dir = /path/to/top/level/cylc/run-directory
 
 If the remote task has a different cycling sequence, just arrange for the
 local polling task to be on the same sequence as the remote task that it
@@ -1343,11 +1343,11 @@ at ``3,9,15,21``:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[T03,T09,T15,T21]]]
-			   graph = "my-dog<other.suite::dog>"
-		   [[[T00,T06,T12,T18]]]
-			   graph = "my-dog[-PT3H] => cat"
+       [[dependencies]]
+           [[[T03,T09,T15,T21]]]
+               graph = "my-dog<other.suite::dog>"
+           [[[T00,T06,T12,T18]]]
+               graph = "my-dog[-PT3H] => cat"
 
 For suite-state polling, the cycle point is automatically converted to the
 cycle point format of the target suite.
@@ -1368,14 +1368,14 @@ command interrogates the suite run database, not the suite server program.
 
    .. code-block:: cylc
 
-	  [scheduling]
-		  [[dependencies]]
-			  graph = "poller<other-suite::foo:succeed>:fail => another-task"
-	  [runtime]
-		  [[my-foo]]
-			  [[[suite state polling]]]
-				  max-polls = 10
-				  interval = PT10S
+      [scheduling]
+          [[dependencies]]
+              graph = "poller<other-suite::foo:succeed>:fail => another-task"
+      [runtime]
+          [[my-foo]]
+              [[[suite state polling]]]
+                  max-polls = 10
+                  interval = PT10S
 
 
 .. _Suite Server Logs:
@@ -1398,17 +1398,17 @@ cylc-7.2.0) by a small suite that runs two 30-second dummy tasks
 .. code-block:: cylc
 
    [cylc]
-	   cycle point format = %Y-%m-%dT%HZ
+       cycle point format = %Y-%m-%dT%HZ
    [scheduling]
-	   initial cycle point = 2017-01-01T00Z
-	   final cycle point = 2017-01-01T00Z
-	   [[dependencies]]
-		   graph = "foo => bar"
+       initial cycle point = 2017-01-01T00Z
+       final cycle point = 2017-01-01T00Z
+       [[dependencies]]
+           graph = "foo => bar"
    [runtime]
-	   [[foo]]
-		   script = sleep 30; /bin/false
-	   [[bar]]
-		   script = sleep 30; /bin/true
+       [[foo]]
+           script = sleep 30; /bin/false
+       [[bar]]
+           script = sleep 30; /bin/true
 
 By the task scripting defined above, this suite will stall when ``foo``
 fails. Then, the suite owner *vagrant@cylon* manually resets the failed
@@ -1526,15 +1526,15 @@ To restart the suite, the critical Cylc files that must be restored are:
 
    # On the suite host:
    ~/cylc-run/SUITE-NAME/
-	   suite.rc   # live suite configuration (located here in Rose suites)
-	   log/db  # public suite DB (can just be a copy of the private DB)
-	   log/rose-suite-run.conf  # (needed to restart a Rose suite)
-	   .service/db  # private suite DB
-	   .service/source -> PATH-TO-SUITE-DIR  # symlink to live suite directory
+       suite.rc   # live suite configuration (located here in Rose suites)
+       log/db  # public suite DB (can just be a copy of the private DB)
+       log/rose-suite-run.conf  # (needed to restart a Rose suite)
+       .service/db  # private suite DB
+       .service/source -> PATH-TO-SUITE-DIR  # symlink to live suite directory
 
    # On job hosts (if no shared filesystem):
    ~/cylc-run/SUITE-NAME/
-	   log/job/CYCLE-POINT/TASK-NAME/SUBMIT-NUM/job.status
+       log/job/CYCLE-POINT/TASK-NAME/SUBMIT-NUM/job.status
 
 .. note::
 
@@ -1611,8 +1611,8 @@ running on ``bar`` will stop immediately, making no attempt to restart.
 .. code-block:: cylc
 
    [suite servers]
-	   run hosts = pub
-	   condemned hosts = foo, bar!
+       run hosts = pub
+       condemned hosts = foo, bar!
 
 To prevent large numbers of suites attempting to restart simultaneously the
 ``auto restart delay`` setting defines a period of time in seconds.

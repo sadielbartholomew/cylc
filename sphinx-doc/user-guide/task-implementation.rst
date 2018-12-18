@@ -49,7 +49,7 @@ suite server program:
 .. code-block:: bash
 
    cylc message -- "${CYLC_SUITE_NAME}" "${CYLC_TASK_JOB}" \
-	 "Hello from ${CYLC_TASK_ID}"
+     "Hello from ${CYLC_TASK_ID}"
 
 CUSTOM severity messages are printed to ``job.out``, logged by the
 suite server program, and can be used to trigger *custom*
@@ -58,7 +58,7 @@ event handlers:
 .. code-block:: bash
 
    cylc message -- "${CYLC_SUITE_NAME}" "${CYLC_TASK_JOB}" \
-	 "CUSTOM:data available for ${CYLC_TASK_CYCLE_POINT}"
+     "CUSTOM:data available for ${CYLC_TASK_CYCLE_POINT}"
 
 Custom severity messages and event handlers can be used to signal special
 events that are neither routine information or an error condition, such as
@@ -71,7 +71,7 @@ suite server program, and can be passed to *warning* event handlers:
 .. code-block:: none
 
    cylc message -- "${CYLC_SUITE_NAME}" "${CYLC_TASK_JOB}" \
-	 "WARNING:Uh-oh, something's not right here."
+     "WARNING:Uh-oh, something's not right here."
 
 CRITICAL severity messages are printed to ``job.err``, logged by the
 suite server program, and can be passed to *critical* event handlers:
@@ -79,7 +79,7 @@ suite server program, and can be passed to *critical* event handlers:
 .. code-block:: none
 
    cylc message -- "${CYLC_SUITE_NAME}" "${CYLC_TASK_JOB}" \
-	 "CRITICAL:ERROR occurred in process X!"
+     "CRITICAL:ERROR occurred in process X!"
 
 
 Aborting Job Scripts on Error
@@ -97,9 +97,9 @@ triggering the exit trap, protect it with a control statement such as:
 .. code-block:: bash
 
    if cmp FILE1 FILE2; then
-	   :  # success: do stuff
+       :  # success: do stuff
    else
-	   :  # failure: do other stuff
+       :  # failure: do other stuff
    fi
 
 Task job scripts also use ``set -u`` to abort on referencing any
@@ -123,9 +123,9 @@ before aborting, potentially triggering a *critical* task event handler:
 .. code-block:: bash
 
    if ! /bin/false; then
-	 cylc message -- "${CYLC_SUITE_NAME}" "${CYLC_TASK_JOB}" \
-	   "CRITICAL:ERROR: /bin/false failed!"
-	 exit 1
+     cylc message -- "${CYLC_SUITE_NAME}" "${CYLC_TASK_JOB}" \
+       "CRITICAL:ERROR: /bin/false failed!"
+     exit 1
    fi
 
 To abort a job script with a custom message that can be passed to a
@@ -135,7 +135,7 @@ function:
 .. code-block:: bash
 
    if ! /bin/false; then
-	 cylc__job_abort "ERROR: /bin/false failed!"
+     cylc__job_abort "ERROR: /bin/false failed!"
    fi
 
 
@@ -162,15 +162,15 @@ task to repeatedly poll for the results of the detached processes:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   graph = "model => checker => post-proc"
+       [[dependencies]]
+           graph = "model => checker => post-proc"
    [runtime]
-	   [[model]]
-		   # Uh-oh, this script does an internal job submission to run model.exe:
-		   script = "run-model.sh"
-	   [[checker]]
-		   # Fail and retry every minute (for 10 tries at the most) if model's
-		   # job.done indicator file does not exist yet.
-		   script = "[[ ! -f $RUN_DIR/job.done ]] && exit 1"
-		   [[[job]]]
-			   execution retry delays = 10 * PT1M
+       [[model]]
+           # Uh-oh, this script does an internal job submission to run model.exe:
+           script = "run-model.sh"
+       [[checker]]
+           # Fail and retry every minute (for 10 tries at the most) if model's
+           # job.done indicator file does not exist yet.
+           script = "[[ ! -f $RUN_DIR/job.done ]] && exit 1"
+           [[[job]]]
+               execution retry delays = 10 * PT1M

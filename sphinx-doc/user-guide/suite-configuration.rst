@@ -60,20 +60,20 @@ A typical example:
 .. code-block:: bash
 
    /path/to/my/suite   # suite configuration directory
-	   suite.rc           # THE SUITE CONFIGURATION FILE
-	   bin/               # scripts and executables used by tasks
-		   foo.sh
-		   bar.sh
-		   ...
-	   # (OPTIONAL) any other suite-related files, for example:
-	   inc/               # suite.rc include-files
-		   nwp-tasks.rc
-		   globals.rc
-		   ...
-	   doc/               # documentation
-	   control/           # control files
-	   ancil/             # ancillary files
-	   ...
+       suite.rc           # THE SUITE CONFIGURATION FILE
+       bin/               # scripts and executables used by tasks
+           foo.sh
+           bar.sh
+           ...
+       # (OPTIONAL) any other suite-related files, for example:
+       inc/               # suite.rc include-files
+           nwp-tasks.rc
+           globals.rc
+           ...
+       doc/               # documentation
+       control/           # control files
+       ancil/             # ancillary files
+       ...
 
 
 .. _SuiteRCFile:
@@ -224,7 +224,7 @@ example showing a section heading with a missing right bracket:
 .. code-block:: bash
 
    $ cylc validate my.suite
-	   [[special tasks]
+       [[special tasks]
    'Section bracket mismatch, line 19'
 
 If the suite.rc file uses include-files ``cylc view`` will
@@ -258,16 +258,16 @@ vary depending on the particular cycle point:
 .. code-block:: cylc
 
    [scheduling]
-	   initial cycle point = 20200401
-	   final cycle point = 20200405
-	   [[dependencies]]
-		   [[[T00,T06,T12,T18]]] # validity (hours)
-			   graph = """
+       initial cycle point = 20200401
+       final cycle point = 20200405
+       [[dependencies]]
+           [[[T00,T06,T12,T18]]] # validity (hours)
+               graph = """
    A => B & C   # B and C trigger off A
    A[-PT6H] => A  # Model A restart trigger
-					   """
-		   [[[T06,T18]]] # hours
-			   graph = "C => X"
+                       """
+           [[[T06,T18]]] # hours
+               graph = "C => X"
 
 :ref:`Figure X <fig-dep-eg-1>` shows the complete suite.rc listing alongside
 the suite graph. This is a complete, valid, runnable suite (it will
@@ -283,26 +283,26 @@ use default task runtime properties such as ``script``).
 
     .. code-block:: cylc
 
-	   [meta]
-		   title = "Dependency Example 1"
-	   [cylc]
-		   UTC mode = True
-	   [scheduling]
-		   initial cycle point = 20200401
-		   final cycle point = 20200405
-		   [[dependencies]]
-			   [[[T00,T06,T12,T18]]] # validity (hours)
-				   graph = """
-	   A => B & C   # B and C trigger off A
-	   A[-PT6H] => A  # Model A restart trigger
-						   """
-			   [[[T06,T18]]] # hours
-				   graph = "C => X"
-	   [visualization]
-		   initial cycle point = 20200401
-		   final cycle point = 20200401T06
-		   [[node attributes]]
-			   X = "color=red"
+       [meta]
+           title = "Dependency Example 1"
+       [cylc]
+           UTC mode = True
+       [scheduling]
+           initial cycle point = 20200401
+           final cycle point = 20200405
+           [[dependencies]]
+               [[[T00,T06,T12,T18]]] # validity (hours)
+                   graph = """
+       A => B & C   # B and C trigger off A
+       A[-PT6H] => A  # Model A restart trigger
+                           """
+               [[[T06,T18]]] # hours
+                   graph = "C => X"
+       [visualization]
+           initial cycle point = 20200401
+           final cycle point = 20200401T06
+           [[node attributes]]
+               X = "color=red"
 
 
 Graph String Syntax
@@ -335,9 +335,9 @@ graph section. For example this graph:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[T00,T12]]]
-			   graph = "A => B"
+       [[dependencies]]
+           [[[T00,T12]]]
+               graph = "A => B"
 
 implies that B triggers off A for cycle points in which the hour matches ``00``
 or ``12``.
@@ -348,9 +348,9 @@ left side of a pair:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[T00,T12]]]
-			   graph = "A[-PT12H] => B"
+       [[dependencies]]
+           [[[T00,T12]]]
+               graph = "A[-PT12H] => B"
 
 This means B[time] triggers off A[time-PT12H] (12 hours before) for cycle
 points with hours matching ``00`` or ``12``. ``time`` is implicit because
@@ -366,9 +366,9 @@ possible to combine multiple offsets within a cycle point offset e.g.
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[T00,T12]]]
-			   graph = "A[-P1D-PT12H] => B"
+       [[dependencies]]
+           [[[T00,T12]]]
+               graph = "A[-P1D-PT12H] => B"
 
 This means that B[Time] triggers off A[time-P1D-PT12H] (1 day and 12 hours
 before).
@@ -378,7 +378,7 @@ Triggers can be chained together. This graph:
 .. code-block:: cylc
 
    graph = """A => B  # B triggers off A
-			  B => C  # C triggers off B"""
+              B => C  # C triggers off B"""
 
 is equivalent to this:
 
@@ -409,22 +409,22 @@ and comments to make the graph structure as clear as possible.
 .. code-block:: cylc
 
    # B triggers if A succeeds, then C and D trigger if B succeeds:
-	   graph = "A => B => C & D"
+       graph = "A => B => C & D"
    # which is equivalent to this:
-	   graph = """A => B => C
-				  B => D"""
+       graph = """A => B => C
+                  B => D"""
    # and to this:
-	   graph = """A => B => D
-				  B => C"""
+       graph = """A => B => D
+                  B => C"""
    # and to this:
-	   graph = """A => B
-				  B => C
-				  B => D"""
+       graph = """A => B
+                  B => C
+                  B => D"""
    # and it can even be written like this:
-	   graph = """A => B # blank line follows:
+       graph = """A => B # blank line follows:
 
-				  B => C # comment ...
-				  B => D"""
+                  B => C # comment ...
+                  B => D"""
 
 
 Splitting Up Long Graph Lines
@@ -477,13 +477,13 @@ successors (once they're all finished the suite just exits). The integer
 
     One-off (Non-Cycling) Tasks.
 
-	.. code-block:: cylc
+    .. code-block:: cylc
 
-	   [meta]
-		   title = some one-off tasks
-	   [scheduling]
-		   [[dependencies]]
-			   graph = "foo => bar & baz => qux"
+       [meta]
+           title = some one-off tasks
+       [scheduling]
+           [[dependencies]]
+               graph = "foo => bar & baz => qux"
 
 
 Cycling Graphs
@@ -500,15 +500,15 @@ shows a small suite of cycling tasks.
 
     Cycling Tasks.
 
-	.. code-block:: cylc
+    .. code-block:: cylc
 
-	   [meta]
-		   title = some cycling tasks
-	   # (no dependence between cycle points)
-	   [scheduling]
-		   [[dependencies]]
-			   [[[T00,T12]]]
-				   graph = "foo => bar & baz => qux"
+       [meta]
+           title = some cycling tasks
+       # (no dependence between cycle points)
+       [scheduling]
+           [[dependencies]]
+               [[[T00,T12]]]
+                   graph = "foo => bar & baz => qux"
 
 
 Graph Section Headings
@@ -521,9 +521,9 @@ example in the following scenario:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[ T06 ]]]  # A graph section heading
-			   graph = foo => bar
+       [[dependencies]]
+           [[[ T06 ]]]  # A graph section heading
+               graph = foo => bar
 
 ``T06`` means "Run every day starting at 06:00 after the
 initial cycle point". Cylc allows you to start (or end) at any particular
@@ -622,11 +622,11 @@ So, for example, you can write:
 
    [[[ R1//+P0D ]]]  # Run once at the final cycle point
    [[[ R5/P1D ]]]    # Run 5 times, every 1 day, ending at the final
-					 # cycle point
+                     # cycle point
    [[[ P2W/T00 ]]]   # Run every 2 weeks ending at 00:00 following
-					 # the final cycle point
+                     # the final cycle point
    [[[ R//T00 ]]]    # Run every 1 day ending at 00:00 following the
-					 # final cycle point
+                     # final cycle point
 
 
 .. _referencing-the-initial-and-final-cycle-points:
@@ -640,14 +640,14 @@ initial and final cycle points. Using this shorthand you can write:
 .. code-block:: none
 
    [[[ R1/^+PT12H ]]]  # Repeat once 12 hours after the initial cycle point
-					   # R[limit]/[date-time]
-					   # Equivalent to [[[ R1/+PT12H ]]]
+                       # R[limit]/[date-time]
+                       # Equivalent to [[[ R1/+PT12H ]]]
    [[[ R1/$ ]]]        # Repeat once at the final cycle point
-					   # R[limit]/[date-time]
-					   # Equivalent to [[[ R1//+P0D ]]]
+                       # R[limit]/[date-time]
+                       # Equivalent to [[[ R1//+P0D ]]]
    [[[ $-P2D/PT3H ]]]  # Repeat 3 hourly starting two days before the
-					   # [date-time]/[interval]
-					   # final cycle point
+                       # [date-time]/[interval]
+                       # final cycle point
 
 .. note::
 
@@ -656,9 +656,9 @@ initial and final cycle points. Using this shorthand you can write:
 
    .. code-block:: none
 
-	  [[[ R1/P0Y ]]]      # R[limit]/[interval]
-	  [[[ R1/P0Y/$ ]]]    # R[limit]/[interval]/[date-time]
-	  [[[ R1/$ ]]]        # R[limit]/[date-time]
+      [[[ R1/P0Y ]]]      # R[limit]/[interval]
+      [[[ R1/P0Y/$ ]]]    # R[limit]/[interval]/[date-time]
+      [[[ R1/$ ]]]        # R[limit]/[date-time]
 
 
 .. _excluding-dates:
@@ -688,11 +688,11 @@ suite ``foo`` will only run once as its second run has been excluded.
 .. code-block:: cylc
 
    [scheduling]
-	   initial cycle point = 20000101T00Z
-	   final cycle point = 20000105T00Z
-	   [[dependencies]]
-		   [[[ R2/P1D!20000102 ]]]
-			   graph = foo
+       initial cycle point = 20000101T00Z
+       final cycle point = 20000105T00Z
+       [[dependencies]]
+           [[[ R2/P1D!20000102 ]]]
+               graph = foo
 
 
 Advanced exclusion syntax
@@ -708,11 +708,11 @@ For example, partial date-times can be excluded using the syntax:
 .. code-block:: none
 
    [[[ PT1H ! T12 ]]]          # Run hourly but not at 12:00 from the initial
-							   # cycle point.
+                               # cycle point.
    [[[ T-00 ! (T00, T06, T12, T18) ]]]   # Run hourly but not at 00:00, 06:00,
-										 # 12:00, 18:00.
+                                         # 12:00, 18:00.
    [[[ PT5M ! T-15 ]]]         # Run 5-minutely but not at 15 minutes past the
-							   # hour from the initial cycle point.
+                               # hour from the initial cycle point.
    [[[ T00 ! W-1T00 ]]]        # Run daily at 00:00 except on Mondays.
 
 It is also valid to use sequences for exclusions. For example:
@@ -720,21 +720,21 @@ It is also valid to use sequences for exclusions. For example:
 .. code-block:: none
 
    [[[ PT1H ! PT6H ]]]         # Run hourly from the initial cycle point but
-							   # not 6-hourly from the intial cycle point.
+                               # not 6-hourly from the intial cycle point.
    [[[ T-00 ! PT6H ]]]         # Run hourly on the hour but not 6-hourly
-							   # on the hour.
-	   # Same as [[[ T-00 ! T-00/PT6H ]]] (T-00 context is implied)
-	   # Same as [[[ T-00 ! (T00, T06, T12, T18) ]]]
-	   # Same as [[[ PT1H ! (T00, T06, T12, T18) ]]] Initial cycle point dependent
+                               # on the hour.
+       # Same as [[[ T-00 ! T-00/PT6H ]]] (T-00 context is implied)
+       # Same as [[[ T-00 ! (T00, T06, T12, T18) ]]]
+       # Same as [[[ PT1H ! (T00, T06, T12, T18) ]]] Initial cycle point dependent
 
    [[[ T12 ! T12/P15D ]]]      # Run daily at 12:00 except every 15th day.
 
    [[[ R/^/P1H ! R5/20000101T00/P1D ]]]    # Any valid recurrence may be used to
-										   # determine exclusions. This example
-										   # translates to: Repeat every hour from
-										   # the initial cycle point, but exclude
-										   # 00:00 for 5 days from the 1st January
-										   # 2000.
+                                           # determine exclusions. This example
+                                           # translates to: Repeat every hour from
+                                           # the initial cycle point, but exclude
+                                           # 00:00 for 5 days from the 1st January
+                                           # 2000.
 
 You can combine exclusion sequences and single point exclusions within a
 comma separated list enclosed in parentheses:
@@ -742,8 +742,8 @@ comma separated list enclosed in parentheses:
 .. code-block:: none
 
    [[[ T-00 ! (20000101T07, PT2H) ]]]      # Run hourly on the hour but not at 07:00
-										   # on the 1st Jan, 2000 and not 2-hourly
-										   # on the hour.
+                                           # on the 1st Jan, 2000 and not 2-hourly
+                                           # on the hour.
 
 
 .. _HowMultipleGraphStringsCombine:
@@ -762,12 +762,12 @@ a duplicate prerequisite for task C:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[T00,T06,T12,T18]]]
-			   graph = "A => B => C"
-		   [[[T06,T18]]]
-			   graph = "B => C => X"
-			   # duplicate prerequisite: B => C already defined at T06, T18
+       [[dependencies]]
+           [[[T00,T06,T12,T18]]]
+               graph = "A => B => C"
+           [[[T06,T18]]]
+               graph = "B => C => X"
+               # duplicate prerequisite: B => C already defined at T06, T18
 
 This does not affect scheduling, but for the sake of clarity and brevity
 the graph should be written like this:
@@ -775,12 +775,12 @@ the graph should be written like this:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[T00,T06,T12,T18]]]
-			   graph = "A => B => C"
-		   [[[T06,T18]]]
-			   # X triggers off C only at 6 and 18 hours
-			   graph = "C => X"
+       [[dependencies]]
+           [[[T00,T06,T12,T18]]]
+               graph = "A => B => C"
+           [[[T06,T18]]]
+               # X triggers off C only at 6 and 18 hours
+               graph = "C => X"
 
 
 .. _AdvancedCycling:
@@ -795,30 +795,30 @@ The following examples show the various ways of writing graph headings in cylc.
    [[[ R1 ]]]         # Run once at the initial cycle point
    [[[ P1D ]]]        # Run every day starting at the initial cycle point
    [[[ PT5M ]]]       # Run every 5 minutes starting at the initial cycle
-					  # point
+                      # point
    [[[ T00/P2W ]]]    # Run every 2 weeks starting at 00:00 after the
-					  # initial cycle point
+                      # initial cycle point
    [[[ +P5D/P1M ]]]   # Run every month, starting 5 days after the initial
-					  # cycle point
+                      # cycle point
    [[[ R1/T06 ]]]     # Run once at 06:00 after the initial cycle point
    [[[ R1/P0Y ]]]     # Run once at the final cycle point
    [[[ R1/$ ]]]       # Run once at the final cycle point (alternative
-					  # form)
+                      # form)
    [[[ R1/$-P3D ]]]   # Run once three days before the final cycle point
    [[[ R3/T0830 ]]]   # Run 3 times, every day at 08:30 after the initial
-					  # cycle point
+                      # cycle point
    [[[ R3/01T00 ]]]   # Run 3 times, every month at 00:00 on the first
-					  # of the month after the initial cycle point
+                      # of the month after the initial cycle point
    [[[ R5/W-1/P1M ]]] # Run 5 times, every month starting on Monday
-					  # following the initial cycle point
+                      # following the initial cycle point
    [[[ T00!^ ]]]      # Run at the first occurrence of T00 that isn't the
-					  # initial cycle point
+                      # initial cycle point
    [[[ PT1D!20000101 ]]]  # Run every day days excluding 1st Jan 2000
    [[[ 20140201T06/P1D ]]]    # Run every day starting at 20140201T06
    [[[ R1/min(T00,T06,T12,T18) ]]]  # Run once at the first instance
-									# of either T00, T06, T12 or T18
-									# starting at the initial cycle
-									# point
+                                    # of either T00, T06, T12 or T18
+                                    # starting at the initial cycle
+                                    # point
 
 
 .. _AdvancedStartingUp:
@@ -833,15 +833,15 @@ For example:
 .. code-block:: cylc
 
    [cylc]
-	   UTC mode = True
+       UTC mode = True
    [scheduling]
-	   initial cycle point = 20130808T00
-	   final cycle point = 20130812T00
-	   [[dependencies]]
-		   [[[R1]]]
-			   graph = "prep => foo"
-		   [[[T00]]]
-			   graph = "foo[-P1D] => foo => bar"
+       initial cycle point = 20130808T00
+       final cycle point = 20130812T00
+       [[dependencies]]
+           [[[R1]]]
+               graph = "prep => foo"
+           [[[T00]]]
+               graph = "foo[-P1D] => foo => bar"
 
 In the example above, ``R1`` implies ``R1/20130808T00``, so
 ``prep`` only runs once at that cycle point (the initial cycle point).
@@ -857,17 +857,17 @@ Let's suppose that we add the following section to the suite example above:
 .. code-block:: cylc
 
    [cylc]
-	   UTC mode = True
+       UTC mode = True
    [scheduling]
-	   initial cycle point = 20130808T00
-	   final cycle point = 20130812T00
-	   [[dependencies]]
-		   [[[R1]]]
-			   graph = "prep => foo"
-		   [[[T00]]]
-			   graph = "foo[-P1D] => foo => bar"
-		   [[[T12]]]
-			   graph = "baz[-P1D] => baz => qux"
+       initial cycle point = 20130808T00
+       final cycle point = 20130812T00
+       [[dependencies]]
+           [[[R1]]]
+               graph = "prep => foo"
+           [[[T00]]]
+               graph = "foo[-P1D] => foo => bar"
+           [[[T12]]]
+               graph = "baz[-P1D] => baz => qux"
 
 We'll also say that there should be a starting dependence between
 ``prep`` and our new task ``baz`` - but we still want to have
@@ -887,32 +887,32 @@ For example, we can write our suite like :ref:`Figure X <fig-test4>`.
 
     .. code-block:: cylc
 
-	   [cylc]
-		   UTC mode = True
-	   [scheduling]
-		   initial cycle point = 20130808T00
-		   final cycle point = 20130812T00
-		   [[dependencies]]
-			   [[[R1]]]
-				   graph = "prep"
-			   [[[R1/T00]]]
-	   # ^ implies the initial cycle point:
-			graph = "prep[^] => foo"
-			   [[[R1/T12]]]
-	   # ^ is initial cycle point, as above:
-			graph = "prep[^] => baz"
-			   [[[T00]]]
-			graph = "foo[-P1D] => foo => bar"
-			   [[[T12]]]
-			graph = "baz[-P1D] => baz => qux"
-	   [visualization]
-		   initial cycle point = 20130808T00
-		   final cycle point = 20130810T00
-		   [[node attributes]]
-			   foo = "color=red"
-			   bar = "color=orange"
-			   baz = "color=green"
-			   qux = "color=blue"
+       [cylc]
+           UTC mode = True
+       [scheduling]
+           initial cycle point = 20130808T00
+           final cycle point = 20130812T00
+           [[dependencies]]
+               [[[R1]]]
+                   graph = "prep"
+               [[[R1/T00]]]
+       # ^ implies the initial cycle point:
+            graph = "prep[^] => foo"
+               [[[R1/T12]]]
+       # ^ is initial cycle point, as above:
+            graph = "prep[^] => baz"
+               [[[T00]]]
+            graph = "foo[-P1D] => foo => bar"
+               [[[T12]]]
+            graph = "baz[-P1D] => baz => qux"
+       [visualization]
+           initial cycle point = 20130808T00
+           final cycle point = 20130810T00
+           [[node attributes]]
+               foo = "color=red"
+               bar = "color=orange"
+               baz = "color=green"
+               qux = "color=blue"
 
 This neatly expresses what we want - a task running at the initial cycle point
 that has one-off dependencies with other task sets at different cycles.
@@ -927,25 +927,25 @@ that has one-off dependencies with other task sets at different cycles.
 
    .. code-block:: cylc
 
-	   [cylc]
-		   UTC mode = True
-	   [scheduling]
-		   initial cycle point = 20130808T00
-		   final cycle point = 20130808T18
-		   [[dependencies]]
-			   [[[R1]]]
-				   graph = "setup_foo => foo"
-			   [[[+PT6H/PT6H]]]
-				   graph = """
-					   foo[-PT6H] => foo
-					   foo => bar
-				   """
-	   [visualization]
-		   initial cycle point = 20130808T00
-		   final cycle point = 20130808T18
-		   [[node attributes]]
-			   foo = "color=red"
-			   bar = "color=orange"
+       [cylc]
+           UTC mode = True
+       [scheduling]
+           initial cycle point = 20130808T00
+           final cycle point = 20130808T18
+           [[dependencies]]
+               [[[R1]]]
+                   graph = "setup_foo => foo"
+               [[[+PT6H/PT6H]]]
+                   graph = """
+                       foo[-PT6H] => foo
+                       foo => bar
+                   """
+       [visualization]
+           initial cycle point = 20130808T00
+           final cycle point = 20130808T18
+           [[node attributes]]
+               foo = "color=red"
+               bar = "color=orange"
 
 A different kind of requirement is displayed in :ref:`Figure X <fig-test5>`.
 Usually, we want to specify additional tasks and dependencies at the initial
@@ -966,16 +966,16 @@ used as follows:
 .. code-block:: cylc
 
    [cylc]
-	   UTC mode = True
+       UTC mode = True
    [scheduling]
-	   initial cycle point = 20100101T03
-	   [[dependencies]]
-		   [[[R1/min(T00,T12)]]]
-			   graph = "prep1 => foo"
-		   [[[R1/min(T06,T18)]]]
-			   graph = "prep2 => foo"
-		   [[[T00,T06,T12,T18]]]
-			   graph = "foo => bar"
+       initial cycle point = 20100101T03
+       [[dependencies]]
+           [[[R1/min(T00,T12)]]]
+               graph = "prep1 => foo"
+           [[[R1/min(T06,T18)]]]
+               graph = "prep2 => foo"
+           [[[T00,T06,T12,T18]]]
+               graph = "foo => bar"
 
 
 In this example the initial cycle point is ``20100101T03``, so the
@@ -1010,18 +1010,18 @@ where suite initial and final cycle points can be assumed. Some examples:
 .. code-block:: none
 
    [[[ R1 ]]]        # Run once at the initial cycle point
-					 # (short for R1/initial-point/?)
+                     # (short for R1/initial-point/?)
    [[[ P1 ]]]        # Repeat with step 1 from the initial cycle point
-					 # (short for R/initial-point/P1)
+                     # (short for R/initial-point/P1)
    [[[ P5 ]]]        # Repeat with step 5 from the initial cycle point
-					 # (short for R/initial-point/P5)
+                     # (short for R/initial-point/P5)
    [[[ R2//P2 ]]]    # Run twice with step 3 from the initial cycle point
-					 # (short for R2/initial-point/P2)
+                     # (short for R2/initial-point/P2)
    [[[ R/+P1/P2 ]]]  # Repeat with step 2, from 1 after the initial cycle point
    [[[ R2/P2 ]]]     # Run twice with step 2, to the final cycle point
-					 # (short for R2/P2/final-point)
+                     # (short for R2/P2/final-point)
    [[[ R1/P0 ]]]     # Run once at the final cycle point
-					 # (short for R1/P0/final-point)
+                     # (short for R1/P0/final-point)
 
 
 Example
@@ -1065,7 +1065,7 @@ example you can write:
    [[[ R1/^ ]]]     # Run once at the initial cycle point
    [[[ R1/$ ]]]     # Run once at the final cycle point
    [[[ R3/^/P2 ]]]  # Run three times with step two starting at the
-					# initial cycle point
+                    # initial cycle point
 
 Likewise the syntax introduced in :ref:`excluding-dates` for excluding
 a particular point from a recurrence also works for integer cycling. For
@@ -1074,11 +1074,11 @@ example:
 .. code-block:: none
 
    [[[ R/P4!8 ]]]       # Run with step 4, to the final cycle point
-						# but not at point 8
+                        # but not at point 8
    [[[ R3/3/P2!5 ]]]    # Run with step 2 from point 3 but not at
-						# point 5
+                        # point 5
    [[[ R/+P1/P6!14 ]]]  # Run with step 6 from 1 step after the
-						# initial cycle point but not at point 14
+                        # initial cycle point but not at point 14
 
 Multiple integer exclusions are also valid in the same way as the syntax
 in :ref:`excluding-dates`. Integer exclusions may be a list of single
@@ -1087,16 +1087,16 @@ integer points, an integer sequence, or a combination of both:
 .. code-block:: none
 
    [[[ R/P1!(2,3,7) ]]]  # Run with step 1 to the final cycle point,
-						 # but not at points 2, 3, or 7.
+                         # but not at points 2, 3, or 7.
    [[[ P1 ! P2 ]]]       # Run with step 1 from the initial to final
-						 # cycle point, skipping every other step from
-						 # the initial cycle point.
+                         # cycle point, skipping every other step from
+                         # the initial cycle point.
    [[[ P1 ! +P1/P2 ]]]   # Run with step 1 from the initial cycle point,
-						 # excluding every other step beginning one step
-						 # after the initial cycle point.
+                         # excluding every other step beginning one step
+                         # after the initial cycle point.
    [[[ P1 !(P2,6,8) ]]]  # Run with step 1 from the intial cycle point,
-						 # excluding every other step, and also excluding
-						 # steps 6 and 8.
+                         # excluding every other step, and also excluding
+                         # steps 6 and 8.
 
 
 .. _TriggerTypes:
@@ -1123,7 +1123,7 @@ upstream task succeeding:
 .. code-block:: cylc
 
    # B triggers if A SUCCEEDS:
-	   graph = "A => B"
+       graph = "A => B"
 
 For consistency and completeness, however, the success trigger can be
 explicit:
@@ -1131,9 +1131,9 @@ explicit:
 .. code-block:: cylc
 
    # B triggers if A SUCCEEDS:
-	   graph = "A => B"
+       graph = "A => B"
    # or:
-	   graph = "A:succeed => B"
+       graph = "A:succeed => B"
 
 
 Failure Triggers
@@ -1144,7 +1144,7 @@ To trigger off the upstream task reporting failure:
 .. code-block:: cylc
 
    # B triggers if A FAILS:
-	   graph = "A:fail => B"
+       graph = "A:fail => B"
 
 *Suicide triggers* can be used to remove task ``B`` here if
 ``A`` does not fail, see :ref:`SuicideTriggers`.
@@ -1158,7 +1158,7 @@ To trigger off the upstream task starting to execute:
 .. code-block:: cylc
 
    # B triggers if A STARTS EXECUTING:
-	   graph = "A:start => B"
+       graph = "A:start => B"
 
 This can be used to trigger tasks that monitor other tasks once they
 (the target tasks) start executing. Consider a long-running forecast model,
@@ -1186,9 +1186,9 @@ one way or the other:
 .. code-block:: cylc
 
    # B triggers if A either SUCCEEDS or FAILS:
-	   graph = "A | A:fail => B"
+       graph = "A | A:fail => B"
    # or
-	   graph = "A:finish => B"
+       graph = "A:finish => B"
 
 
 .. _MessageTriggers:
@@ -1217,9 +1217,9 @@ It is also possible to trigger off a task submitting, or failing to submit:
 .. code-block:: cylc
 
    # B triggers if A submits successfully:
-	   graph = "A:submit => B"
+       graph = "A:submit => B"
    # D triggers if C fails to submit successfully:
-	   graph = "C:submit-fail => D"
+       graph = "C:submit-fail => D"
 
 A possible use case for submit-fail triggers: if a task goes into the
 submit-failed state, possibly after several job submission retries,
@@ -1237,22 +1237,22 @@ provide a concise alternative to defining multiple triggers separately:
 .. code-block:: cylc
 
    # 1/ this:
-	   graph = "A & B => C"
+       graph = "A & B => C"
    # is equivalent to:
-	   graph = """A => C
-				  B => C"""
+       graph = """A => C
+                  B => C"""
    # 2/ this:
-	   graph = "A => B & C"
+       graph = "A => B & C"
    # is equivalent to:
-	   graph = """A => B
-				  A => C"""
+       graph = """A => B
+                  A => C"""
    # 3/ and this:
-	   graph = "A & B => C & D"
+       graph = "A & B => C & D"
    # is equivalent to this:
-	   graph = """A => C
-				  B => C
-				  A => D
-				  B => D"""
+       graph = """A => C
+                  B => C
+                  A => D
+                  B => D"""
 
 OR operators (``|``) which result in true conditional triggers,
 can only appear on the left [1]_ :
@@ -1260,7 +1260,7 @@ can only appear on the left [1]_ :
 .. code-block:: cylc
 
    # C triggers when either A or B finishes:
-	   graph = "A | B => C"
+       graph = "A | B => C"
 
 Forecasting suites typically have simple conditional
 triggering requirements, but any valid conditional expression can be
@@ -1274,16 +1274,16 @@ used, as shown in :ref:`Figure X <fig-conditional>`
 
     Conditional triggers, which are plotted with open arrow heads.
 
-	.. code-block:: cylc
+    .. code-block:: cylc
 
-			   graph = """
-	   # D triggers if A or (B and C) succeed
-	   A | B & C => D
-	   # just to align the two graph sections
-	   D => W
-	   # Z triggers if (W or X) and Y succeed
-	   (W|X) & Y => Z
-					   """
+               graph = """
+       # D triggers if A or (B and C) succeed
+       A | B & C => D
+       # just to align the two graph sections
+       D => W
+       # Z triggers if (W or X) and Y succeed
+       (W|X) & Y => Z
+                       """
 
 
 .. _SuicideTriggers:
@@ -1311,29 +1311,29 @@ you toggle them on with *View* ``->`` *Options* ``->``
 
     Automated failure recovery via suicide triggers.
 
-	.. code-block:: cylc
+    .. code-block:: cylc
 
-		[meta]
-			title = automated failure recovery
-			description = """
-		Model task failure triggers diagnosis
-		and recovery tasks, which take themselves
-		out of the suite if model succeeds. Model
-		post processing triggers off model OR
-		recovery tasks.
-					  """
-		[scheduling]
-			[[dependencies]]
-				graph = """
-		pre => model
-		model:fail => diagnose => recover
-		model => !diagnose & !recover
-		model | recover => post
-						"""
-		[runtime]
-			[[model]]
-				# UNCOMMENT TO TEST FAILURE:
-				# script = /bin/false
+        [meta]
+            title = automated failure recovery
+            description = """
+        Model task failure triggers diagnosis
+        and recovery tasks, which take themselves
+        out of the suite if model succeeds. Model
+        post processing triggers off model OR
+        recovery tasks.
+                      """
+        [scheduling]
+            [[dependencies]]
+                graph = """
+        pre => model
+        model:fail => diagnose => recover
+        model => !diagnose & !recover
+        model | recover => post
+                        """
+        [runtime]
+            [[model]]
+                # UNCOMMENT TO TEST FAILURE:
+                # script = /bin/false
 
 .. note::
 
@@ -1342,14 +1342,14 @@ you toggle them on with *View* ``->`` *Options* ``->``
 
    .. code-block:: cylc
 
-	  foo => !baz
-	  bar => !baz
+      foo => !baz
+      bar => !baz
 
    is equivalent to this:
 
    .. code-block:: cylc
 
-	  foo & bar => !baz
+      foo & bar => !baz
 
    i.e. both ``foo`` and ``bar`` must succeed for
    ``baz`` to be taken out of the suite. If you really want a task
@@ -1358,7 +1358,7 @@ you toggle them on with *View* ``->`` *Options* ``->``
 
    .. code-block:: cylc
 
-	  foo | bar => !baz
+      foo | bar => !baz
 
 .. warning::
 
@@ -1367,9 +1367,9 @@ you toggle them on with *View* ``->`` *Options* ``->``
 
    .. code-block:: cylc
 
-	  [scheduling]
-		  [[dependencies]]
-			  graph = "foo => !bar"
+      [scheduling]
+          [[dependencies]]
+              graph = "foo => !bar"
 
    Task ``bar`` has a suicide trigger but no normal prerequisites
    (a suicide trigger is not a task triggering prerequisite, it is a task
@@ -1377,12 +1377,12 @@ you toggle them on with *View* ``->`` *Options* ``->``
 
    .. code-block:: cylc
 
-	  [scheduling]
-		  [[dependencies]]
-			  graph = """
-				  foo & bar
-				 foo => !bar
-					  """
+      [scheduling]
+          [[dependencies]]
+              graph = """
+                  foo & bar
+                 foo => !bar
+                      """
 
    In other words both tasks will trigger immediately, at the same time,
    and then ``bar`` will be removed if ``foo`` succeeds.
@@ -1413,24 +1413,24 @@ To trigger an entire task family at once:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   graph = "foo => FAM"
+       [[dependencies]]
+           graph = "foo => FAM"
    [runtime]
-	   [[FAM]]    # a family (because others inherit from it)
-	   [[m1,m2]]  # family members (inherit from namespace FAM)
-		   inherit = FAM
+       [[FAM]]    # a family (because others inherit from it)
+       [[m1,m2]]  # family members (inherit from namespace FAM)
+           inherit = FAM
 
 This is equivalent to:
 
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   graph = "foo => m1 & m2"
+       [[dependencies]]
+           graph = "foo => m1 & m2"
    [runtime]
-	   [[FAM]]
-	   [[m1,m2]]
-		   inherit = FAM
+       [[FAM]]
+       [[m1,m2]]
+           inherit = FAM
 
 To trigger other tasks off families we have to specify whether
 to triggering off *all members* starting, succeeding, failing,
@@ -1440,19 +1440,19 @@ triggers are thus:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   graph = """
-		 # all-member triggers:
-	   FAM:start-all => one
-	   FAM:succeed-all => one
-	   FAM:fail-all => one
-	   FAM:finish-all => one
-		 # any-member triggers:
-	   FAM:start-any => one
-	   FAM:succeed-any => one
-	   FAM:fail-any => one
-	   FAM:finish-any => one
-				   """
+       [[dependencies]]
+           graph = """
+         # all-member triggers:
+       FAM:start-all => one
+       FAM:succeed-all => one
+       FAM:fail-all => one
+       FAM:finish-all => one
+         # any-member triggers:
+       FAM:start-any => one
+       FAM:succeed-any => one
+       FAM:fail-any => one
+       FAM:finish-any => one
+                   """
 
 Here's how to trigger downstream processing after if one or more family
 members succeed, but only after all members have finished (succeeded or
@@ -1461,10 +1461,10 @@ failed):
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   graph = """
-	   FAM:finish-all & FAM:succeed-any => foo
-				   """
+       [[dependencies]]
+           graph = """
+       FAM:finish-all & FAM:succeed-any => foo
+                   """
 
 
 .. _EfficientInterFamilyTriggering:
@@ -1480,10 +1480,10 @@ members of ``FAM1``.
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   graph = """
-	   FAM1:succeed-any => FAM2
-				   """
+       [[dependencies]]
+           graph = """
+       FAM1:succeed-any => FAM2
+                   """
 
 Expanding this out, you generate ``N * M`` dependencies, where
 ``N`` is the number of members of ``FAM1`` and ``M`` is
@@ -1500,14 +1500,14 @@ member of ``FAM1`` succeeding you can create a dummy task
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   graph = """
-	   FAM1:succeed-any => FAM1_succeed_any_marker => FAM2
-				   """
+       [[dependencies]]
+           graph = """
+       FAM1:succeed-any => FAM1_succeed_any_marker => FAM2
+                   """
    [runtime]
    ...
-	   [[FAM1_succeed_any_marker]]
-		   script = true
+       [[FAM1_succeed_any_marker]]
+           script = true
    ...
 
 This graph generates only ``N + M`` dependencies, which takes
@@ -1529,9 +1529,9 @@ kind of relationship in cylc:
 .. code-block:: cylc
 
    [dependencies]
-	   [[PT6H]]
-		   # B triggers off A in the previous cycle point
-		   graph = "A[-PT6H] => B"
+       [[PT6H]]
+           # B triggers off A in the previous cycle point
+           graph = "A[-PT6H] => B"
 
 inter-cycle and trigger type (or message trigger) notation can be
 combined:
@@ -1558,14 +1558,14 @@ summarize here briefly:
 
   .. code-block:: cylc
 
-	 [scheduling]
-		 [[dependencies]]
-			 [[[R1]]]
-				 graph = "prep"
-			 [[[R1/T00,R1/T12]]]
-				 graph = "prep[^] => foo"
-			 [[[T00,T12]]]
-				 graph = "foo[-PT12H] => foo => bar"
+     [scheduling]
+         [[dependencies]]
+             [[[R1]]]
+                 graph = "prep"
+             [[[R1/T00,R1/T12]]]
+                 graph = "prep[^] => foo"
+             [[[T00,T12]]]
+                 graph = "foo[-PT12H] => foo => bar"
 
 ``R1``, or ``R1/date-time`` tasks are the recommended way to
 specify unusual start up conditions. They allow you to specify a clean
@@ -1605,13 +1605,13 @@ it in ``R1``-based cycling sections. Here's the example inter-cycle
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[R1]]]
-			   graph = "prep"
-		   [[[R1/T00,R1/T12]]]
-			   graph = "prep[^] => foo"
-		   [[[T00,T12]]]
-			   graph = "foo[-PT12H] => foo => bar"
+       [[dependencies]]
+           [[[R1]]]
+               graph = "prep"
+           [[[R1/T00,R1/T12]]]
+               graph = "prep[^] => foo"
+           [[[T00,T12]]]
+               graph = "foo[-PT12H] => foo => bar"
 
 You can see there is a dependence on the initial ``R1`` task
 ``prep`` for ``foo`` at the first ``T00`` cycle point,
@@ -1624,9 +1624,9 @@ point.
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[R1/20200202]]]
-			   graph = "baz[20200101] => qux"
+       [[dependencies]]
+           [[[R1/20200202]]]
+               graph = "baz[20200101] => qux"
 
 However, in a long running suite, a repeating cycle should avoid having a
 dependency on a task with a specific cycle point (including the initial cycle
@@ -1637,11 +1637,11 @@ will never be removed from the task pool:
 .. code-block:: cylc
 
    [scheduling]
-	   initial cycle point = 2010
-	   [[dependencies]]
-		   # Can cause performance issue!
-		   [[[P1D]]]
-			   graph = "baz[20200101] => qux"
+       initial cycle point = 2010
+       [[dependencies]]
+           # Can cause performance issue!
+           [[[P1D]]]
+               graph = "baz[20200101] => qux"
 
 
 .. _SequentialTasks:
@@ -1655,12 +1655,12 @@ Tasks that depend on their own previous-cycle instance can be declared as
 .. code-block:: cylc
 
    [scheduling]
-	   [[special tasks]]
-		   # foo depends on its previous instance:
-		   sequential = foo  # deprecated - see below!
-	   [[dependencies]]
-		   [[[T00,T12]]]
-			   graph = "foo => bar"
+       [[special tasks]]
+           # foo depends on its previous instance:
+           sequential = foo  # deprecated - see below!
+       [[dependencies]]
+           [[[T00,T12]]]
+               graph = "foo => bar"
 
 *The sequential declaration is deprecated* however, in favor of explicit
 inter-cycle triggers which clearly expose the same scheduling behaviour in the
@@ -1669,10 +1669,10 @@ graph:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[T00,T12]]]
-			   # foo depends on its previous instance:
-			   graph = "foo[-PT12H] => foo => bar"
+       [[dependencies]]
+           [[[T00,T12]]]
+               # foo depends on its previous instance:
+               graph = "foo[-PT12H] => foo => bar"
 
 The sequential declaration is arguably convenient in one unusual situation
 though: if a task has a non-uniform cycling sequence then multiple explicit
@@ -1681,26 +1681,26 @@ triggers,
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[T00,T03,T11]]]
-			   graph = "foo => bar"
-		   [[[T00]]]
-			   graph = "foo[-PT13H] => foo"
-		   [[[T03]]]
-			   graph = "foo[-PT3H] => foo"
-		   [[[T11]]]
-			   graph = "foo[-PT8H] => foo"
+       [[dependencies]]
+           [[[T00,T03,T11]]]
+               graph = "foo => bar"
+           [[[T00]]]
+               graph = "foo[-PT13H] => foo"
+           [[[T03]]]
+               graph = "foo[-PT3H] => foo"
+           [[[T11]]]
+               graph = "foo[-PT8H] => foo"
 
 can be replaced by a single sequential declaration,
 
 .. code-block:: cylc
 
    [scheduling]
-	   [[special tasks]]
-		   sequential = foo
-	   [[dependencies]]
-		   [[[T00,T03,T11]]]
-			   graph = "foo => bar"
+       [[special tasks]]
+           sequential = foo
+       [[dependencies]]
+           [[[T00,T03,T11]]]
+               graph = "foo => bar"
 
 
 Future Triggers
@@ -1713,13 +1713,13 @@ unless the task has a clock trigger):
 .. code-block:: cylc
 
    [[dependencies]]
-	   [[[T00,T06,T12,T18]]]
-		   graph = """
-	   # A runs in this cycle:
-			   A
-	   # B in this cycle triggers off A in the next cycle.
-			   A[PT6H] => B
-		   """
+       [[[T00,T06,T12,T18]]]
+           graph = """
+       # A runs in this cycle:
+               A
+       # B in this cycle triggers off A in the next cycle.
+               A[PT6H] => B
+           """
 
 Future triggers present a problem at suite shutdown rather than at start-up.
 Here, ``B`` at the final cycle point wants to trigger off an instance
@@ -1751,11 +1751,11 @@ triggers) a wall clock time expressed as an offset from cycle point:
 .. code-block:: cylc
 
    [scheduling]
-	   [[special tasks]]
-		   clock-trigger = foo(PT2H)
-	   [[dependencies]]
-		   [[[T00]]]
-			   graph = foo
+       [[special tasks]]
+           clock-trigger = foo(PT2H)
+       [[dependencies]]
+           [[[T00]]]
+               graph = foo
 
 Here, ``foo[2015-08-23T00]`` would trigger (other dependencies allowing)
 when the wall clock time reaches ``2015-08-23T02``. Clock-trigger
@@ -1792,16 +1792,16 @@ workflow is skipped, if it is more than one day behind the wall-clock (see also
 .. code-block:: cylc
 
    [cylc]
-	  cycle point format = %Y-%m-%dT%H
+      cycle point format = %Y-%m-%dT%H
    [scheduling]
-	   initial cycle point = 2015-08-15T00
-	   [[special tasks]]
-		   clock-expire = copy(-P1D)
-	   [[dependencies]]
-		   [[[P1D]]]
-			   graph = """
-		   model[-P1D] => model => copy => proc
-				 copy:expired => !proc"""
+       initial cycle point = 2015-08-15T00
+       [[special tasks]]
+           clock-expire = copy(-P1D)
+       [[dependencies]]
+           [[[P1D]]]
+               graph = """
+           model[-P1D] => model => copy => proc
+                 copy:expired => !proc"""
 
 
 External Triggers
@@ -1822,9 +1822,9 @@ dependence requires an inter-cycle trigger:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[T00,T06,T12,T18]]]
-			   graph = "A[-PT6H] => A"
+       [[dependencies]]
+           [[[T00,T06,T12,T18]]]
+               graph = "A[-PT6H] => A"
 
 If your model is configured to write out additional restart files
 to allow one or more cycle points to be skipped in an emergency *do not
@@ -1838,10 +1838,10 @@ be finished first:
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   [[[T00,T06,T12,T18]]]
-			   # DO NOT DO THIS (SEE ACCOMPANYING TEXT):
-			   graph = "A[-PT24H] | A[-PT18H] | A[-PT12H] | A[-PT6H] => A"
+       [[dependencies]]
+           [[[T00,T06,T12,T18]]]
+               # DO NOT DO THIS (SEE ACCOMPANYING TEXT):
+               graph = "A[-PT24H] | A[-PT18H] | A[-PT12H] | A[-PT6H] => A"
 
 
 How The Graph Determines Task Instantiation
@@ -1883,11 +1883,11 @@ the existence of the cycle offset task is not defined anywhere at all:
 .. code-block:: cylc
 
    [scheduling]
-	   initial cycle point = 2020
-	   [[dependencies]]
-		   [[[P1Y]]]
-			   # ERROR
-			   graph = "foo[-P1Y] => bar"
+       initial cycle point = 2020
+       [[dependencies]]
+           [[[P1Y]]]
+               # ERROR
+               graph = "foo[-P1Y] => bar"
 
 .. code-block:: bash
 
@@ -1900,12 +1900,12 @@ To fix this, use another line in the graph to tell Cylc to define
 .. code-block:: cylc
 
    [scheduling]
-	   initial cycle point = 2020
-	   [[dependencies]]
-		   [[[P1Y]]]
-			   graph = """
-				   foo
-				   foo[-P1Y] => bar"""
+       initial cycle point = 2020
+       [[dependencies]]
+           [[[P1Y]]]
+               graph = """
+                   foo
+                   foo[-P1Y] => bar"""
 
 But validation does not catch this kind of error if the offset task
 is defined only on a different cycling sequence:
@@ -1913,12 +1913,12 @@ is defined only on a different cycling sequence:
 .. code-block:: cylc
 
    [scheduling]
-	   initial cycle point = 2020
-	   [[dependencies]]
-		   [[[P2Y]]]
-			   graph = """foo
-				   # ERROR
-				   foo[-P1Y] => bar"""
+       initial cycle point = 2020
+       [[dependencies]]
+           [[[P2Y]]]
+               graph = """foo
+                   # ERROR
+                   foo[-P1Y] => bar"""
 
 This suite will validate OK, but it will stall at runtime with ``bar``
 waiting on ``foo[-P1Y]`` at the intermediate years where it does not
@@ -1929,12 +1929,12 @@ exist. The offset ``[-P1Y]`` is presumably an error (it should be
 .. code-block:: cylc
 
    [scheduling]
-	   initial cycle point = 2020
-	   [[dependencies]]
-		   [[[P1Y]]]
-			   graph = "foo"
-		   [[[P2Y]]]
-			   graph = "foo[-P1Y] => bar"
+       initial cycle point = 2020
+       [[dependencies]]
+           [[[P1Y]]]
+               graph = "foo"
+           [[[P2Y]]]
+               graph = "foo[-P1Y] => bar"
 
 Similarly the following suite will validate OK, but it will stall at
 runtime with ``bar`` waiting on ``foo[-P1Y]`` in
@@ -1944,13 +1944,13 @@ cycle point:
 .. code-block:: cylc
 
    [scheduling]
-	   initial cycle point = 2020
-	   [[dependencies]]
-		   [[[R1]]]
-			   graph = foo
-		   [[[P1Y]]]
-			   # ERROR
-			   graph = foo[-P1Y] => bar
+       initial cycle point = 2020
+       [[dependencies]]
+           [[[R1]]]
+               graph = foo
+           [[[P1Y]]]
+               # ERROR
+               graph = foo[-P1Y] => bar
 
 .. note::
 
@@ -2040,10 +2040,10 @@ argument that identifies the calling task name:
 .. code-block:: cylc
 
    [runtime]
-	   [[ENSEMBLE]]
-		   script = "run-model.sh $CYLC_TASK_NAME"
-	   [[m1, m2, m3]]
-		   inherit = ENSEMBLE
+       [[ENSEMBLE]]
+           script = "run-model.sh $CYLC_TASK_NAME"
+       [[m1, m2, m3]]
+           inherit = ENSEMBLE
 
 For large ensembles template processing can be used to
 automatically generate the member names and associated dependencies
@@ -2089,7 +2089,7 @@ inheritance in a suite. You can extract specific items, e.g.:
 .. code-block:: bash
 
    $ cylc get-suite-config --item '[runtime][var_p2]script' \
-	   inherit.multi.one
+       inherit.multi.one
    echo ``RUN: run-var.sh''
 
 or use the ``--sparse`` option to print entire namespaces
@@ -2102,7 +2102,7 @@ from the root namespace:
    script = echo ``RUN: run-ops.sh''
    inherit = ['OPS', 'SERIAL']
    [directives]
-	  job_type = serial
+      job_type = serial
 
 
 Suite Visualization And Multiple Inheritance
@@ -2116,11 +2116,11 @@ without affecting the order of inheritance of runtime properties:
 .. code-block:: cylc
 
    [runtime]
-	   [[BAR]]
-		   # ...
-	   [[foo]]
-		   # inherit properties from BAR, but stay under root for visualization:
-		   inherit = None, BAR
+       [[BAR]]
+           # ...
+       [[foo]]
+           # inherit properties from BAR, but stay under root for visualization:
+           inherit = None, BAR
 
 
 How Runtime Inheritance Works
@@ -2159,9 +2159,9 @@ cylc utility commands:
 .. code-block:: cylc
 
    [runtime]
-	   [[foo]]
-		   [[[environment]]]
-			   REFERENCE_TIME = $( cylc util cycletime --offset-hours=6 )
+       [[foo]]
+           [[[environment]]]
+               REFERENCE_TIME = $( cylc util cycletime --offset-hours=6 )
 
 
 User Environment Variables
@@ -2173,14 +2173,14 @@ A task's user-defined environment results from its inherited
 .. code-block:: cylc
 
    [runtime]
-	   [[root]]
-		   [[[environment]]]
-			   COLOR = red
-			   SHAPE = circle
-	   [[foo]]
-		   [[[environment]]]
-			   COLOR = blue  # root override
-			   TEXTURE = rough # new variable
+       [[root]]
+           [[[environment]]]
+               COLOR = red
+               SHAPE = circle
+       [[foo]]
+           [[[environment]]]
+               COLOR = blue  # root override
+               TEXTURE = rough # new variable
 
 This results in a task *foo* with ``SHAPE=circle``, ``COLOR=blue``,
 and ``TEXTURE=rough`` in its environment.
@@ -2200,14 +2200,14 @@ environment variable you cannot also access the original parent value:
 .. code-block:: cylc
 
    [runtime]
-	   [[FOO]]
-		   [[[environment]]]
-			   COLOR = red
-	   [[bar]]
-		   inherit = FOO
-		   [[[environment]]]
-			   tmp = $COLOR        # !! ERROR: $COLOR is undefined here
-			   COLOR = dark-$tmp   # !! as this overrides COLOR in FOO.
+       [[FOO]]
+           [[[environment]]]
+               COLOR = red
+       [[bar]]
+           inherit = FOO
+           [[[environment]]]
+               tmp = $COLOR        # !! ERROR: $COLOR is undefined here
+               COLOR = dark-$tmp   # !! as this overrides COLOR in FOO.
 
 The compressed variant of this, ``COLOR = dark-$COLOR``, is
 also in error for the same reason. To achieve the desired result you
@@ -2216,13 +2216,13 @@ must use a different name for the parent variable:
 .. code-block:: cylc
 
    [runtime]
-	   [[FOO]]
-		   [[[environment]]]
-			   FOO_COLOR = red
-	   [[bar]]
-		   inherit = FOO
-		   [[[environment]]]
-			   COLOR = dark-$FOO_COLOR  # OK
+       [[FOO]]
+           [[[environment]]]
+               FOO_COLOR = red
+       [[bar]]
+           inherit = FOO
+           [[[environment]]]
+               COLOR = dark-$FOO_COLOR  # OK
 
 
 .. _Task Job Script Variables:
@@ -2250,44 +2250,44 @@ The task job script may export the following environment variables:
    TZ                              # Set to "UTC" in UTC mode or not defined
 
    CYLC_SUITE_RUN_DIR              # Location of the suite run directory in
-								   # job host, e.g. ~/cylc-run/foo
+                                   # job host, e.g. ~/cylc-run/foo
    CYLC_SUITE_DEF_PATH             # Location of the suite configuration directory in
-								   # job host, e.g. ~/cylc-run/foo
+                                   # job host, e.g. ~/cylc-run/foo
    CYLC_SUITE_HOST                 # Host running the suite process
    CYLC_SUITE_OWNER                # User ID running the suite process
    CYLC_SUITE_DEF_PATH_ON_SUITE_HOST
-								   # Location of the suite configuration directory in
-								   # suite host, e.g. ~/cylc-run/foo
+                                   # Location of the suite configuration directory in
+                                   # suite host, e.g. ~/cylc-run/foo
    CYLC_SUITE_SHARE_DIR            # Suite (or task!) shared directory (see below)
    CYLC_SUITE_UUID                 # Suite UUID string
    CYLC_SUITE_WORK_DIR             # Suite work directory (see below)
 
    CYLC_TASK_JOB                   # Task job identifier expressed as
-								   # CYCLE-POINT/TASK-NAME/SUBMIT-NUM
-								   # e.g. 20110511T1800Z/t1/01
+                                   # CYCLE-POINT/TASK-NAME/SUBMIT-NUM
+                                   # e.g. 20110511T1800Z/t1/01
    CYLC_TASK_CYCLE_POINT           # Cycle point, e.g. 20110511T1800Z
    CYLC_TASK_NAME                  # Job's task name, e.g. t1
    CYLC_TASK_SUBMIT_NUMBER         # Job's submit number, e.g. 1,
-								   # increments with every submit
+                                   # increments with every submit
    CYLC_TASK_TRY_NUMBER            # Number of execution tries, e.g. 1
-								   # increments with automatic retry-on-fail
+                                   # increments with automatic retry-on-fail
    CYLC_TASK_ID                    # Task instance identifier expressed as
-								   # TASK-NAME.CYCLE-POINT
-								   # e.g. t1.20110511T1800Z
+                                   # TASK-NAME.CYCLE-POINT
+                                   # e.g. t1.20110511T1800Z
    CYLC_TASK_LOG_DIR               # Location of the job log directory
-								   # e.g. ~/cylc-run/foo/log/job/20110511T1800Z/t1/01/
+                                   # e.g. ~/cylc-run/foo/log/job/20110511T1800Z/t1/01/
    CYLC_TASK_LOG_ROOT              # The task job file path
-								   # e.g. ~/cylc-run/foo/log/job/20110511T1800Z/t1/01/job
+                                   # e.g. ~/cylc-run/foo/log/job/20110511T1800Z/t1/01/job
    CYLC_TASK_WORK_DIR              # Location of task work directory (see below)
-								   # e.g. ~/cylc-run/foo/work/20110511T1800Z/t1
+                                   # e.g. ~/cylc-run/foo/work/20110511T1800Z/t1
    CYLC_TASK_NAMESPACE_HIERARCHY   # Linearised family namespace of the task,
-								   # e.g. root postproc t1
+                                   # e.g. root postproc t1
    CYLC_TASK_DEPENDENCIES          # List of met dependencies that triggered the task
-								   # e.g. foo.1 bar.1
+                                   # e.g. foo.1 bar.1
 
    CYLC_TASK_COMMS_METHOD          # Set to "ssh" if communication method is "ssh"
    CYLC_TASK_SSH_LOGIN_SHELL       # With "ssh" communication, if set to "True",
-								   # use login shell on suite host
+                                   # use login shell on suite host
 
 There are also some global shell variables that may be defined in the task job
 script (but not exported to the environment). These include:
@@ -2297,10 +2297,10 @@ script (but not exported to the environment). These include:
    CYLC_FAIL_SIGNALS               # List of signals trapped by the error trap
    CYLC_VACATION_SIGNALS           # List of signals trapped by the vacation trap
    CYLC_SUITE_WORK_DIR_ROOT        # Root directory above the suite work directory
-								   # in the job host
+                                   # in the job host
    CYLC_TASK_MESSAGE_STARTED_PID   # PID of "cylc message" job started" command
    CYLC_TASK_WORK_DIR_BASE         # Alternate task work directory,
-								   # relative to the suite work directory
+                                   # relative to the suite work directory
 
 
 Suite Share Directories
@@ -2369,12 +2369,12 @@ batch system:
 .. code-block:: cylc
 
    [runtime]
-	   [[foo]]
-		   [[[remote]]]
-			   host = orca.niwa.co.nz
-			   owner = bob
-		   [[[job]]]
-			   batch system = pbs
+       [[foo]]
+           [[[remote]]]
+               host = orca.niwa.co.nz
+               owner = bob
+           [[[job]]]
+               batch system = pbs
 
 For this to work:
 
@@ -2441,7 +2441,7 @@ Collapsible Families In Suite Graphs
 .. code-block:: cylc
 
    [visualization]
-	   collapsed families = family1, family2
+       collapsed families = family1, family2
 
 Nested families from the runtime inheritance hierarchy can be expanded
 and collapsed in suite graphs and the gcylc graph view. All families
@@ -2527,33 +2527,33 @@ For example:
 .. code-block:: cylc
 
    [cylc]
-	   [[parameters]]
-		   # parameters: "ship", "buoy", "plane"
-		   # default task suffixes: _ship, _buoy, _plane
-		   obs = ship, buoy, plane
+       [[parameters]]
+           # parameters: "ship", "buoy", "plane"
+           # default task suffixes: _ship, _buoy, _plane
+           obs = ship, buoy, plane
 
-		   # parameters: 1, 2, 3, 4, 5
-		   # default task suffixes: _run1, _run2, _run3, _run4, _run5
-		   run = 1..5
+           # parameters: 1, 2, 3, 4, 5
+           # default task suffixes: _run1, _run2, _run3, _run4, _run5
+           run = 1..5
 
-		   # parameters: 1, 3, 5, 7, 9
-		   # default task suffixes: _idx1, _idx3, _idx5, _idx7, _idx9
-		   idx = 1..9..2
+           # parameters: 1, 3, 5, 7, 9
+           # default task suffixes: _idx1, _idx3, _idx5, _idx7, _idx9
+           idx = 1..9..2
 
-		   # parameters: -11, -1, 9
-		   # default task suffixes: _idx-11, _idx-01, _idx+09
-		   idx = -11..9..10
+           # parameters: -11, -1, 9
+           # default task suffixes: _idx-11, _idx-01, _idx+09
+           idx = -11..9..10
 
-		   # parameters: 1, 3, 5, 10, 11, 12, 13
-		   # default task suffixes: _i01, _i03, _i05, _i10, _i11, _i12, _i13
-		   i = 1..5..2, 10, 11..13
+           # parameters: 1, 3, 5, 10, 11, 12, 13
+           # default task suffixes: _i01, _i03, _i05, _i10, _i11, _i12, _i13
+           i = 1..5..2, 10, 11..13
 
-		   # parameters: "0", "1", "e", "pi", "i"
-		   # default task suffixes: _0, _1, _e, _pi, _i
-		   item = 0, 1, e, pi, i
+           # parameters: "0", "1", "e", "pi", "i"
+           # default task suffixes: _0, _1, _e, _pi, _i
+           item = 0, 1, e, pi, i
 
-		   # ERROR: mix strings with int range
-		   p = one, two, 3..5
+           # ERROR: mix strings with int range
+           p = one, two, 3..5
 
 Then angle brackets denote use of these parameters throughout the suite
 configuration. For the values above, this parameterized name:
@@ -2589,11 +2589,11 @@ overridden if need be:
 .. code-block:: cylc
 
    [cylc]
-	   [[parameters]]
-		   obs = ship, buoy, plane
-		   run = 1..5
-	   [[parameter templates]]
-		   run = -R%(run)s  # Make foo<run> expand to foo-R1 etc.
+       [[parameters]]
+           obs = ship, buoy, plane
+           run = 1..5
+       [[parameter templates]]
+           run = -R%(run)s  # Make foo<run> expand to foo-R1 etc.
 
 (See :ref:`RefParameterTemplates` for more on the string template syntax.)
 
@@ -2615,40 +2615,40 @@ Here's a simple but complete example suite:
 .. code-block:: cylc
 
    [cylc]
-	   [[parameters]]
-		   run = 1..2
+       [[parameters]]
+           run = 1..2
    [scheduling]
-	   [[dependencies]]
-		   graph = "prep => model<run>"
+       [[dependencies]]
+           graph = "prep => model<run>"
    [runtime]
-	   [[model<run>]]
-		   # ...
+       [[model<run>]]
+           # ...
 
 The result, post parameter expansion, is this:
 
 .. code-block:: cylc
 
    [scheduling]
-	   [[dependencies]]
-		   graph = "prep => model_run1 & model_run2"
+       [[dependencies]]
+           graph = "prep => model_run1 & model_run2"
    [runtime]
-	   [[model_run1]]
-		   # ...
-	   [[model_run2]]
-		   # ...
+       [[model_run1]]
+           # ...
+       [[model_run2]]
+           # ...
 
 Here's a more complex graph using two parameters (``[runtime]`` omitted):
 
 .. code-block:: cylc
 
    [cylc]
-	   [[parameters]]
-		   run = 1..2
-		   mem = cat, dog
+       [[parameters]]
+           run = 1..2
+           mem = cat, dog
    [scheduling]
-	   [[dependencies]]
-		   graph = """prep => init<run> => model<run,mem> =>
-						 post<run,mem> => wrap<run> => done"""
+       [[dependencies]]
+           graph = """prep => init<run> => model<run,mem> =>
+                         post<run,mem> => wrap<run> => done"""
 
 .. todo::
    original TODO:
@@ -2693,13 +2693,13 @@ To get thicker padding and/or alternate suffixes, use a template. E.g.:
 .. code-block:: cylc
 
    [cylc]
-	   [[parameters]]
-		   i = 1..9
-		   p = 3..14
-	   [[parameter templates]]
-		   i = _i%(i)02d  # suffixes = _i01, _i02, ..., _i09
-		   # A double-percent gives a literal percent character
-		   p = %%p%(p)03d  # suffixes = %p003, %p004, ..., %p013, %p014
+       [[parameters]]
+           i = 1..9
+           p = 3..14
+       [[parameter templates]]
+           i = _i%(i)02d  # suffixes = _i01, _i02, ..., _i09
+           # A double-percent gives a literal percent character
+           p = %%p%(p)03d  # suffixes = %p003, %p004, ..., %p013, %p014
 
 
 Parameters as Full Task Names
@@ -2711,15 +2711,15 @@ should be overridden to remove the initial underscore. For example:
 .. code-block:: cylc
 
    [cylc]
-	   [[parameters]]
-		   i = 1..4
-		   obs = ship, buoy, plane
-	   [[parameter templates]]
-		   i = i%(i)d  # task name must begin with an alphabet
-		   obs = %(obs)s
+       [[parameters]]
+           i = 1..4
+           obs = ship, buoy, plane
+       [[parameter templates]]
+           i = i%(i)d  # task name must begin with an alphabet
+           obs = %(obs)s
    [scheduling]
-	   [[dependencies]]
-		   graph = """
+       [[dependencies]]
+           graph = """
    foo => <i>  # foo => i1 & i2 & i3 & i4
    <obs> => bar  # ship & buoy & plane => bar
    """
@@ -2734,12 +2734,12 @@ parameter expansion. For example, if we have:
 .. code-block:: cylc
 
    [cylc]
-	   [[parameters]]
-		   obs = ship, buoy, plane
-		   run = 1..5
+       [[parameters]]
+           obs = ship, buoy, plane
+           run = 1..5
    [scheduling]
-	   [[dependencies]]
-		   graph = model<run,obs>
+       [[dependencies]]
+           graph = model<run,obs>
 
 Then task ``model_run2_ship`` would get the following standard
 environment variables:
@@ -2759,10 +2759,10 @@ substitution. For example, if we add this to the above configuration:
 .. code-block:: cylc
 
    [runtime]
-	   [[model<run,obs>]]
-		   [[[parameter environment templates]]]
-			   MYNAME = %(obs)sy-mc%(obs)sface
-			   MYFILE = /path/to/run%(run)03d/%(obs)s
+       [[model<run,obs>]]
+           [[[parameter environment templates]]]
+               MYNAME = %(obs)sy-mc%(obs)sface
+               MYFILE = /path/to/run%(run)03d/%(obs)s
 
 Then task ``model_run2_ship`` would get the following custom
 environment variables:
@@ -2785,18 +2785,18 @@ set of model runs:
 .. code-block:: cylc
 
    [cylc]
-	   [[parameters]]
-		   run = 1..5
+       [[parameters]]
+           run = 1..5
    [scheduling]
-	   [[dependencies]]
-		   graph = """model<run> => post_proc<run>  # general case
-					  model<run=1> => check_first_run  # special case"""
+       [[dependencies]]
+           graph = """model<run> => post_proc<run>  # general case
+                      model<run=1> => check_first_run  # special case"""
    [runtime]
-	   [[model<run>]]
-		   # config for all "model" runs...
-	   [[model<run=1>
-		   # special config (if any) for the first model run...
-	   #...
+       [[model<run>]]
+           # config for all "model" runs...
+       [[model<run=1>
+           # special config (if any) for the first model run...
+       #...
 
 
 Selecting Partial Parameter Ranges
@@ -2810,20 +2810,20 @@ template as the full-range parameter. For example:
 .. code-block:: cylc
 
    [cylc]
-	   [[parameters]]
-		   run = 1..10  # 1, 2, ..., 10
-		   runx = 1..3  # 1, 2, 3
-	   [[parameter templates]]
-		   run = _R%(run)02d   # _R01, _R02, ..., _R10
-		   runx = _R%(runx)02d  # _R01, _R02, _R03
+       [[parameters]]
+           run = 1..10  # 1, 2, ..., 10
+           runx = 1..3  # 1, 2, 3
+       [[parameter templates]]
+           run = _R%(run)02d   # _R01, _R02, ..., _R10
+           runx = _R%(runx)02d  # _R01, _R02, _R03
    [scheduling]
-	   [[dependencies]]
-		   graph = """model<run> => post<run>
-					  model<runx> => checkx<runx>"""
+       [[dependencies]]
+           graph = """model<run> => post<run>
+                      model<runx> => checkx<runx>"""
    [runtime]
-	   [[model<run>]]
-		   # ...
-	   #...
+       [[model<run>]]
+           # ...
+       #...
 
 
 Parameter Offsets In The Graph
@@ -2902,9 +2902,9 @@ Task family members can be generated by parameter expansion:
 .. code-block:: cylc
 
    [runtime]
-	   [[FAM]]
-	   [[member<r>]]
-		   inherit = FAM
+       [[FAM]]
+       [[member<r>]]
+           inherit = FAM
    # Result: family FAM contains member_r1, member_r2, etc.
 
 
@@ -2913,11 +2913,11 @@ Family names can be parameterized too, just like task names:
 .. code-block:: cylc
 
    [runtime]
-	   [[RUN<r>]]
-	   [[model<r>]]
-		   inherit = RUN<r>
-	   [[post_proc<r>]]
-		   inherit = RUN<r>
+       [[RUN<r>]]
+       [[model<r>]]
+           inherit = RUN<r>
+       [[post_proc<r>]]
+           inherit = RUN<r>
    # Result: family RUN_r1 contains model_r1 and post_proc_r1,
    #         family RUN_r2 contains model_r2 and post_proc_r1, etc.
 
@@ -3000,32 +3000,32 @@ with previous-instance model dependence (e.g. for model restart files):
 .. code-block:: cylc
 
    [scheduling]
-	   initial cycle point = 2020-01
-	   final cycle point = 2020-12
-	   [[dependencies]]
-		   [[[R1]]]  # Run once, at the initial point.
-			   graph = "prep => model"
-		   [[[P2M]]]  # Run at 2-month intervals between the initial and final points.
-			   graph = "model[-P2M] => model => post_proc & archive"
+       initial cycle point = 2020-01
+       final cycle point = 2020-12
+       [[dependencies]]
+           [[[R1]]]  # Run once, at the initial point.
+               graph = "prep => model"
+           [[[P2M]]]  # Run at 2-month intervals between the initial and final points.
+               graph = "model[-P2M] => model => post_proc & archive"
    [runtime]
-	   [[model]]
-		   script = "run-model $CYLC_TASK_CYCLE_POINT"
+       [[model]]
+           script = "run-model $CYLC_TASK_CYCLE_POINT"
 
 And here's how to do the same thing with parameterized tasks:
 
 .. code-block:: cylc
 
    [cylc]
-	   [[parameters]]
-		   chunk = 1..6
+       [[parameters]]
+           chunk = 1..6
    [scheduling]
-	   [[dependencies]]
-		   graph = """prep => model<chunk=1>
-						model<chunk-1> => model<chunk> =>
-						  post_proc<chunk> & archive<chunk>"""
+       [[dependencies]]
+           graph = """prep => model<chunk=1>
+                        model<chunk-1> => model<chunk> =>
+                          post_proc<chunk> & archive<chunk>"""
    [runtime]
-	   [[model<chunk>]]
-		   script = """
+       [[model<chunk>]]
+           script = """
    # Compute start date from chunk index and interval, then run the model.
    INITIAL_POINT=2020-01
    INTERVAL_MONTHS=2
@@ -3064,14 +3064,14 @@ point:
 .. code-block:: cylc
 
    [cylc]
-	   [[parameters]]
-		   chunk = 1..4
+       [[parameters]]
+           chunk = 1..4
    [scheduling]
-	   initial cycle point = 2020-01
-	   [[dependencies]]
-		   [[[P1Y]]]
-			   graph = """model<chunk-1> => model<chunk>
-					   model<chunk=4>[-P1Y] => model<chunk=1>"""
+       initial cycle point = 2020-01
+       [[dependencies]]
+           [[[P1Y]]]
+               graph = """model<chunk-1> => model<chunk>
+                       model<chunk=4>[-P1Y] => model<chunk=1>"""
 
 .. note::
 
@@ -3081,11 +3081,11 @@ point:
 
    .. code-block:: cylc
 
-	  [scheduling]
-		  initial cycle point = 2020-01
-		  [[dependencies]]
-			  [[[P3M]]]
-				  graph = "model[-P3M] => model"
+      [scheduling]
+          initial cycle point = 2020-01
+          [[dependencies]]
+              [[[P3M]]]
+                  graph = "model[-P3M] => model"
 
 Here's a possible valid use-case for mixed cycling: consider a portable
 date-time cycling workflow of model jobs that can each take too long to run on
@@ -3196,11 +3196,11 @@ generated using Jinja2:
    #!jinja2
    {% set N_MEMBERS = 5 %}
    [scheduling]
-	   [[dependencies]]
-		   graph = """{# generate ensemble dependencies #}
-			   {% for I in range( 0, N_MEMBERS ) %}
-				  foo => mem_{{ I }} => post_{{ I }} => bar
-			   {% endfor %}"""
+       [[dependencies]]
+           graph = """{# generate ensemble dependencies #}
+               {% for I in range( 0, N_MEMBERS ) %}
+                  foo => mem_{{ I }} => post_{{ I }} => bar
+               {% endfor %}"""
 
 Here is the generated suite configuration, after Jinja2 processing:
 
@@ -3208,14 +3208,14 @@ Here is the generated suite configuration, after Jinja2 processing:
 
    #!jinja2
    [scheduling]
-	   [[dependencies]]
-		   graph = """
-			 foo => mem_0 => post_0 => bar
-			 foo => mem_1 => post_1 => bar
-			 foo => mem_2 => post_2 => bar
-			 foo => mem_3 => post_3 => bar
-			 foo => mem_4 => post_4 => bar
-				   """
+       [[dependencies]]
+           graph = """
+             foo => mem_0 => post_0 => bar
+             foo => mem_1 => post_1 => bar
+             foo => mem_2 => post_2 => bar
+             foo => mem_3 => post_3 => bar
+             foo => mem_4 => post_4 => bar
+                   """
 
 And finally, the ``jinja2.cities`` example uses variables,
 includes or excludes special cleanup tasks according to the value of a
@@ -3254,9 +3254,9 @@ automatically imports the user environment to template's global namespace
    #!Jinja2
    #...
    [runtime]
-	   [[root]]
-		   [[[environment]]]
-			   SUITE_OWNER_HOME_DIR_ON_SUITE_HOST = {{environ['HOME']}}
+       [[root]]
+           [[[environment]]]
+               SUITE_OWNER_HOME_DIR_ON_SUITE_HOST = {{environ['HOME']}}
 
 This example is emphasizes that *the environment is read on the suite
 host at the time the suite configuration is parsed* - it is not, for
@@ -3315,8 +3315,8 @@ and related values in ensemble suites:
 .. code-block:: cylc
 
    {% for i in range(0,100) %}  # 0, 1, ..., 99
-	   {% set j = i | pad(2,'0') %}
-	   A_{{j}}          # A_00, A_01, ..., A_99
+       {% set j = i | pad(2,'0') %}
+       A_{{j}}          # A_00, A_01, ..., A_99
    {% endfor %}
 
 
@@ -3397,18 +3397,18 @@ Here's an example, from ``<cylc-dir>/etc/examples/jinja2/dict``:
    {% set resource = { 'airs':'ncpus=9', 'iasi':'ncpus=20' } %}
 
    [scheduling]
-	   [[dependencies]]
-		   graph = OBS
+       [[dependencies]]
+           graph = OBS
    [runtime]
-	   [[OBS]]
-		   [[[job]]]
-			   batch system = pbs
-	   {% for i in obs_types %}
-	   [[ {{i}} ]]
-		   inherit = OBS
-		   [[[directives]]]
-				-I = {{ resource[i] }}
-		{% endfor %}
+       [[OBS]]
+           [[[job]]]
+               batch system = pbs
+       {% for i in obs_types %}
+       [[ {{i}} ]]
+           inherit = OBS
+           [[[directives]]]
+                -I = {{ resource[i] }}
+        {% endfor %}
 
 Here's the result:
 
@@ -3431,9 +3431,9 @@ Here's an example, from ``<cylc-dir>/etc/examples/jinja2/defaults``:
 
    [meta]
 
-	   title = "Jinja2 example: use of defaults and external input"
+       title = "Jinja2 example: use of defaults and external input"
 
-	   description = """
+       description = """
    The template variable FIRST_TASK must be given on the cylc command line
    using --set or --set-file=FILE; two other variables, LAST_TASK and
    N_MEMBERS can be set similarly, but if not they have default values."""
@@ -3444,17 +3444,17 @@ Here's an example, from ``<cylc-dir>/etc/examples/jinja2/defaults``:
    {# input of FIRST_TASK is required - no default #}
 
    [scheduling]
-	   initial cycle point = 20100808T00
-	   final cycle point   = 20100816T00
-	   [[dependencies]]
-		   [[[0]]]
-			   graph = """{{ FIRST_TASK }} => ENS
-					ENS:succeed-all => {{ LAST_TASK }}"""
+       initial cycle point = 20100808T00
+       final cycle point   = 20100816T00
+       [[dependencies]]
+           [[[0]]]
+               graph = """{{ FIRST_TASK }} => ENS
+                    ENS:succeed-all => {{ LAST_TASK }}"""
    [runtime]
-	   [[ENS]]
+       [[ENS]]
    {% for I in range( 0, N_MEMBERS ) %}
-	   [[ mem_{{ I }} ]]
-		   inherit = ENS
+       [[ mem_{{ I }} ]]
+           inherit = ENS
    {% endfor %}
 
 Here's the result:
@@ -3516,9 +3516,9 @@ so the following will print ``# FOO is 0``, not ``# FOO is 9``:
 
    {% set FOO = false %}
    {% for item in items %}
-	   {% if item.check_something() %}
-		   {% set FOO = true %}
-	   {% endif %}
+       {% if item.check_something() %}
+           {% set FOO = true %}
+       {% endif %}
    {% endfor %}
    # FOO is {{FOO}}
 
@@ -3531,9 +3531,9 @@ across scopes:
 
    {% set ns = namespace(foo=false) %}
    {% for item in items %}
-	   {% if item.check_something() %}
-		   {% set ns.foo = true %}
-	   {% endif %}
+       {% if item.check_something() %}
+           {% set ns.foo = true %}
+       {% endif %}
    {% endfor %}
    # FOO is {{ns.foo}}
 
@@ -3565,7 +3565,7 @@ The "raise" function will result in an error containing the provided text.
 .. code-block:: cylc
 
    {% if not VARIABLE is defined %}
-	   {{ raise('VARIABLE must be defined for this suite.') }}
+       {{ raise('VARIABLE must be defined for this suite.') }}
    {% endif %}
 
 
@@ -3600,7 +3600,7 @@ Cylc extends this functionality to allow import of arbitrary Python modules.
    {% from "itertools" import product %}
    [runtime]
    {% for group, member in product(['a', 'b'], [0, 1, 2]) %}
-	   [[{{group}}_{{member}}]]
+       [[{{group}}_{{member}}]]
    {% endfor %}
 
 For better clarity and disambiguation Python modules can be prefixed with

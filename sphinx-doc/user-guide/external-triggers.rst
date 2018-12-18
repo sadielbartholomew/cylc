@@ -74,15 +74,15 @@ cycle point value by one hour:
 .. code-block:: cylc
 
    [scheduling]
-	   initial cycle point = 2018-01-01
-	   [[xtriggers]]
-		   clock_1 = wall_clock(offset=PT1H):PT10S
-	   [[dependencies]]
-		   [[[P1D]]]
-			   graph = "@clock_1 => foo"
+       initial cycle point = 2018-01-01
+       [[xtriggers]]
+           clock_1 = wall_clock(offset=PT1H):PT10S
+       [[dependencies]]
+           [[[P1D]]]
+               graph = "@clock_1 => foo"
    [runtime]
-	   [[foo]]
-		   script = run-foo.sh
+       [[foo]]
+           script = run-foo.sh
 
 Notice that the short label ``clock_1`` is used to represent the
 trigger function in the graph. The function call interval, which determines how
@@ -103,14 +103,14 @@ the ``[xtriggers]`` section:
 .. code-block:: cylc
 
    [scheduling]
-	   initial cycle point = 2018-01-01
-	   [[dependencies]]
-		   [[[P1D]]]
-			   # zero-offset clock trigger:
-			   graph = "@wall_clock => foo"
+       initial cycle point = 2018-01-01
+       [[dependencies]]
+           [[[P1D]]]
+               # zero-offset clock trigger:
+               graph = "@wall_clock => foo"
    [runtime]
-	   [[foo]]
-		   script = run-foo.sh
+       [[foo]]
+           script = run-foo.sh
 
 
 .. _Built-in Suite State Triggers:
@@ -129,7 +129,7 @@ The suite state trigger function signature looks like this:
 .. code-block:: none
 
    suite_state(suite, task, point, offset=None, status='succeeded',
-			   message=None, cylc_run_dir=None, debug=False)
+               message=None, cylc_run_dir=None, debug=False)
 
 The first three arguments are compulsory; they single out the target suite name
 (``suite``) task name (``task``) and cycle point
@@ -178,13 +178,13 @@ this:
 .. code-block:: none
 
    results = {
-	   'suite': suite,
-	   'task': task,
-	   'point': point,
-	   'offset': offset,
-	   'status': status,
-	   'message': message,
-	   'cylc_run_dir': cylc_run_dir
+       'suite': suite,
+       'task': task,
+       'point': point,
+       'offset': offset,
+       'status': status,
+       'message': message,
+       'cylc_run_dir': cylc_run_dir
    }
    return (satisfied, results)
 
@@ -201,16 +201,16 @@ To see this, take a look at the job script for one of the downstream tasks:
    % cylc cat-log -f j dn f2.2011 
    ...
    cylc__job__inst__user_env() {
-	   # TASK RUNTIME ENVIRONMENT:
-	   export upstream_suite upstream_cylc_run_dir upstream_offset \
-		 upstream_message upstream_status upstream_point upstream_task
-	   upstream_suite="up"
-	   upstream_cylc_run_dir="/home/vagrant/cylc-run"
-	   upstream_offset="None"
-	   upstream_message="data ready"
-	   upstream_status="succeeded"
-	   upstream_point="2011"
-	   upstream_task="foo"}
+       # TASK RUNTIME ENVIRONMENT:
+       export upstream_suite upstream_cylc_run_dir upstream_offset \
+         upstream_message upstream_status upstream_point upstream_task
+       upstream_suite="up"
+       upstream_cylc_run_dir="/home/vagrant/cylc-run"
+       upstream_offset="None"
+       upstream_message="data ready"
+       upstream_status="succeeded"
+       upstream_point="2011"
+       upstream_task="foo"}
    ...
 
 .. note::
@@ -315,24 +315,24 @@ satisfied). Here it is in its entirety.
 .. code-block:: none
 
    def echo(*args, **kwargs):
-	   print "echo: ARGS:", args
-	   print "echo: KWARGS:", kwargs
-	   return (False, {})
+       print "echo: ARGS:", args
+       print "echo: KWARGS:", kwargs
+       return (False, {})
 
 Here's an example echo trigger suite:
 
 .. code-block:: cylc
 
    [scheduling]
-	   initial cycle point = now
-	   [[xtriggers]]
-		   echo_1 = echo(hello, 99, qux=True, point=%(point)s, foo=10)
-	   [[dependencies]]
-		   [[[PT1H]]]
-			   graph = "@echo_1 => foo"
+       initial cycle point = now
+       [[xtriggers]]
+           echo_1 = echo(hello, 99, qux=True, point=%(point)s, foo=10)
+       [[dependencies]]
+           [[[PT1H]]]
+               graph = "@echo_1 => foo"
    [runtime]
-	   [[foo]]
-		   script = exit 1
+       [[foo]]
+           script = exit 1
 
 To see the result, run this suite in debug mode and take a look at the
 suite log (or run ``cylc run --debug --no-detach <suite>`` and watch
@@ -439,13 +439,13 @@ scheduling section:
 
    # suite "sat-proc"
    [scheduling]
-	   cycling mode = integer
-	   initial cycle point = 1
-	   [[special tasks]]
-		   external-trigger = get-data("new sat X data avail")
-	   [[dependencies]]
-		   [[[P1]]]
-			   graph = get-data => conv-data => products
+       cycling mode = integer
+       initial cycle point = 1
+       [[special tasks]]
+           external-trigger = get-data("new sat X data avail")
+       [[dependencies]]
+           [[[P1]]]
+               graph = get-data => conv-data => products
 
 Then, each time a new dataset arrives the external detection system should
 notify the suite like this:
@@ -478,13 +478,13 @@ message:
 
    # suite "data-proc"
    [scheduling]
-	   initial cycle point = 20150125T00
-	   final cycle point   = 20150126T00
-	   [[special tasks]]
-		   external-trigger = get-data("data arrived for $CYLC_TASK_CYCLE_POINT")
-	   [[dependencies]]
-		   [[[T00]]]
-			   graph = init-process => get-data => post-process
+       initial cycle point = 20150125T00
+       final cycle point   = 20150126T00
+       [[special tasks]]
+           external-trigger = get-data("data arrived for $CYLC_TASK_CYCLE_POINT")
+       [[dependencies]]
+           [[[T00]]]
+               graph = init-process => get-data => post-process
 
 Once the variable-length waiting is finished, an external detection system
 should notify the suite like this:

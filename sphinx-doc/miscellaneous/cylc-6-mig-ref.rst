@@ -46,13 +46,13 @@ See :ref:`Table X <cylc-6-migration-timeout-delays-table>`.
 
 .. table:: Timeout/Delay Syntax Change Examples
 
-	=========================================================  ===============  ===============
-	Setting                                                    Pre-Cylc-6       Cylc-6+
-	=========================================================  ===============  ===============
-	``[cylc][[events]]timeout``                                180              PT3H
-	``[runtime][[my_task]][[[job]]]execution retry delays``    2*30, 360, 1440  2*PT30M, PT6H, P1D
-	``[runtime][[my_task]][[[suite state polling]]]interval``  2                PT2S
-	=========================================================  ===============  ===============
+    =========================================================  ===============  ===============
+    Setting                                                    Pre-Cylc-6       Cylc-6+
+    =========================================================  ===============  ===============
+    ``[cylc][[events]]timeout``                                180              PT3H
+    ``[runtime][[my_task]][[[job]]]execution retry delays``    2*30, 360, 1440  2*PT30M, PT6H, P1D
+    ``[runtime][[my_task]][[[suite state polling]]]interval``  2                PT2S
+    =========================================================  ===============  ===============
 
 
 .. _cylc-6-migration-runahead-limit:
@@ -138,21 +138,21 @@ Pre-cylc-6:
 
 .. code-block:: cylc
 
-	[scheduling]
-		...
-		[[dependencies]]
-			[[[0,12]]]
-				graph = foo[T-12] => foo & bar => baz
+    [scheduling]
+        ...
+        [[dependencies]]
+            [[[0,12]]]
+                graph = foo[T-12] => foo & bar => baz
 
 Cylc-6+:
 
 .. code-block:: cylc
 
-	[scheduling]
-		...
-		[[dependencies]]
-			[[[T00,T12]]]
-				graph = foo[-PT12H] => foo & bar => baz
+    [scheduling]
+        ...
+        [[dependencies]]
+            [[[T00,T12]]]
+                graph = foo[-PT12H] => foo & bar => baz
 
 
 Hour-based cycling section names are easy enough to convert, as seen in
@@ -200,25 +200,25 @@ creates instances of task ``foo`` at the offset hours
 
 .. code-block:: cylc
 
-	# Pre cylc-6 implicit cycling.
-	[scheduling]
-	   initial cycle time = 2014080800
-	   [[dependencies]]
-		  [[[00,06,12,18]]]
-			 # This creates foo instances at 03,09,15,21:
-			 graph = foo[T-3] => bar
+    # Pre cylc-6 implicit cycling.
+    [scheduling]
+       initial cycle time = 2014080800
+       [[dependencies]]
+          [[[00,06,12,18]]]
+             # This creates foo instances at 03,09,15,21:
+             graph = foo[T-3] => bar
 
 Here's the direct translation to cylc-6+ format:
 
 .. code-block:: cylc
 
-	# In cylc-6+ this suite will stall.
-	[scheduling]
-	   initial cycle point = 20140808T00
-	   [[dependencies]]
-		  [[[T00,T06,T12,T18]]]
-			 # This does NOT create foo instances at 03,09,15,21:
-			 graph = foo[-PT3H] => bar
+    # In cylc-6+ this suite will stall.
+    [scheduling]
+       initial cycle point = 20140808T00
+       [[dependencies]]
+          [[[T00,T06,T12,T18]]]
+             # This does NOT create foo instances at 03,09,15,21:
+             graph = foo[-PT3H] => bar
 
 
 This suite fails validation with
@@ -232,14 +232,14 @@ To fix this, explicitly define the cycling of with an offset cycling sequence
 
 .. code-block:: cylc
 
-	# Cylc-6+ requires explicit task instance creation.
-	[scheduling]
-	   initial cycle point = 20140808T00
-	   [[dependencies]]
-		  [[[T03,T09,T15,T21]]]
-			 graph = foo
-		  [[[T00,T06,T12,T18]]]
-			 graph = foo[-PT3H] => bar
+    # Cylc-6+ requires explicit task instance creation.
+    [scheduling]
+       initial cycle point = 20140808T00
+       [[dependencies]]
+          [[[T03,T09,T15,T21]]]
+             graph = foo
+          [[[T00,T06,T12,T18]]]
+             graph = foo[-PT3H] => bar
 
 Implicit task creation by offset triggers is no longer allowed because it is
 error prone: a mistaken task cycle point offset should cause a failure

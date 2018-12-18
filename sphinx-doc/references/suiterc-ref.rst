@@ -85,8 +85,8 @@ according to your needs. For example, "suite-priority".
 
    .. code-block:: cylc
 
-	  [meta]
-		  suite-priority = high
+      [meta]
+          suite-priority = high
 
 
 [cylc]
@@ -586,9 +586,9 @@ task event handlers.
 
   .. code-block:: cylc
 
-	 [cylc]
-		 [[environment]]
-			 CYLC_SUITE_RUN_DIR = $CYLC_SUITE_RUN_DIR
+     [cylc]
+         [[environment]]
+             CYLC_SUITE_RUN_DIR = $CYLC_SUITE_RUN_DIR
 
 - These variables - unlike task execution environment variables
   which are written to job scripts and interpreted by the shell at
@@ -1380,9 +1380,9 @@ string template item name with "suite\_", for example:
 .. code-block:: cylc
 
    [runtime]
-	   [[root]]
-		   [[[events]]]
-			   failed handler = send-help.sh %(suite_title)s %(suite_importance)s %(title)s
+       [[root]]
+           [[[events]]]
+               failed handler = send-help.sh %(suite_title)s %(suite_importance)s %(title)s
 
 
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[meta]]] ``->`` title
