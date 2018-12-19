@@ -2547,7 +2547,7 @@ task families in the *namespaces* example suite.
     can also be done by right-clicking on tasks in the gcylc graph view.
 
 
-.. _Parameterized Tasks:
+.. _Parameterized Tasks Label:
 
 Parameterized Tasks
 ^^^^^^^^^^^^^^^^^^^
@@ -3194,7 +3194,7 @@ Jinja2
 .. note::
 
    This section needs to be revised - the Parameterized Task feature
-   introduced in cylc-6.11.0 (see :ref:`Parameterized Tasks`) provides
+   introduced in cylc-6.11.0 (see :ref:`Parameterized Tasks Label`) provides
    a cleaner way to auto-generate tasks without coding messy Jinja2 loops.
 
 Cylc has built in support for the Jinja2 template processor in suite

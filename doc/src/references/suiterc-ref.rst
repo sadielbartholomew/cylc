@@ -292,7 +292,7 @@ used for cylc testing and development.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Define parameter values here for use in expanding *parameterized tasks* -
-see :ref:`Parameterized Tasks`.
+see :ref:`Parameterized Tasks Label`.
 
 - *type*: list of strings, or an integer range
   ``LOWER..UPPER..STEP`` (two dots, inclusive bounds, "STEP" optional)
@@ -308,10 +308,10 @@ see :ref:`Parameterized Tasks`.
 [cylc] ``->`` [[parameter templates]]
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Parameterized task names (see previous item, and :ref:`Parameterized Tasks`)
-are expanded, for each parameter value, using string templates.  You
-can assign templates to parameter names here, to override the default
-templates.
+Parameterized task names (see previous item, and
+:ref:`Parameterized Tasks Label`) are expanded, for each parameter value,
+using string templates.  You can assign templates to parameter names here,
+to override the default templates.
 
 - *type*: a Python-style string template
 - *default} for integer parameters* ``p``:
@@ -2046,7 +2046,7 @@ omission from an ``include`` list.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 The user defined task execution parameter environment templates. This is only
-relevant for *parameterized tasks* - see :ref:`Parameterized Tasks`.
+relevant for *parameterized tasks* - see :ref:`Parameterized Tasks Label`.
 
 
 [runtime] ``->`` [[\_\_NAME\_\_]] ``->`` [[[parameter environment templates]]] ``->`` \_\_VARIABLE\_\_
@@ -2054,7 +2054,7 @@ relevant for *parameterized tasks* - see :ref:`Parameterized Tasks`.
 
 Replace ``\_\_VARIABLE\_\_`` with pairs of environment variable
 name and Python string template for parameter substitution. This is only
-relevant for *parameterized tasks* - see :ref:`Parameterized Tasks`.
+relevant for *parameterized tasks* - see :ref:`Parameterized Tasks Label`.
 
 If specified, in addition to the standard ``CYLC\_TASK\_PARAM\_<key>``
 variables, the job script will also export the named variables specified

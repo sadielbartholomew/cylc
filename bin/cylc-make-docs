@@ -18,5 +18,5 @@
 echo >&2
 echo "Building the HTML Cylc Documentation with Sphinx..."
 echo >&2
-cd "$CYLC_DIR"/sphinx-doc/
-sphinx-build -b html . ./doc
+cd "$CYLC_DIR"/doc/
+sphinx-build -b html ./src built/
