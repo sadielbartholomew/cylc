@@ -24,7 +24,7 @@ can be overridden by users,
 The file ``<cylc-dir>/etc/global.rc.eg`` contains instructions on how
 to generate and install site and user global config files:
 
-.. todo:
+.. todo::
    add-in
 
 ADD-IN: \lstinputlisting{../../../etc/global.rc.eg}

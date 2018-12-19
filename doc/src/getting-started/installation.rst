@@ -66,44 +66,43 @@ are installed properly:
 
 .. code-block:: none
 
-    $ cylc check-software
-    Checking your software...
+   $ cylc check-software
+   Checking your software...
 
-    Individual results:
-    =============================================================================
-    Package (version requirements)                        Outcome (version found)
-    =============================================================================
-                                *REQUIRED SOFTWARE*                                 
-    Python (2.6+, <3)...................FOUND & min. version MET (2.7.12.final.0)
+   Individual results:
+   =============================================================================
+   Package (version requirements)                        Outcome (version found)
+   =============================================================================
+                               *REQUIRED SOFTWARE*                                 
+   Python (2.6+, <3)...................FOUND & min. version MET (2.7.12.final.0)
 
-      *OPTIONAL SOFTWARE for the GUI & dependency graph visualisation*           
-    Python:pygtk (2.0+).........................FOUND & min. version MET (2.24.0)
-    graphviz (any).................................................FOUND (2.38.0)
-    Python:pygraphviz (any).........................................FOUND (1.3.1)
+     *OPTIONAL SOFTWARE for the GUI & dependency graph visualisation*           
+   Python:pygtk (2.0+).........................FOUND & min. version MET (2.24.0)
+   graphviz (any).................................................FOUND (2.38.0)
+   Python:pygraphviz (any).........................................FOUND (1.3.1)
 
-                    *OPTIONAL SOFTWARE for the HTML User Guide*                     
-    ImageMagick (any).............................................FOUND (6.8.9-9)
+                   *OPTIONAL SOFTWARE for the HTML User Guide*                     
+   ImageMagick (any).............................................FOUND (6.8.9-9)
 
-               *OPTIONAL SOFTWARE for the HTTPS communications layer*                
-    Python:urllib3 (any)...........................................FOUND (1.13.1)
-    Python:OpenSSL (any)...........................................FOUND (17.2.0)
-    Python:requests (2.4.2+).....................FOUND & min. version MET (2.9.1)
+              *OPTIONAL SOFTWARE for the HTTPS communications layer*                
+   Python:urllib3 (any)...........................................FOUND (1.13.1)
+   Python:OpenSSL (any)...........................................FOUND (17.2.0)
+   Python:requests (2.4.2+).....................FOUND & min. version MET (2.9.1)
 
-                    *OPTIONAL SOFTWARE for the LaTeX User Guide*                     
-    TeX:framed (any)..................................................FOUND (n/a)
-    TeX (3.0+)..............................FOUND & min. version MET (3.14159265)
-    TeX:preprint (any)................................................FOUND (n/a)
-    TeX:tex4ht (any)..................................................FOUND (n/a)
-    TeX:tocloft (any).................................................FOUND (n/a)
-    TeX:texlive (any).................................................FOUND (n/a)
-    =============================================================================
+                   *OPTIONAL SOFTWARE for the LaTeX User Guide*                     
+   TeX:framed (any)..................................................FOUND (n/a)
+   TeX (3.0+)..............................FOUND & min. version MET (3.14159265)
+   TeX:preprint (any)................................................FOUND (n/a)
+   TeX:tex4ht (any)..................................................FOUND (n/a)
+   TeX:tocloft (any).................................................FOUND (n/a)
+   TeX:texlive (any).................................................FOUND (n/a)
+   =============================================================================
 
-    Summary:
-                            ****************************                             
-                               Core requirements: ok                                
-                               Full-functionality: ok                                
-                            ****************************
-
+   Summary:
+                           ****************************                             
+                              Core requirements: ok                                
+                              Full-functionality: ok                                
+                           ****************************
 
 If errors are reported then the packages concerned are either not installed or
 not in your Python search path.

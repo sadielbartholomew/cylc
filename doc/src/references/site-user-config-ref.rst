@@ -704,14 +704,14 @@ overrides :ref:`tail-command-template` above.
 
 .. code-block:: cylc
 
-    [hosts]
-        [[ myhpc*]]
-            [[[batch systems]]]
-                [[[[pbs]]]]
-                    err tailer = qcat -f -e %(job_id)s
-                    out tailer = qcat -f -o %(job_id)s
-                    err viewer = qcat -e %(job_id)s
-                    out viewer = qcat -o %(job_id)s
+   [hosts]
+	   [[ myhpc*]]
+		   [[[batch systems]]]
+			   [[[[pbs]]]]
+				   err tailer = qcat -f -e %(job_id)s
+				   out tailer = qcat -f -o %(job_id)s
+				   err viewer = qcat -e %(job_id)s
+				   out viewer = qcat -o %(job_id)s
 
 
 .. _out-tailer:
@@ -981,12 +981,11 @@ The suite host's identity must be determined locally by cylc and passed
 to running tasks (via ``$CYLC_SUITE_HOST``) so that task messages
 can target the right suite on the right host.
 
-.. todo:
-   original TODO:
+.. todo::
 
-   %(TO DO: is it conceivable that different remote task hosts at the same
-   %site might see the suite host differently? If so we would need to be
-   %able to override the target in suite configurations.)
+   Is it conceivable that different remote task hosts at the same
+   site might see the suite host differently? If so we would need to be
+   able to override the target in suite configurations.
 
 
 [suite host self-identification] ``->`` method

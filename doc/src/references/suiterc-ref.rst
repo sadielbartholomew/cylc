@@ -257,8 +257,8 @@ Group together all the task event mail notifications into a single email within
 a given interval. This is useful to prevent flooding users' mail boxes when
 many task events occur within a short period of time.
 
-- *type*: ISO 8601 duration/interval representation (e.g. ``PT10S``, 10 seconds,
-  or ``PT1M``, 1 minute).
+- *type*: ISO 8601 duration/interval representation (e.g.
+  ``PT10S``, 10 seconds, or ``PT1M``, 1 minute).
 - *default*: PT5M
 
 
@@ -369,7 +369,6 @@ arguments:
 
    <suite-event-handler> %(event)s %(suite)s %(message)s
 
-
 .. note::
 
    Substitution patterns should not be quoted in the template strings.
@@ -449,7 +448,8 @@ substituted with actual values:
 
 - *type*: 
 - *default*: (none)
-- *example*: ``mail footer = see: http://localhost/%(owner)s/notes-on/%(suite)s/``
+- *example*:
+  ``mail footer = see: http://localhost/%(owner)s/notes-on/%(suite)s/``
 
 
 [cylc] ``->`` [[events]] ``->`` mail from

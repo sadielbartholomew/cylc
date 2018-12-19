@@ -36,9 +36,6 @@ task instance for each cycle point as it comes up. Workflow dependencies are
 defined generically with respect to the "current cycle point" of the tasks
 involved.
 
-.. todo::
-   1 x conv section ref.
-
 This is the only sensible way to run very large suites or operational suites
 that need to continue cycling indefinitely. The cycling is configured with
 standards-based ISO 8601 date-time *recurrence expressions*. Multiple
@@ -50,9 +47,6 @@ cycling sequences can be used at once in the same suite. See
 
 Parameterized Tasks as a Proxy for Cycling
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. todo::
-   2 x conv section ref.
 
 It is also possible to run cycling jobs with a pre-defined static workflow in
 which each instance of a cycling job is represented by *a different task*:
@@ -98,6 +92,7 @@ Jobs and Tasks
 A *job* is a program or script that runs on a computer, and a *task* is
 a workflow abstraction - a node in the suite dependency graph - that represents
 a job.
+
 
 Cycle Points
 ^^^^^^^^^^^^

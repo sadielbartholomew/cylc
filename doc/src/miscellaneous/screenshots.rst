@@ -4,34 +4,27 @@ Cylc Screenshots
 .. _fig-gcylc-1:
 
 .. figure:: ../graphics/png/orig/gcylc-graph-and-dot-views.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    gcylc graph and dot views.
-
+   gcylc graph and dot views.
 
 .. _fig-gcylc-2:
 
 .. figure:: ../graphics/png/orig/gcylc-text-view.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    gcylc text view.
-
+   gcylc text view.
 
 .. _fig-gscan:
 
 .. figure:: ../graphics/png/orig/gscan.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    gscan multi-suite state summary GUI.
-
+   gscan multi-suite state summary GUI.
 
 .. _fig-ecox-1:
 
 .. figure:: ../graphics/png/orig/ecox-1.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    A large-ish suite graphed by cylc.
+   A large-ish suite graphed by cylc.

@@ -51,30 +51,30 @@ and a local task views a remote job log then polls and kills the remote jobs.
 
 .. code-block:: cylc
 
-    # suite.rc
-    [scheduling]
-       [[dependencies]]
-              graph = "delayer => master & REMOTES"
-    [runtime]
-       [[REMOTES]]
-          script = "sleep 30"
-           [[[remote]]]
-               host = wizard
-               owner = hobo
-       [[remote-a, remote-b]]
-           inherit = REMOTES
-       [[delayer]]
-          script = "sleep 10"
-       [[master]]
-           script = """
-     sleep 5
-     cylc cat-log -m c -f o $CYLC_SUITE_NAME remote-a.1
-     sleep 2
-     cylc poll $CYLC_SUITE_NAME REMOTES.1
-     sleep 2
-     cylc kill $CYLC_SUITE_NAME REMOTES.1
-     sleep 2
-     cylc remove $CYLC_SUITE_NAME REMOTES.1"""
+   # suite.rc
+   [scheduling]
+      [[dependencies]]
+             graph = "delayer => master & REMOTES"
+   [runtime]
+      [[REMOTES]]
+         script = "sleep 30"
+          [[[remote]]]
+              host = wizard
+              owner = hobo
+      [[remote-a, remote-b]]
+          inherit = REMOTES
+      [[delayer]]
+         script = "sleep 10"
+      [[master]]
+          script = """
+    sleep 5
+    cylc cat-log -m c -f o $CYLC_SUITE_NAME remote-a.1
+    sleep 2
+    cylc poll $CYLC_SUITE_NAME REMOTES.1
+    sleep 2
+    cylc kill $CYLC_SUITE_NAME REMOTES.1
+    sleep 2
+    cylc remove $CYLC_SUITE_NAME REMOTES.1"""
 
 
 The *delayer* task just separates suite start-up from remote job
@@ -86,12 +86,12 @@ to retrieve job logs, and not to use a remote login shell:
 
 .. code-block:: cylc
 
-    # global.rc
-    [hosts]
-       [[wizard]]
-           cylc executable = /opt/bin/cylc
-           retrieve job logs = True
-           use login shell = False
+   # global.rc
+   [hosts]
+      [[wizard]]
+          cylc executable = /opt/bin/cylc
+          retrieve job logs = True
+          use login shell = False
 
 On running the suite, remote job host actions were captured in the transcripts
 below by wrapping the ``ssh``, ``scp``, and ``rsync``
@@ -137,6 +137,7 @@ migrated to Cylc soon though).
 Result:
 
 .. todo::
+
    Nicer dirtree display via sphinx or custom extension?
 
 .. code-block:: bash
@@ -166,12 +167,13 @@ Server installs service directory
 
 .. code-block:: bash
 
-    # cylc remote-init: install suite service directory
-    ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc remote-init '066592b1-4525-48b5-b86e-da06eb2380d9' '$HOME/cylc-run/suitex'
+   # cylc remote-init: install suite service directory
+   ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc remote-init '066592b1-4525-48b5-b86e-da06eb2380d9' '$HOME/cylc-run/suitex'
 
 Result:
 
 .. todo::
+
    Nicer dirtree display via sphinx or custom extension?
 
 .. code-block:: bash
@@ -199,12 +201,13 @@ Server submits jobs
 
 .. code-block:: bash
 
-    # cylc jobs-submit: submit two jobs
-    ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc jobs-submit '--remote-mode' '--' '$HOME/cylc-run/suitex/log/job' '1/remote-a/01' '1/remote-b/01'
+   # cylc jobs-submit: submit two jobs
+   ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc jobs-submit '--remote-mode' '--' '$HOME/cylc-run/suitex/log/job' '1/remote-a/01' '1/remote-b/01'
 
 Result:
 
 .. todo::
+
    Nicer dirtree display via sphinx or custom extension?
 
 .. code-block:: bash
@@ -267,8 +270,8 @@ User views job logs
 
 .. code-block:: bash
 
-    # cylc cat-log: view a job log
-    ssh -oBatchMode=yes -oConnectTimeout=10 -n hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc cat-log --remote-arg='$HOME/cylc-run/suitex/log/job/1/remote-a/NN/job.out' --remote-arg=cat --remote-arg='tail -n +1 -F %(filename)s' suitex
+   # cylc cat-log: view a job log
+   ssh -oBatchMode=yes -oConnectTimeout=10 -n hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc cat-log --remote-arg='$HOME/cylc-run/suitex/log/job/1/remote-a/NN/job.out' --remote-arg=cat --remote-arg='tail -n +1 -F %(filename)s' suitex
 
 
 Server cancels or kills jobs
@@ -282,8 +285,8 @@ Server cancels or kills jobs
 
 .. code-block:: bash
 
-    # cylc jobs-kill: kill two jobs
-    ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc jobs-kill '--' '$HOME/cylc-run/suitex/log/job' '1/remote-a/01' '1/remote-b/01'
+   # cylc jobs-kill: kill two jobs
+   ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc jobs-kill '--' '$HOME/cylc-run/suitex/log/job' '1/remote-a/01' '1/remote-b/01'
 
 
 Server polls jobs
@@ -297,8 +300,8 @@ Server polls jobs
 
 .. code-block:: bash
 
-    # cylc jobs-poll: poll two jobs
-    ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc jobs-poll '--' '$HOME/cylc-run/suitex/log/job' '1/remote-a/01' '1/remote-b/01'
+   # cylc jobs-poll: poll two jobs
+   ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc jobs-poll '--' '$HOME/cylc-run/suitex/log/job' '1/remote-a/01' '1/remote-b/01'
 
 
 Server retrieves jobs logs
@@ -309,12 +312,12 @@ Server retrieves jobs logs
 
 .. code-block:: bash
 
-    # rsync: retrieve two job logs
-    rsync -a --rsh=ssh -oBatchMode=yes -oConnectTimeout=10 --include=/1 --include=/1/remote-a --include=/1/remote-a/01 --include=/1/remote-a/01/** --include=/1/remote-b --include=/1/remote-b/01 --include=/1/remote-b/01/** --exclude=/** hobo@wizard:$HOME/cylc-run/suitex/log/job/ /home/vagrant/cylc-run/suitex/log/job/
-       # (internal rsync)
-       ssh -oBatchMode=yes -oConnectTimeout=10 -l hobo wizard rsync --server --sender -logDtpre.iLsfx . $HOME/cylc-run/suitex/log/job/
-       # (internal rsync, back from hobo@wizard)
-       rsync --server --sender -logDtpre.iLsfx . /home/hobo/cylc-run/suitex/log/job/
+   # rsync: retrieve two job logs
+   rsync -a --rsh=ssh -oBatchMode=yes -oConnectTimeout=10 --include=/1 --include=/1/remote-a --include=/1/remote-a/01 --include=/1/remote-a/01/** --include=/1/remote-b --include=/1/remote-b/01 --include=/1/remote-b/01/** --exclude=/** hobo@wizard:$HOME/cylc-run/suitex/log/job/ /home/vagrant/cylc-run/suitex/log/job/
+      # (internal rsync)
+      ssh -oBatchMode=yes -oConnectTimeout=10 -l hobo wizard rsync --server --sender -logDtpre.iLsfx . $HOME/cylc-run/suitex/log/job/
+      # (internal rsync, back from hobo@wizard)
+      rsync --server --sender -logDtpre.iLsfx . /home/hobo/cylc-run/suitex/log/job/
 
 
 Server tidies job remote at shutdown
@@ -325,8 +328,8 @@ Server tidies job remote at shutdown
 
 .. code-block:: bash
 
-    # cylc remote-tidy: remove the remote suite contact file
-    ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc remote-tidy '$HOME/cylc-run/suitex'
+   # cylc remote-tidy: remove the remote suite contact file
+   ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc remote-tidy '$HOME/cylc-run/suitex'
 
 
 Other Use of SSH in Cylc

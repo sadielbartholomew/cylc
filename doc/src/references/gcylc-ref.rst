@@ -7,6 +7,7 @@ This section defines all legal items and values for the gcylc user config file,
 which should be located in ``$HOME/.cylc/gcylc.rc``. Current settings
 can be printed with the ``cylc get-gui-config`` command.
 
+
 Top Level Items
 ---------------
 
@@ -213,12 +214,14 @@ Sets the size (in pixels) of the cylc GUI at startup.
 
 This section may contain task state color theme definitions.
 
+
 [themes] ``->`` [[THEME]]
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The name of the task state color-theme to be defined in this section.
 
 - *type*: string
+
 
 [themes] ``->`` [[THEME]] ``->`` inherit
 """"""""""""""""""""""""""""""""""""""""
@@ -227,6 +230,7 @@ You can inherit from another theme in order to avoid defining all states.
 
 - *type*: string (parent theme name)
 - *default*: ``default``
+
 
 [themes] ``->`` [[THEME]] ``->`` defaults
 """""""""""""""""""""""""""""""""""""""""
@@ -243,6 +247,7 @@ the X11 ``rgb.txt`` file, e.g. ``SteelBlue``; or hexadecimal color codes, e.g.
 ``#ff0000`` for red; and ``STYLE`` can be ``filled`` or ``unfilled``.
 See ``etc/gcylc.rc.eg`` and ``etc/gcylc-themes.rc`` in
 the Cylc installation directory for examples.
+
 
 [themes] ``->`` [[THEME]] ``->`` STATE
 """"""""""""""""""""""""""""""""""""""

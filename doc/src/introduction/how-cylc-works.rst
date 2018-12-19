@@ -8,9 +8,6 @@ How Cylc Works
 Scheduling Forecast Suites
 --------------------------
 
-.. todo::
-   Fix numbered Figure referencing: can't get working with numfig & :numref:.
-
 Environmental forecasting suites generate forecast products from a
 potentially large group of interdependent scientific models and
 associated data processing tasks. They are constrained by availability
@@ -80,29 +77,26 @@ upstream tasks.
 .. _fig-dep-one:
 
 .. figure:: ../graphics/png/orig/dep-one-cycle.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    A single cycle point dependency graph for a simple suite.
-    The dependency graph for a single forecast cycle point of a simple
-    example suite. Tasks *a*, *b*, and *c* represent forecast models,
-    *d*, *e* and *f* are post processing or product generation
-    tasks, and *x* represents external data that the upstream
-    forecast model depends on.
-
+   A single cycle point dependency graph for a simple suite.
+   The dependency graph for a single forecast cycle point of a simple
+   example suite. Tasks *a*, *b*, and *c* represent forecast models,
+   *d*, *e* and *f* are post processing or product generation
+   tasks, and *x* represents external data that the upstream
+   forecast model depends on.
 
 .. _fig-time-one:
 
 .. figure:: ../graphics/png/orig/timeline-one.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    A single cycle point job schedule for real time operation.
-    The optimal job schedule for two consecutive cycle points of our
-    example suite during real time operation, assuming that all tasks
-    trigger off upstream tasks finishing completely. The horizontal
-    extent of a task bar represents its execution time, and the vertical
-    blue lines show when the external driving data becomes available.
+   A single cycle point job schedule for real time operation.
+   The optimal job schedule for two consecutive cycle points of our
+   example suite during real time operation, assuming that all tasks
+   trigger off upstream tasks finishing completely. The horizontal
+   extent of a task bar represents its execution time, and the vertical
+   blue lines show when the external driving data becomes available.
 
 :ref:`Figure X <fig-time-one>` shows the optimal job schedule for two
 consecutive cycle points of the example suite in real time operation, given
@@ -116,36 +110,30 @@ diagrams.
 .. _fig-dep-two-linked:
 
 .. figure:: ../graphics/png/orig/dep-two-cycles-linked.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    What if the external driving data is available early? If the external
-    driving data is available in advance, can we start running the next cycle
-    point early?
-
+   What if the external driving data is available early? If the external
+   driving data is available in advance, can we start running the next cycle
+   point early?
 
 .. _fig-overlap:
 
 .. figure:: ../graphics/png/orig/timeline-one-c.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    Attempted overlap of consecutive single-cycle-point job
-    schedules. A naive attempt to overlap two consecutive cycle
-    points using the single-cycle-point dependency graph. The red shaded
-    tasks will fail because of dependency violations (or will not be able to
-    run because of upstream dependency violations).
-
+   Attempted overlap of consecutive single-cycle-point job
+   schedules. A naive attempt to overlap two consecutive cycle
+   points using the single-cycle-point dependency graph. The red shaded
+   tasks will fail because of dependency violations (or will not be able to
+   run because of upstream dependency violations).
 
 .. _fig-job-no-overlap:
 
 .. figure:: ../graphics/png/orig/timeline-one-a.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    The only safe multi-cycle-point job schedule? The best that can be done
-    *in general* when inter-cycle dependence is ignored.
-
+   The only safe multi-cycle-point job schedule? The best that can be done
+   *in general* when inter-cycle dependence is ignored.
 
 Now the question arises, what happens if the external driving data for
 upcoming cycle points is available in advance, as it would be after a
@@ -211,26 +199,23 @@ contention or task failures) won't result in dependency violations.
 .. _fig-dep-multi:
 
 .. figure:: ../graphics/png/orig/dep-multi-cycle.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    The complete multi-cycle-point dependency graph.
-    The complete dependency graph for the example suite, assuming
-    the least possible inter-cycle dependence: the forecast models (*a*,
-    *b*, and *c*) depend on their own previous instances. The dashed arrows
-    show connections to previous and subsequent forecast cycle points.
-
+   The complete multi-cycle-point dependency graph.
+   The complete dependency graph for the example suite, assuming
+   the least possible inter-cycle dependence: the forecast models (*a*,
+   *b*, and *c*) depend on their own previous instances. The dashed arrows
+   show connections to previous and subsequent forecast cycle points.
 
 .. _fig-optimal-two:
 
 .. figure:: ../graphics/png/orig/timeline-two-cycles-optimal.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    The optimal two-cycle-point job schedule. The optimal two cycle job
-    schedule when the next cycle's driving data is available in
-    advance, possible in principle when inter-cycle dependence is
-    handled explicitly.
+   The optimal two-cycle-point job schedule. The optimal two cycle job
+   schedule when the next cycle's driving data is available in
+   advance, possible in principle when inter-cycle dependence is
+   handled explicitly.
 
 :ref:`Figure X <fig-optimal-two>` shows, in contrast to
 :ref:`Figure X <fig-overlap>`, the optimal two cycle point job schedule
@@ -245,32 +230,29 @@ with dependency violations.
 .. _fig-time-three:
 
 .. figure:: ../graphics/png/orig/timeline-three.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    Comparison of job schedules after a delay. Job
-    schedules for the example suite after a delay of almost one whole
-    forecast cycle point, when inter-cycle dependence is
-    taken into account (above the time axis), and when it is not
-    (below the time axis). The colored lines indicate the time that
-    each cycle point is delayed, and normal "caught up" cycle points
-    are shaded gray.
-
+   Comparison of job schedules after a delay. Job
+   schedules for the example suite after a delay of almost one whole
+   forecast cycle point, when inter-cycle dependence is
+   taken into account (above the time axis), and when it is not
+   (below the time axis). The colored lines indicate the time that
+   each cycle point is delayed, and normal "caught up" cycle points
+   are shaded gray.
 
 .. _fig-time-two:
 
 .. figure:: ../graphics/png/orig/timeline-two.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    Optimal job schedule when all external data is
-    available. Job schedules for the example suite in case study
-    mode, or after a long delay, when the external driving data are
-    available many cycle points in advance. Above the time axis is the optimal
-    schedule obtained when the suite is constrained only by its true
-    dependencies, as in :ref:`Figure X <fig-dep-two-linked>`, and underneath
-    is the best that can be done, in general, when inter-cycle
-    dependence is ignored.
+   Optimal job schedule when all external data is
+   available. Job schedules for the example suite in case study
+   mode, or after a long delay, when the external driving data are
+   available many cycle points in advance. Above the time axis is the optimal
+   schedule obtained when the suite is constrained only by its true
+   dependencies, as in :ref:`Figure X <fig-dep-two-linked>`, and underneath
+   is the best that can be done, in general, when inter-cycle
+   dependence is ignored.
 
 To further illustrate the potential benefits of proper inter-cycle
 dependency handling, :ref:`Figure X <fig-time-three>` shows an operational
@@ -315,16 +297,14 @@ The Cylc Scheduling Algorithm
 .. _fig-task-pool:
 
 .. figure:: ../graphics/png/orig/task-pool.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    The cylc task pool. How cylc sees a suite, in contrast to the
-    multi-cycle-point dependency graph of :ref:`Figure X <fig-dep-multi>`.
-    Task colors represent different cycle points, and the small squares
-    and circles represent different prerequisites and outputs. A task
-    can run when its prerequisites are satisfied by the outputs
-    of other tasks in the pool.
-
+   The cylc task pool. How cylc sees a suite, in contrast to the
+   multi-cycle-point dependency graph of :ref:`Figure X <fig-dep-multi>`.
+   Task colors represent different cycle points, and the small squares
+   and circles represent different prerequisites and outputs. A task
+   can run when its prerequisites are satisfied by the outputs
+   of other tasks in the pool.
 
 Cylc manages a pool of proxy objects that represent the real tasks in a
 suite. Task proxies know how to run the real tasks that they represent,

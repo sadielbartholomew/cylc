@@ -235,10 +235,9 @@ show an inlined copy of the suite with correct line numbers
 Validation does not check the validity of chosen batch systems.
 
 .. todo::
-   original TODO:
 
-   %this is to allow users to extend cylc with their own job submission
-   %methods, which are by definition unknown to the suite.rc spec.
+   This is to allow users to extend cylc with their own job submission
+   methods, which are by definition unknown to the suite.rc spec.
 
 
 .. _ConfiguringScheduling:
@@ -590,7 +589,7 @@ that it can be written as:
 
 with example graph headings for each form being:
 
-.. code-block:: none
+.. code-block:: cylc
 
    [[[ R5/T00 ]]]           # Run 5 times at 00:00 every day
    [[[ R//PT1H ]]]          # Run every hour (Note the R// is redundant)
@@ -644,7 +643,7 @@ cylc with a collapsed form:
 
 So, for example, you can write:
 
-.. code-block:: none
+.. code-block:: cylc
 
    [[[ R1//+P0D ]]]  # Run once at the final cycle point
    [[[ R5/P1D ]]]    # Run 5 times, every 1 day, ending at the final
@@ -663,7 +662,7 @@ Referencing The Initial And Final Cycle Points
 For convenience the caret and dollar symbols may be used as shorthand for the
 initial and final cycle points. Using this shorthand you can write:
 
-.. code-block:: none
+.. code-block:: cylc
 
    [[[ R1/^+PT12H ]]]  # Repeat once 12 hours after the initial cycle point
                        # R[limit]/[date-time]
@@ -680,7 +679,7 @@ initial and final cycle points. Using this shorthand you can write:
    There can be multiple ways to write the same headings, for instance
    the following all run once at the final cycle point:
 
-   .. code-block:: none
+   .. code-block:: cylc
 
       [[[ R1/P0Y ]]]      # R[limit]/[interval]
       [[[ R1/P0Y/$ ]]]    # R[limit]/[interval]/[date-time]
@@ -731,7 +730,7 @@ excluded from the main sequence.
 
 For example, partial date-times can be excluded using the syntax:
 
-.. code-block:: none
+.. code-block:: cylc
 
    [[[ PT1H ! T12 ]]]          # Run hourly but not at 12:00 from the initial
                                # cycle point.
@@ -743,7 +742,7 @@ For example, partial date-times can be excluded using the syntax:
 
 It is also valid to use sequences for exclusions. For example:
 
-.. code-block:: none
+.. code-block:: cylc
 
    [[[ PT1H ! PT6H ]]]         # Run hourly from the initial cycle point but
                                # not 6-hourly from the intial cycle point.
@@ -765,7 +764,7 @@ It is also valid to use sequences for exclusions. For example:
 You can combine exclusion sequences and single point exclusions within a
 comma separated list enclosed in parentheses:
 
-.. code-block:: none
+.. code-block:: cylc
 
    [[[ T-00 ! (20000101T07, PT2H) ]]]      # Run hourly on the hour but not at 07:00
                                            # on the 1st Jan, 2000 and not 2-hourly
@@ -816,7 +815,7 @@ Advanced Examples
 
 The following examples show the various ways of writing graph headings in cylc.
 
-.. code-block:: none
+.. code-block:: cylc
 
    [[[ R1 ]]]         # Run once at the initial cycle point
    [[[ P1D ]]]        # Run every day starting at the initial cycle point
@@ -1052,7 +1051,7 @@ The full integer recurrence expressions supported are:
 But, as for date-time cycling, sequence start and end points can be omitted
 where suite initial and final cycle points can be assumed. Some examples:
 
-.. code-block:: none
+.. code-block:: cylc
 
    [[[ R1 ]]]        # Run once at the initial cycle point
                      # (short for R1/initial-point/?)
@@ -1091,9 +1090,9 @@ shown in :ref:`Figure X <fig-satellite>`.
 .. _fig-satellite:
 
 .. figure:: ../graphics/png/orig/satellite.png
-    :align: center
+   :align: center
 
-    The ``etc/examples/satellite`` integer suite.
+   The ``etc/examples/satellite`` integer suite.
 
 
 Advanced Integer Cycling Syntax
@@ -1104,7 +1103,7 @@ The same syntax used to reference the initial and final cycle points
 use with date-time cycling can also be used for integer cycling. For
 example you can write:
 
-.. code-block:: none
+.. code-block:: cylc
 
    [[[ R1/^ ]]]     # Run once at the initial cycle point
    [[[ R1/$ ]]]     # Run once at the final cycle point
@@ -1115,7 +1114,7 @@ Likewise the syntax introduced in :ref:`excluding-dates` for excluding
 a particular point from a recurrence also works for integer cycling. For
 example:
 
-.. code-block:: none
+.. code-block:: cylc
 
    [[[ R/P4!8 ]]]       # Run with step 4, to the final cycle point
                         # but not at point 8
@@ -1128,7 +1127,7 @@ Multiple integer exclusions are also valid in the same way as the syntax
 in :ref:`excluding-dates`. Integer exclusions may be a list of single
 integer points, an integer sequence, or a combination of both:
 
-.. code-block:: none
+.. code-block:: cylc
 
    [[[ R/P1!(2,3,7) ]]]  # Run with step 1 to the final cycle point,
                          # but not at points 2, 3, or 7.
@@ -2023,9 +2022,9 @@ cycle point:
 .. _ghost-node-screenshot:
 
 .. figure:: ../graphics/png/orig/ghost-node-example.png
-    :align: center
+   :align: center
 
-    Screenshot of ``cylc graph`` showing one task as a "ghost node".
+   Screenshot of ``cylc graph`` showing one task as a "ghost node".
 
 
 .. _NIORP:
@@ -2518,33 +2517,34 @@ failed).
 task families in the *namespaces* example suite.
 
 .. todo::
-   use proper sub-figures, this is just a hack to link first and
-   caption last, as displayed in turn.
+
+   Create sub-figures if possible: for now hacked as separate figures with
+   link to first, and caption on final, displayed figure.
 
 .. _fig-namespaces:
 
 .. figure:: ../graphics/png/orig/inherit-2.png
-    :align: center
+   :align: center
 
 .. figure:: ../graphics/png/orig/inherit-3.png
-    :align: center
+   :align: center
 
 .. figure:: ../graphics/png/orig/inherit-4.png
-    :align: center
+   :align: center
 
 .. figure:: ../graphics/png/orig/inherit-5.png
-    :align: center
+   :align: center
 
 .. figure:: ../graphics/png/orig/inherit-6.png
-    :align: center
+   :align: center
 
 .. figure:: ../graphics/png/orig/inherit-7.png
-    :align: center
+   :align: center
 
-    Graphs of the *namespaces* example suite showing various states of
-    expansion of the nested namespace family hierarchy, from all families
-    collapsed (top left) through to all expanded (bottom right). This
-    can also be done by right-clicking on tasks in the gcylc graph view.
+   Graphs of the *namespaces* example suite showing various states of
+   expansion of the nested namespace family hierarchy, from all families
+   collapsed (top left) through to all expanded (bottom right). This
+   can also be done by right-clicking on tasks in the gcylc graph view.
 
 
 .. _Parameterized Tasks Label:
@@ -2705,17 +2705,16 @@ Here's a more complex graph using two parameters (``[runtime]`` omitted):
                          post<run,mem> => wrap<run> => done"""
 
 .. todo::
-   original TODO:
 
-   %which expands to:
+   \.\.\. which expands to:
 
-   %[scheduling]
-   %    [[dependencies]]
-   %        graph = """
-   %            prep => init_run1 => model_run1_cat => post_run1_cat => wrap_run1 => done
-   %                init_run1 => model_run1_dog => post_run2_dog => wrap_run1
-   %            prep => init_run2 => model_run2_cat => post_run2_cat => wrap_run2 => done
-   %                init_run2 => model_run2_dog => post_run2_dog => wrap_run2"""
+   [scheduling]
+       [[dependencies]]
+           graph = """
+               prep => init_run1 => model_run1_cat => post_run1_cat => wrap_run1 => done
+                   init_run1 => model_run1_dog => post_run2_dog => wrap_run1
+               prep => init_run2 => model_run2_cat => post_run2_cat => wrap_run2 => done
+                   init_run2 => model_run2_dog => post_run2_dog => wrap_run2"""
 
 :ref:`Figure X <fig-params-1>` shows the result as visualized by
 ``cylc graph``.
@@ -2723,9 +2722,9 @@ Here's a more complex graph using two parameters (``[runtime]`` omitted):
 .. _fig-params-1:
 
 .. figure:: ../graphics/png/orig/params1.png
-    :align: center
+   :align: center
 
-    Parameter expansion example.
+   Parameter expansion example.
 
 
 Zero-Padded Integer Values
@@ -3095,19 +3094,20 @@ date-time arithmetic has to be done by the user; and the full extent of the
 workflow will be visible at all times as the suite runs.
 
 .. todo::
-   sub-figure add-in.
+   Create sub-figures if possible: for now hacked as separate figures with
+   link to first, and caption on final, displayed figure.
 
 .. _fig-eg2:
 
 .. figure:: ../graphics/png/orig/eg2-static.png
-    :align: center
+   :align: center
 
 .. figure:: ../graphics/png/orig/eg2-dynamic.png
-    :align: center
+   :align: center
 
-    Parameterized (top) and cycling (bottom) versions of the same
-    workflow. The first three cycle points are shown in the
-    cycling case. The parameterized case does not have "cycle points".
+   Parameterized (top) and cycling (bottom) versions of the same
+   workflow. The first three cycle points are shown in the
+   cycling case. The parameterized case does not have "cycle points".
 
 Here's a yearly-cycling suite with four parameterized chunks in each cycle
 point:
@@ -3232,9 +3232,9 @@ with standard programming techniques.
 .. _fig-jinja2-ensemble:
 
 .. figure:: ../graphics/png/orig/jinja2-ensemble-graph.png
-    :align: center
+   :align: center
 
-    The Jinja2 ensemble example suite graph.
+   The Jinja2 ensemble example suite graph.
 
 
 The ``jinja2.ensemble`` example, graphed in
@@ -3284,10 +3284,10 @@ ADD-IN: \lstinputlisting{../../../etc/examples/jinja2/cities/suite.rc}
 .. _fig-jinja2-cities:
 
 .. figure:: ../graphics/png/orig/jinja2-suite-graph.png
-    :align: center
+   :align: center
 
-    The Jinja2 cities example suite graph, with the
-    New York City task family expanded.
+   The Jinja2 cities example suite graph, with the
+   New York City task family expanded.
 
 
 Accessing Environment Variables With Jinja2

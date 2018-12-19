@@ -15,10 +15,10 @@ cylc on suite configurations:
 
 .. code-block:: cylc
 
-    # $HOME/.cylc/$(cylc --version)/global.rc
-    [editors]
-        terminal = vim
-        gui = gvim -f
+   # $HOME/.cylc/$(cylc --version)/global.rc
+   [editors]
+       terminal = vim
+       gui = gvim -f
 
 - For more on site and user global config files
   see :ref:`SiteAndUserConfiguration` and :ref:`SiteRCReference`.
@@ -50,8 +50,8 @@ and their help documentation.
 
 .. code-block:: bash
 
-    $ cylc help       # Top level command help.
-    $ cylc run --help # Example command-specific help.
+   $ cylc help       # Top level command help.
+   $ cylc run --help # Example command-specific help.
 
 Command help transcripts are printed in :ref:`CommandReference` and are
 available from the GUI Help menu.
@@ -69,9 +69,9 @@ GUI does not affect the suite itself.
 
 .. code-block:: bash
 
-    $ gcylc & # or:
-    $ cylc gui & # Single suite control GUI.
-    $ cylc gscan & # Multi-suite monitor GUI.
+   $ gcylc & # or:
+   $ cylc gui & # Single suite control GUI.
+   $ cylc gscan & # Multi-suite monitor GUI.
 
 Clicking on a suite in gscan, shown in :ref:`Figure X <fig-gscan>`, opens a
 gcylc instance for it.
@@ -98,19 +98,19 @@ suites have to target the suite by name.
 
 .. code-block:: bash
 
-    # Target a suite by file path:
-    $ cylc validate /path/to/my/suite/suite.rc
-    $ cylc graph /path/to/my/suite/suite.rc
+   # Target a suite by file path:
+   $ cylc validate /path/to/my/suite/suite.rc
+   $ cylc graph /path/to/my/suite/suite.rc
 
-    # Register a suite:
-    $ cylc register my.suite /path/to/my/suite/
+   # Register a suite:
+   $ cylc register my.suite /path/to/my/suite/
 
-    # Target a suite by name:
-    $ cylc graph my.suite
-    $ cylc validate my.suite
-    $ cylc run my.suite
-    $ cylc stop my.suite
-    # etc.
+   # Target a suite by name:
+   $ cylc graph my.suite
+   $ cylc validate my.suite
+   $ cylc run my.suite
+   $ cylc stop my.suite
+   # etc.
 
 
 .. _tutPassphrases:
@@ -153,12 +153,12 @@ Make the tutorial suite names shorter, and print their locations with
 
 .. code-block:: bash
 
-    $ mv ~/cylc-run/examples/$(cylc --version)/tutorial ~/cylc-run/tut
-    $ cylc print -ya tut
-    tut/oneoff/jinja2  | /tmp/cylc-examples/7.0.0/tutorial/oneoff/jinja2
-    tut/cycling/two    | /tmp/cylc-examples/7.0.0/tutorial/cycling/two
-    tut/cycling/three  | /tmp/cylc-examples/7.0.0/tutorial/cycling/three
-    # ...
+   $ mv ~/cylc-run/examples/$(cylc --version)/tutorial ~/cylc-run/tut
+   $ cylc print -ya tut
+   tut/oneoff/jinja2  | /tmp/cylc-examples/7.0.0/tutorial/oneoff/jinja2
+   tut/cycling/two    | /tmp/cylc-examples/7.0.0/tutorial/cycling/two
+   tut/cycling/three  | /tmp/cylc-examples/7.0.0/tutorial/cycling/three
+   # ...
 
 See ``cylc print --help`` for other display options.
 
@@ -169,16 +169,16 @@ Suite configurations can be validated to detect syntax (and other) errors:
 
 .. code-block:: bash
 
-    # pass:
-    $ cylc validate tut/oneoff/basic
-    Valid for cylc-6.0.0
-    $ echo $?
-    0
-    # fail:
-    $ cylc validate my/bad/suite
-    Illegal item: [scheduling]special tusks
-    $ echo $?
-    1
+   # pass:
+   $ cylc validate tut/oneoff/basic
+   Valid for cylc-6.0.0
+   $ echo $?
+   0
+   # fail:
+   $ cylc validate my/bad/suite
+   Illegal item: [scheduling]special tusks
+   $ echo $?
+   1
 
 
 Hello World in Cylc
@@ -264,25 +264,25 @@ that you can exit the terminal or even log out without killing the suite:
 
 .. code-block:: bash
 
-    $ cylc run tut/oneoff/basic
-                ._.
-                | |                 The Cylc Suite Engine [7.0.0]
-    ._____._. ._| |_____.           Copyright (C) 2008-2018 NIWA & British Crown (Met Office) & Contributors.
-    | .___| | | | | .___|  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-    | !___| !_! | | !___.  This program comes with ABSOLUTELY NO WARRANTY;
-    !_____!___. |_!_____!  see `cylc warranty`.  It is free software, you
-          .___! |           are welcome to redistribute it under certain
-          !_____!                conditions; see `cylc conditions`.
+   $ cylc run tut/oneoff/basic
+               ._.
+               | |                 The Cylc Suite Engine [7.0.0]
+   ._____._. ._| |_____.           Copyright (C) 2008-2018 NIWA & British Crown (Met Office) & Contributors.
+   | .___| | | | | .___|  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+   | !___| !_! | | !___.  This program comes with ABSOLUTELY NO WARRANTY;
+   !_____!___. |_!_____!  see `cylc warranty`.  It is free software, you
+         .___! |           are welcome to redistribute it under certain
+         !_____!                conditions; see `cylc conditions`.
 
-    *** listening on https://nwp-1:43027/ ***
+   *** listening on https://nwp-1:43027/ ***
 
-    To view suite server program contact information:
-     $ cylc get-suite-contact tut/oneoff/basic
+   To view suite server program contact information:
+    $ cylc get-suite-contact tut/oneoff/basic
 
-    Other ways to see if the suite is still running:
-     $ cylc scan -n '\btut/oneoff/basic\b' nwp-1
-     $ cylc ping -v --host=nwp-1 tut/oneoff/basic
-     $ ps h -opid,args 123456  # on nwp-1
+   Other ways to see if the suite is still running:
+    $ cylc scan -n '\btut/oneoff/basic\b' nwp-1
+    $ cylc ping -v --host=nwp-1 tut/oneoff/basic
+    $ ps h -opid,args 123456  # on nwp-1
 
 
 If you're quick enough (this example only takes 10-15 seconds to run) the
@@ -290,8 +290,8 @@ If you're quick enough (this example only takes 10-15 seconds to run) the
 
 .. code-block:: bash
 
-    $ cylc scan
-    tut/oneoff/basic oliverh@nwp-1:43027
+   $ cylc scan
+   tut/oneoff/basic oliverh@nwp-1:43027
 
 .. note::
 
@@ -320,7 +320,7 @@ are already running:
 
 .. code-block:: bash
 
-    $ cylc gui tut/oneoff/basic &
+   $ cylc gui tut/oneoff/basic &
 
 Use the tool bar *Play* button, or the *Control* ``->`` *Run* menu item, to
 run the suite again. You may want to alter the suite configuration slightly
@@ -356,12 +356,12 @@ GUI tools:
 
 .. code-block:: bash
 
-    # list currently running suites and their port numbers:
-    $ cylc scan
-    tut/oneoff/basic oliverh@nwp-1:43001
+   # list currently running suites and their port numbers:
+   $ cylc scan
+   tut/oneoff/basic oliverh@nwp-1:43001
 
-    # GUI summary view of running suites:
-    $ cylc gscan &
+   # GUI summary view of running suites:
+   $ cylc gscan &
 
 The scan GUI is shown in :ref:`Figure X <fig-gscan>`; clicking on a suite in
 it opens gcylc.
@@ -376,8 +376,8 @@ usually a date-time or an integer:
 
 .. code-block:: bash
 
-    foo.20100808T00Z   # a task with a date-time cycle point
-    bar.1              # a task with an integer cycle point (could be non-cycling)
+   foo.20100808T00Z   # a task with a date-time cycle point
+   bar.1              # a task with an integer cycle point (could be non-cycling)
 
 Non-cycling tasks usually just have the cycle point ``1``, but this
 still has to be used to target the task instance with cylc commands.
@@ -421,11 +421,11 @@ as in ``tut/oneoff/jobsub``:
 
 .. code-block:: cylc
 
-    [runtime]
-        [[hello]]
-            script = "sleep 10; echo Hello World!"
-            [[[job]]]
-                batch system = at
+   [runtime]
+       [[hello]]
+           script = "sleep 10; echo Hello World!"
+           [[[job]]]
+               batch system = at
 
 Run the suite again after checking that ``at`` is running on your
 system.
@@ -450,35 +450,35 @@ time-stamped suite log file, and task job scripts and job logs
 
 .. code-block:: bash
 
-    $ tree $HOME/cylc-run/tut/oneoff/basic/
-    |-- .service              # location of run time service files
-    |    |-- contact          # detail on how to contact the running suite
-    |    |-- db               # private suite run database
-    |    |-- passphrase       # passphrase for client authentication
-    |    |-- source           # symbolic link to source directory
-    |    |-- ssl.cert         # SSL certificate for the suite server
-    |    `-- ssl.pem          # SSL private key
-    |-- cylc-suite.db         # back compat symlink to public suite run database
-    |-- share                 # suite share directory (not used in this example)
-    |-- work                  # task work space (sub-dirs are deleted if not used)
-    |    `-- 1                   # task cycle point directory (or 1)
-    |        `-- hello              # task work directory (deleted if not used)
-    |-- log                   # suite log directory
-    |   |-- db                   # public suite run database
-    |   |-- job                  # task job log directory
-    |   |   `-- 1                   # task cycle point directory (or 1)
-    |   |       `-- hello              # task name
-    |   |           |-- 01                # task submission number
-    |   |           |   |-- job              # task job script
-    |   |           |   `-- job-activity.log # task job activity log
-    |   |           |   |-- job.err          # task stderr log
-    |   |           |   |-- job.out          # task stdout log
-    |   |           |   `-- job.status       # task status file
-    |   |           `-- NN -> 01          # symlink to latest submission number
-    |   `-- suite                # suite server log directory
-    |       |-- err                 # suite server stderr log (daemon mode only)
-    |       |-- out                 # suite server stdout log (daemon mode only)
-    |       `-- log                 # suite server event log (timestamped info)
+   $ tree $HOME/cylc-run/tut/oneoff/basic/
+   |-- .service              # location of run time service files
+   |    |-- contact          # detail on how to contact the running suite
+   |    |-- db               # private suite run database
+   |    |-- passphrase       # passphrase for client authentication
+   |    |-- source           # symbolic link to source directory
+   |    |-- ssl.cert         # SSL certificate for the suite server
+   |    `-- ssl.pem          # SSL private key
+   |-- cylc-suite.db         # back compat symlink to public suite run database
+   |-- share                 # suite share directory (not used in this example)
+   |-- work                  # task work space (sub-dirs are deleted if not used)
+   |    `-- 1                   # task cycle point directory (or 1)
+   |        `-- hello              # task work directory (deleted if not used)
+   |-- log                   # suite log directory
+   |   |-- db                   # public suite run database
+   |   |-- job                  # task job log directory
+   |   |   `-- 1                   # task cycle point directory (or 1)
+   |   |       `-- hello              # task name
+   |   |           |-- 01                # task submission number
+   |   |           |   |-- job              # task job script
+   |   |           |   `-- job-activity.log # task job activity log
+   |   |           |   |-- job.err          # task stderr log
+   |   |           |   |-- job.out          # task stdout log
+   |   |           |   `-- job.status       # task status file
+   |   |           `-- NN -> 01          # symlink to latest submission number
+   |   `-- suite                # suite server log directory
+   |       |-- err                 # suite server stderr log (daemon mode only)
+   |       |-- out                 # suite server stdout log (daemon mode only)
+   |       `-- log                 # suite server event log (timestamped info)
 
 The suite run database files, suite environment file,
 and task status files are used internally by cylc. Tasks execute in
@@ -502,14 +502,14 @@ with the ``cylc cat-log`` command:
 
 .. code-block:: bash
 
-    # suite logs:
-    $ cylc cat-log    tut/oneoff/basic           # suite event log
-    $ cylc cat-log -o tut/oneoff/basic           # suite stdout log
-    $ cylc cat-log -e tut/oneoff/basic           # suite stderr log
-    # task logs:
-    $ cylc cat-log    tut/oneoff/basic hello.1   # task job script
-    $ cylc cat-log -o tut/oneoff/basic hello.1   # task stdout log
-    $ cylc cat-log -e tut/oneoff/basic hello.1   # task stderr log
+   # suite logs:
+   $ cylc cat-log    tut/oneoff/basic           # suite event log
+   $ cylc cat-log -o tut/oneoff/basic           # suite stdout log
+   $ cylc cat-log -e tut/oneoff/basic           # suite stderr log
+   # task logs:
+   $ cylc cat-log    tut/oneoff/basic hello.1   # task job script
+   $ cylc cat-log -o tut/oneoff/basic hello.1   # task stdout log
+   $ cylc cat-log -e tut/oneoff/basic hello.1   # task stderr log
 
 - For a web-based interface to suite and task logs (and much more),
   see *Rose* in :ref:`SuiteStorageEtc`.
@@ -527,10 +527,9 @@ Cylc Review. It displays suite information in web pages, as shown in
 .. _fig-review-screenshot:
 
 .. figure:: ../graphics/png/orig/cylc-review-screenshot.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    Screenshot of a Cylc Review web page
+   Screenshot of a Cylc Review web page
 
 If a Cylc Review server is provided at your site, you can open the Cylc
 Review page for a suite by running the ``cylc review`` command.
@@ -596,11 +595,11 @@ host instead change its runtime configuration as in ``tut/oneoff/remote``:
 
 .. code-block:: cylc
 
-    [runtime]
-        [[hello]]
-            script = "sleep 10; echo Hello World!"
-            [[[remote]]]
-                host = server1.niwa.co.nz
+   [runtime]
+       [[hello]]
+           script = "sleep 10; echo Hello World!"
+           [[[remote]]]
+               host = server1.niwa.co.nz
 
 In general, a *task remote* is a user account, other than the account
 running the suite server program, where a task job is submitted to run. It can
@@ -638,12 +637,12 @@ automatically do this:
 
 .. code-block:: cylc
 
-    [runtime]
-        [[hello]]
-            script = "sleep 10; echo Hello World!"
-            [[[remote]]]
-                host = server1.niwa.co.nz
-                retrieve job logs = True
+   [runtime]
+       [[hello]]
+           script = "sleep 10; echo Hello World!"
+           [[[remote]]]
+               host = server1.niwa.co.nz
+               retrieve job logs = True
 
 This suite will attempt to ``rsync`` job logs from the remote
 host each time a task job completes.
@@ -655,14 +654,14 @@ retrieval by setting some delays. E.g.:
 
 .. code-block:: cylc
 
-    [runtime]
-        [[hello]]
-            script = "sleep 10; echo Hello World!"
-            [[[remote]]]
-                host = server1.niwa.co.nz
-                retrieve job logs = True
-                # Retry after 10 seconds, 1 minute and 3 minutes
-                retrieve job logs retry delays = PT10S, PT1M, PT3M
+   [runtime]
+       [[hello]]
+           script = "sleep 10; echo Hello World!"
+           [[[remote]]]
+               host = server1.niwa.co.nz
+               retrieve job logs = True
+               # Retry after 10 seconds, 1 minute and 3 minutes
+               retrieve job logs retry delays = PT10S, PT1M, PT3M
 
 
 Finally, if the disk space of the suite host is limited, you may want to set
@@ -672,15 +671,14 @@ be anything that is accepted by the ``--max-size=SIZE`` option of the
 
 .. code-block:: cylc
 
-    [runtime]
-        [[hello]]
-            script = "sleep 10; echo Hello World!"
-            [[[remote]]]
-                host = server1.niwa.co.nz
-                retrieve job logs = True
-                # Don't get anything bigger than 10MB
-                retrieve job logs max size = 10M
-
+   [runtime]
+       [[hello]]
+           script = "sleep 10; echo Hello World!"
+           [[[remote]]]
+               host = server1.niwa.co.nz
+               retrieve job logs = True
+               # Don't get anything bigger than 10MB
+               retrieve job logs max size = 10M
 
 It is worth noting that cylc uses the existence of a job's ``job.out``
 or ``job.err`` in the local file system to indicate a successful job
@@ -713,48 +711,48 @@ as in ``tut/oneoff/goodbye``:
 
 .. code-block:: cylc
 
-    [scheduling]
-        [[dependencies]]
-            graph = "hello => goodbye"
+   [scheduling]
+       [[dependencies]]
+           graph = "hello => goodbye"
 
 or to trigger it at the same time as ``hello``,
 
 .. code-block:: cylc
 
-    [scheduling]
-        [[dependencies]]
-            graph = "hello & goodbye"
+   [scheduling]
+       [[dependencies]]
+           graph = "hello & goodbye"
 
 and configure the new task's behaviour under ``[runtime]``:
 
 .. code-block:: cylc
 
-    [runtime]
-        [[goodbye]]
-            script = "sleep 10; echo Goodbye World!"
+   [runtime]
+       [[goodbye]]
+           script = "sleep 10; echo Goodbye World!"
 
 Run ``tut/oneoff/goodbye`` and check the output from the new task:
 
 .. code-block:: bash
 
-    $ cat ~/cylc-run/tut/oneoff/goodbye/log/job/1/goodbye/01/job.out
-      # or
-    $ cylc cat-log -o tut/oneoff/goodbye goodbye.1
-    JOB SCRIPT STARTING
-    cylc (scheduler - 2014-08-14T15:09:30+12): goodbye.1 started at 2014-08-14T15:09:30+12
-    cylc Suite and Task Identity:
-      Suite Name  : tut/oneoff/goodbye
-      Suite Host  : oliverh-34403dl.niwa.local
-      Suite Port  : 43001
-      Suite Owner : oliverh
-      Task ID     : goodbye.1
-      Task Host   : nwp-1
-      Task Owner  : oliverh
-      Task Try No.: 1
+   $ cat ~/cylc-run/tut/oneoff/goodbye/log/job/1/goodbye/01/job.out
+     # or
+   $ cylc cat-log -o tut/oneoff/goodbye goodbye.1
+   JOB SCRIPT STARTING
+   cylc (scheduler - 2014-08-14T15:09:30+12): goodbye.1 started at 2014-08-14T15:09:30+12
+   cylc Suite and Task Identity:
+     Suite Name  : tut/oneoff/goodbye
+     Suite Host  : oliverh-34403dl.niwa.local
+     Suite Port  : 43001
+     Suite Owner : oliverh
+     Task ID     : goodbye.1
+     Task Host   : nwp-1
+     Task Owner  : oliverh
+     Task Try No.: 1
 
-    Goodbye World!
-    cylc (scheduler - 2014-08-14T15:09:40+12): goodbye.1 succeeded at 2014-08-14T15:09:40+12
-    JOB SCRIPT EXITING (TASK SUCCEEDED)
+   Goodbye World!
+   cylc (scheduler - 2014-08-14T15:09:40+12): goodbye.1 succeeded at 2014-08-14T15:09:40+12
+   JOB SCRIPT EXITING (TASK SUCCEEDED)
 
 
 Task Failure And Suicide Triggering
@@ -767,19 +765,19 @@ to trigger off task states other than success:
 
 .. code-block:: cylc
 
-        graph = """
-     a => b        # trigger b if a succeeds
-     c:submit => d # trigger d if c submits
-     e:finish => f # trigger f if e succeeds or fails
-     g:start  => h # trigger h if g starts executing
-     i:fail   => j # trigger j if i fails
-                """
+       graph = """
+   a => b        # trigger b if a succeeds
+   c:submit => d # trigger d if c submits
+   e:finish => f # trigger f if e succeeds or fails
+   g:start  => h # trigger h if g starts executing
+   i:fail   => j # trigger j if i fails
+               """
 
 A common use of this is to automate recovery from known modes of failure:
 
 .. code-block:: cylc
 
-    graph = "goodbye:fail => really_goodbye"
+   graph = "goodbye:fail => really_goodbye"
 
 i.e. if task ``goodbye`` fails, trigger another task that
 (presumably) really says goodbye.
@@ -790,12 +788,11 @@ would hang about indefinitely in the waiting state):
 
 .. code-block:: cylc
 
-    [scheduling]
-        [[dependencies]]
-            graph = """hello => goodbye
-                goodbye:fail => really_goodbye
-             goodbye => !really_goodbye # suicide"""
-
+   [scheduling]
+       [[dependencies]]
+           graph = """hello => goodbye
+               goodbye:fail => really_goodbye
+            goodbye => !really_goodbye # suicide"""
 
 This means if ``goodbye`` fails, trigger
 ``really_goodbye``; and otherwise, if ``goodbye``
@@ -813,14 +810,13 @@ Runtime Inheritance
 
 **suite**: ``tut/oneoff/inherit``
 
-
 The ``[runtime]`` section is actually a *multiple inheritance* hierarchy.
 Each subsection is a *namespace* that represents a task, or if it is
 inherited by other namespaces, a *family*. This allows common configuration
 to be factored out of related tasks very efficiently.
 
 .. todo::
-   auto-include.
+   add-in.
 
 ADD-IN:../../../etc/examples/tutorial/oneoff/inherit/suite.rc
 
@@ -848,9 +844,9 @@ shorthand in graph trigger expressions. To see this, consider two
 
 .. code-block:: cylc
 
-    [scheduling]
-        [[dependencies]]
-            graph = "foo => greeter_1 & greeter_2"
+   [scheduling]
+       [[dependencies]]
+           graph = "foo => greeter_1 & greeter_2"
 
 If we put the common greeting functionality of ``greeter_1``
 and ``greeter_2`` into a special ``GREETERS`` family,
@@ -858,20 +854,18 @@ the graph can be expressed more efficiently like this:
 
 .. code-block:: cylc
 
-    [scheduling]
-        [[dependencies]]
-            graph = "foo => GREETERS"
-
+   [scheduling]
+       [[dependencies]]
+           graph = "foo => GREETERS"
 
 i.e. if ``foo`` succeeds, trigger all members of
 ``GREETERS`` at once. Here's the full suite with runtime
 hierarchy shown:
 
 .. todo::
-   auto-include.
+   add-in.
 
 ADD-IN: ../../../etc/examples/tutorial/oneoff/ftrigger1/suite.rc
-
 
 .. note::
 
@@ -893,21 +887,21 @@ the upstream family members. Here's how to trigger another task
 
 .. code-block:: cylc
 
-    [scheduling]
-        [[dependencies]]
-            graph = """foo => GREETERS
-                GREETERS:succeed-all => bar"""
+   [scheduling]
+       [[dependencies]]
+           graph = """foo => GREETERS
+               GREETERS:succeed-all => bar"""
 
 Verbose validation in this case reports:
 
 .. code-block:: bash
 
-    $ cylc val -v tut/oneoff/ftrigger2
-    ...
-    Graph line substitutions occurred:
-      IN: GREETERS:succeed-all => bar
-      OUT: greeter_1:succeed & greeter_2:succeed => bar
-    ...
+   $ cylc val -v tut/oneoff/ftrigger2
+   ...
+   Graph line substitutions occurred:
+     IN: GREETERS:succeed-all => bar
+     OUT: greeter_1:succeed & greeter_2:succeed => bar
+   ...
 
 Cylc ignores family member qualifiers like ``succeed-all`` on
 the right side of a trigger arrow, where they don't make sense, to
@@ -915,9 +909,9 @@ allow the two graph lines above to be combined in simple cases:
 
 .. code-block:: cylc
 
-    [scheduling]
-        [[dependencies]]
-            graph = "foo => GREETERS:succeed-all => bar"
+   [scheduling]
+       [[dependencies]]
+           graph = "foo => GREETERS:succeed-all => bar"
 
 Any task triggering status qualified by ``-all`` or
 ``-any``, for the members, can be used with a family trigger.
@@ -926,10 +920,10 @@ of ``GREETERS`` finish (succeed or fail) and any of them succeed:
 
 .. code-block:: cylc
 
-    [scheduling]
-        [[dependencies]]
-            graph = """foo => GREETERS
-        GREETERS:finish-all & GREETERS:succeed-any => bar"""
+   [scheduling]
+       [[dependencies]]
+           graph = """foo => GREETERS
+       GREETERS:finish-all & GREETERS:succeed-any => bar"""
 
 (use of ``GREETERS:succeed-any`` by itself here would trigger
 ``bar`` as soon as any one member of ``GREETERS``
@@ -939,14 +933,14 @@ two-member family:
 
 .. code-block:: bash
 
-    $ cylc val -v tut/oneoff/ftrigger2
-    ...
-    Graph line substitutions occurred:
-      IN: GREETERS:finish-all & GREETERS:succeed-any => bar
-      OUT: ( greeter_1:succeed | greeter_1:fail ) & \
-           ( greeter_2:succeed | greeter_2:fail ) & \
-           ( greeter_1:succeed | greeter_2:succeed ) => bar
-    ...
+   $ cylc val -v tut/oneoff/ftrigger2
+   ...
+   Graph line substitutions occurred:
+     IN: GREETERS:finish-all & GREETERS:succeed-any => bar
+     OUT: ( greeter_1:succeed | greeter_1:fail ) & \
+          ( greeter_2:succeed | greeter_2:fail ) & \
+          ( greeter_1:succeed | greeter_2:succeed ) => bar
+   ...
 
 Experiment with ``tut/oneoff/ftrigger2`` to see how this works.
 
@@ -961,41 +955,39 @@ You can style dependency graphs with an optional
 
 .. code-block:: cylc
 
-    [visualization]
-        default node attributes = "style=filled"
-        [[node attributes]]
-            foo = "fillcolor=#6789ab", "color=magenta"
-            GREETERS = "fillcolor=#ba9876"
-            bar = "fillcolor=#89ab67"
+   [visualization]
+       default node attributes = "style=filled"
+       [[node attributes]]
+           foo = "fillcolor=#6789ab", "color=magenta"
+           GREETERS = "fillcolor=#ba9876"
+           bar = "fillcolor=#89ab67"
 
 To display the graph in an interactive viewer:
 
 .. code-block:: bash
 
-    $ cylc graph tut/oneoff/ftrigger2 &    # dependency graph
-    $ cylc graph -n tut/oneoff/ftrigger2 & # runtime inheritance graph
+   $ cylc graph tut/oneoff/ftrigger2 &    # dependency graph
+   $ cylc graph -n tut/oneoff/ftrigger2 & # runtime inheritance graph
 
 It should look like :ref:`Figure X <fig-tut-hello-multi>` (with the
 ``GREETERS`` family node expanded on the right).
 
 .. todo::
-   put these into subfigures if sphinx supports somehow.
+   Create sub-figures if possible: for now hacked as separate figures with
+   link to first, and caption on final, displayed figure.
 
 .. _fig-tut-hello-multi:
 
 .. figure:: ../graphics/png/orig/tut-hello-multi-1.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
 .. figure:: ../graphics/png/orig/tut-hello-multi-2.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
 .. figure:: ../graphics/png/orig/tut-hello-multi-3.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    The ``tut/oneoff/ftrigger2`` dependency and runtime inheritance graphs
+   The ``tut/oneoff/ftrigger2`` dependency and runtime inheritance graphs
 
 
 Graph styling can be applied to entire families at once, and custom
@@ -1022,7 +1014,7 @@ Make the task script executable, and change the ``hello`` task
 runtime section to invoke it:
 
 .. todo::
-   auto-include.
+   add-in.
 
 ADD-IN: ../../../etc/examples/tutorial/oneoff/external/suite.rc
 
@@ -1064,7 +1056,7 @@ belonging to that sequence may only run once.
 Open the ``tut/cycling/one`` suite:
 
 .. todo::
-   auto-include.
+   add-in.
 
 ADD-IN: ../../../etc/examples/tutorial/cycling/one/suite.rc
 
@@ -1082,15 +1074,14 @@ cycling dummy tasks).
    :ref:`Figure X <fig-tut-one>`.
 
 .. todo::
-   Update? Orignial figure caption says 'Image out of date now'
+   Image out of date now.
 
 .. _fig-tut-one:
 
 .. figure:: ../graphics/png/orig/tut-one.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    The ``tut/cycling/one`` suite
+   The ``tut/cycling/one`` suite
 
 If you run this suite instances of ``foo`` will spawn in parallel out
 to the *runahead limit*, and each ``bar`` will trigger off the
@@ -1121,12 +1112,12 @@ constraints to the suite to only allow initial cycle points at ``00`` or
 
 .. code-block:: cylc
 
-    [scheduling]
-        initial cycle point = 20130808T00
-        initial cycle point constraints = T00, T12
+   [scheduling]
+       initial cycle point = 20130808T00
+       initial cycle point constraints = T00, T12
 
 .. todo::
-   Orig docs note says: 'Runahead factor now'.
+   Runahead factor now.
 
 - For a comprehensive description of ISO 8601 based date-time cycling,
   see :ref:`AdvancedCycling`
@@ -1146,11 +1137,11 @@ to the previous example:
 
 .. code-block:: cylc
 
-    [scheduling]
-        [[dependencies]]
-            # Repeat with cycle points of 00 and 12 hours every day:
-            [[[T00,T12]]]
-                graph = "foo[-PT12H] => foo => bar"
+   [scheduling]
+       [[dependencies]]
+           # Repeat with cycle points of 00 and 12 hours every day:
+           [[[T00,T12]]]
+               graph = "foo[-PT12H] => foo => bar"
 
 For any given cycle point in the sequence defined by the
 cycling graph section heading, ``bar`` triggers off
@@ -1163,11 +1154,9 @@ cycling graph sections together.
 .. _fig-tut-two:
 
 .. figure:: ../graphics/png/orig/tut-two.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    The ``tut/cycling/two`` suite
-
+   The ``tut/cycling/two`` suite
 
 Experiment with this suite to see how inter-cycle triggers work.
 
@@ -1213,17 +1202,16 @@ For example, in ``tut/cycling/three``:
 
 .. code-block:: cylc
 
-    [cylc]
-        cycle point time zone = +13
-    [scheduling]
-        initial cycle point = 20130808T00
-        final cycle point = 20130812T00
-        [[dependencies]]
-            [[[R1]]]
-                graph = "prep => foo"
-            [[[T00,T12]]]
-                graph = "foo[-PT12H] => foo => bar"
-
+   [cylc]
+       cycle point time zone = +13
+   [scheduling]
+       initial cycle point = 20130808T00
+       final cycle point = 20130812T00
+       [[dependencies]]
+           [[[R1]]]
+               graph = "prep => foo"
+           [[[T00,T12]]]
+               graph = "foo[-PT12H] => foo => bar"
 
 This is shown in :ref:`Figure X <fig-tut-three>`.
 
@@ -1238,15 +1226,13 @@ on ``prep``:
 
 .. code-block:: cylc
 
-    prep.20130808T0000+13 & foo.20130807T1200+13 => foo.20130808T0000+13
-
+   prep.20130808T0000+13 & foo.20130807T1200+13 => foo.20130808T0000+13
 
 Thereafter, it will just look like e.g.:
 
 .. code-block:: cylc
 
    foo.20130808T0000+13 => foo.20130808T1200+13
-
 
 However, in our initial cycle point example, the dependence on
 ``foo.20130807T1200+13`` will be ignored, because that task's cycle
@@ -1262,10 +1248,9 @@ actually look like:
 .. _fig-tut-three:
 
 .. figure:: ../graphics/png/orig/tut-three.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    The ``tut/cycling/three`` suite
+   The ``tut/cycling/three`` suite
 
 - ``R1`` tasks can also be used to make something special
   happen at suite shutdown, or at any single cycle point throughout the
@@ -1286,17 +1271,16 @@ Open the ``tut/cycling/integer`` suite, which is plotted in
 :ref:`Figure X <fig-tut-int>`.
 
 .. todo::
-   auto-include.
+   add-in.
 
 ADD-IN: ../../../etc/examples/tutorial/cycling/integer/suite.rc
 
 .. _fig-tut-int:
 
 .. figure:: ../graphics/png/orig/tut-cyc-int.png
-    :align: center
-    :figclass: align-center
+   :align: center
 
-    The ``tut/cycling/integer`` suite
+   The ``tut/cycling/integer`` suite
 
 The integer cycling notation is intended to look similar to the ISO 8601
 date-time notation, but it is simpler for obvious reasons. The example suite
@@ -1329,7 +1313,7 @@ of a logical switch; and iteratively generating dependencies and runtime
 configuration for groups of related tasks:
 
 .. todo::
-   auto-include.
+   add-in.
 
 ADD-IN: ../../../etc/examples/tutorial/oneoff/jinja2/suite.rc
 
@@ -1342,14 +1326,14 @@ To view the result of Jinja2 processing with the Jinja2 flag
 
 .. code-block:: cylc
 
-    [meta]
-        title = "A Jinja2 Hello World! suite"
-    [scheduling]
-        [[dependencies]]
-            graph = "hello"
-    [runtime]
-        [[hello]]
-            script = "sleep 10; echo Hello World!"
+   [meta]
+       title = "A Jinja2 Hello World! suite"
+   [scheduling]
+       [[dependencies]]
+           graph = "hello"
+   [runtime]
+       [[hello]]
+           script = "sleep 10; echo Hello World!"
 
 And with ``MULTI`` set to ``True``:
 
@@ -1359,22 +1343,22 @@ And with ``MULTI`` set to ``True``:
 
 .. code-block:: cylc
 
-    [meta]
-        title = "A Jinja2 Hello World! suite"
-    [scheduling]
-        [[dependencies]]
-            graph = "hello => BYE"
-    [runtime]
-        [[hello]]
-            script = "sleep 10; echo Hello World!"
-        [[BYE]]
-            script = "sleep 10; echo Goodbye World!"
-        [[ goodbye_0 ]]
-            inherit = BYE
-        [[ goodbye_1 ]]
-            inherit = BYE
-        [[ goodbye_2 ]]
-            inherit = BYE
+   [meta]
+       title = "A Jinja2 Hello World! suite"
+   [scheduling]
+       [[dependencies]]
+           graph = "hello => BYE"
+   [runtime]
+       [[hello]]
+           script = "sleep 10; echo Hello World!"
+       [[BYE]]
+           script = "sleep 10; echo Goodbye World!"
+       [[ goodbye_0 ]]
+           inherit = BYE
+       [[ goodbye_1 ]]
+           inherit = BYE
+       [[ goodbye_2 ]]
+           inherit = BYE
 
 
 Task Retry On Failure
@@ -1387,9 +1371,8 @@ An environment variable ``$CYLC_TASK_TRY_NUMBER`` increments
 from ``1`` on each successive try, and is passed to the task to allow
 different behaviour on the retry:
 
-
 .. todo::
-  auto-include the following suite from docs:
+  add-in:
 
 TODO ADD-IN: ../../../etc/examples/tutorial/oneoff/retry/suite.rc
 

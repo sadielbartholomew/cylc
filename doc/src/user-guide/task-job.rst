@@ -117,10 +117,10 @@ These are written to the top of the task job script like this:
 
 .. code-block:: bash
 
-    #!/bin/bash
-    # DIRECTIVES
-    #BSUB -q = foo
-    #BSUB -W = 10
+   #!/bin/bash
+   # DIRECTIVES
+   #BSUB -q = foo
+   #BSUB -W = 10
 
 If ``execution time limit`` is specified, it is used to generate the
 ``-W`` directive. Do not specify the ``-W`` directive
@@ -611,7 +611,6 @@ hosts* in one of these locations:
 - under ``SUITE-DEF-PATH/lib/python/``
 - under ``CYLC-PATH/lib/cylc/batch_sys_handlers/``
 - or anywhere in ``$PYTHONPATH``
-
 
 .. note::
 

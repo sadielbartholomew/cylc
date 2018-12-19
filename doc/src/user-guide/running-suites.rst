@@ -899,7 +899,6 @@ will be used:
 
    <task-event-handler> %(event)s %(suite)s %(id)s %(message)s
 
-
 .. note::
 
    Substitution patterns should not be quoted in the template strings.
