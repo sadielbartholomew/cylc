@@ -90,8 +90,9 @@ html_sidebars = {
 }
 
 # Logo and favicon to display.
-html_logo = "cylc-logo.png"
-html_favicon = "cylc-favicon.ico"  # sphinx specifies this should be .ico format
+html_logo = "graphics/png/orig/cylc-logo.png"
+# sphinx specifies this should be .ico format
+html_favicon = "graphics/cylc-favicon.ico"
 
 # Any paths that contain custom static files (such as style sheets).
 html_static_path = ['_static']
@@ -122,7 +123,7 @@ latex_documents = [
 ]
 
 # Image file to place at the top of the title page.
-latex_logo = "cylc-logo.png"
+latex_logo = "graphics/png/orig/cylc-logo.png"
 
 # If true, show URL addresses after external links.
 latex_show_urls = True
