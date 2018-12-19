@@ -316,7 +316,7 @@ must be unique. To specify multiple values using an option such as
 ``-l`` option in PBS, SGE, etc., either specify all items in a single
 line:
 
-.. code-block:: bash
+.. code-block:: none
 
    -l=select=28:ncpus=36:mpiprocs=18:ompthreads=2:walltime=12:00:00
 
@@ -325,7 +325,7 @@ override the first.)
 
 Or separate the items:
 
-.. code-block:: bash
+.. code-block:: none
 
    -l select=28
    -l ncpus=36

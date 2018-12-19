@@ -4,7 +4,6 @@ Introduction
 
 .. toctree::
    :maxdepth: 2
-   :numbered:
 
    how-cylc-works
    background

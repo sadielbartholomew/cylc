@@ -3027,7 +3027,7 @@ family ``OBS_PROC`` has members ``proc<obs>`` then this graph:
 
 expands to:
 
-.. code-block:: cylc
+.. code-block:: none
 
    get_ship => proc_ship
    get_buoy => proc_buoy

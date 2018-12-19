@@ -59,7 +59,7 @@ see :ref:`Current Trigger Function Limitations`.)
 Clock triggers, unlike other trigger functions, are executed synchronously in
 the main process. The clock trigger function signature looks like this:
 
-.. code-block:: none
+.. code-block:: python
 
    wall_clock(offset=None)
 
@@ -126,7 +126,7 @@ interface has stabilized - see :ref:`Current Trigger Function Limitations`.)
 
 The suite state trigger function signature looks like this:
 
-.. code-block:: none
+.. code-block:: python
 
    suite_state(suite, task, point, offset=None, status='succeeded',
                message=None, cylc_run_dir=None, debug=False)
@@ -175,7 +175,7 @@ Some important points to note about this:
 The return value of the ``suite_state`` trigger function looks like
 this:
 
-.. code-block:: none
+.. code-block:: python
 
    results = {
        'suite': suite,
@@ -312,7 +312,7 @@ positional and keyword arguments (from the suite configuration) and simply
 prints them to stdout, and then returns False (i.e. trigger condition not
 satisfied). Here it is in its entirety.
 
-.. code-block:: none
+.. code-block:: python
 
    def echo(*args, **kwargs):
        print "echo: ARGS:", args
@@ -347,7 +347,7 @@ The ``xrandom`` function sleeps for a configurable amount of time
 should be avoided) and has a configurable random chance of success. The
 function signature is:
 
-.. code-block:: none
+.. code-block:: python
 
    xrandom(percent, secs=0, _=None, debug=False)
 

@@ -1415,7 +1415,7 @@ fails. Then, the suite owner *vagrant@cylon* manually resets the failed
 task's state to *succeeded*, allowing ``bar`` to trigger and the
 suite to finish and shut down.  Here's the complete suite log for this run:
 
-.. code-block:: bash
+.. code-block:: none
 
    $ cylc cat-log SUITE-NAME
    2017-03-30T09:46:10Z INFO - Suite starting: server=localhost:43086 pid=3483

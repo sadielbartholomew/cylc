@@ -4,7 +4,6 @@ Miscellaneous
 
 .. toctree::
    :maxdepth: 1
-   :numbered:
 
    readme-info
    install-info

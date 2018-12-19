@@ -4,7 +4,6 @@ References
 
 .. toctree::
    :maxdepth: 3
-   :numbered:
 
    command-ref
    suiterc-ref

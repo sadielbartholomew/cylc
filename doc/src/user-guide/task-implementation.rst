@@ -68,7 +68,7 @@ other tasks, can also be sent with custom severity if need be.
 WARNING severity messages are printed to ``job.err``, logged by the
 suite server program, and can be passed to *warning* event handlers:
 
-.. code-block:: none
+.. code-block:: bash
 
    cylc message -- "${CYLC_SUITE_NAME}" "${CYLC_TASK_JOB}" \
      "WARNING:Uh-oh, something's not right here."
@@ -76,7 +76,7 @@ suite server program, and can be passed to *warning* event handlers:
 CRITICAL severity messages are printed to ``job.err``, logged by the
 suite server program, and can be passed to *critical* event handlers:
 
-.. code-block:: none
+.. code-block:: bash
 
    cylc message -- "${CYLC_SUITE_NAME}" "${CYLC_TASK_JOB}" \
      "CRITICAL:ERROR occurred in process X!"

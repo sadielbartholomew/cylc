@@ -164,7 +164,7 @@ Server installs service directory
   filesystem) it reads a tar archive of the service directory from stdin, and
   unpacks it to install.
 
-.. code-block:: none
+.. code-block:: bash
 
     # cylc remote-init: install suite service directory
     ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc remote-init '066592b1-4525-48b5-b86e-da06eb2380d9' '$HOME/cylc-run/suitex'
@@ -197,7 +197,7 @@ Server submits jobs
 - uses SSH to invoke ``cylc jobs-submit`` on the remote - to read job
   scripts from stdin, write them to disk, and submit them to run
 
-.. code-block:: none
+.. code-block:: bash
 
     # cylc jobs-submit: submit two jobs
     ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc jobs-submit '--remote-mode' '--' '$HOME/cylc-run/suitex/log/job' '1/remote-a/01' '1/remote-b/01'
@@ -265,7 +265,7 @@ User views job logs
 - suites will serve job logs in future, but this will still be needed
   (e.g. if the suite is down)
 
-.. code-block:: none
+.. code-block:: bash
 
     # cylc cat-log: view a job log
     ssh -oBatchMode=yes -oConnectTimeout=10 -n hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc cat-log --remote-arg='$HOME/cylc-run/suitex/log/job/1/remote-a/NN/job.out' --remote-arg=cat --remote-arg='tail -n +1 -F %(filename)s' suitex
@@ -280,7 +280,7 @@ Server cancels or kills jobs
   remote, with job log paths on the command line. Reads job ID from the
   job status file.
 
-.. code-block:: none
+.. code-block:: bash
 
     # cylc jobs-kill: kill two jobs
     ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc jobs-kill '--' '$HOME/cylc-run/suitex/log/job' '1/remote-a/01' '1/remote-b/01'
@@ -295,7 +295,7 @@ Server polls jobs
   remote, with job log paths on the command line. Reads job ID from the
   job status file.
 
-.. code-block:: none
+.. code-block:: bash
 
     # cylc jobs-poll: poll two jobs
     ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc jobs-poll '--' '$HOME/cylc-run/suitex/log/job' '1/remote-a/01' '1/remote-b/01'
@@ -307,7 +307,7 @@ Server retrieves jobs logs
 - done at job completion, according to global config
 - uses ``rsync``
 
-.. code-block:: none
+.. code-block:: bash
 
     # rsync: retrieve two job logs
     rsync -a --rsh=ssh -oBatchMode=yes -oConnectTimeout=10 --include=/1 --include=/1/remote-a --include=/1/remote-a/01 --include=/1/remote-a/01/** --include=/1/remote-b --include=/1/remote-b/01 --include=/1/remote-b/01/** --exclude=/** hobo@wizard:$HOME/cylc-run/suitex/log/job/ /home/vagrant/cylc-run/suitex/log/job/
@@ -323,7 +323,7 @@ Server tidies job remote at shutdown
 - removes ``.service/contact`` so that clients won't repeatedly
   try to connect
 
-.. code-block:: none
+.. code-block:: bash
 
     # cylc remote-tidy: remove the remote suite contact file
     ssh -oBatchMode=yes -oConnectTimeout=10 hobo@wizard env CYLC_VERSION=7.6.x /opt/bin/cylc remote-tidy '$HOME/cylc-run/suitex'

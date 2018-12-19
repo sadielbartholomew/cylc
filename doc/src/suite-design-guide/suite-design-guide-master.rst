@@ -16,7 +16,6 @@ Version 1.0 - 23 March 2017
 
 .. toctree::
    :maxdepth: 2
-   :numbered:
 
    sdg-introduction
    style-guidelines

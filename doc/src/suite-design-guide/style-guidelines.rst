@@ -146,16 +146,16 @@ have many levels of indentations.
 In the above, each line in ``log.txt`` would end up with 4 leading
 white spaces. The following will give you lines with no white spaces.
 
-   .. code-block:: cylc
+.. code-block:: cylc
 
-      [runtime]
-          [[foo]]
-              script = """
-              cat >> log.txt <<_EOF_
-              The quick brown fox jumped
-              over the lazy dog.
-              _EOF_
-                       """
+   [runtime]
+       [[foo]]
+           script = """
+           cat >> log.txt <<_EOF_
+           The quick brown fox jumped
+           over the lazy dog.
+           _EOF_
+                    """
 
 
 Graph String Lines
@@ -163,32 +163,32 @@ Graph String Lines
 
 Multiline ``graph`` strings can be entirely free-form:
 
-   .. code-block:: cylc
+.. code-block:: cylc
 
-      [scheduling]
-          [[dependencies]]
-              graph = """
-          # Main workflow:
-        FAMILY:succeed-all => bar & baz => qux
+   [scheduling]
+       [[dependencies]]
+           graph = """
+       # Main workflow:
+     FAMILY:succeed-all => bar & baz => qux
 
-          # Housekeeping:
-        qux => rose_arch => rose_prune"""
+       # Housekeeping:
+     qux => rose_arch => rose_prune"""
 
 Whitespace is ignored in graph string parsing, however, so internal graph lines
 can be indented as if part of the suite.rc syntax, or even out to the triple
 quotes, if you feel it aids readability (but watch line length with large
 indents; see :ref:`Line Length`):
 
-   .. code-block:: cylc
+.. code-block:: cylc
 
-      [scheduling]
-          [[dependencies]]
-              graph = """
-                  # Main workflow:
-                  FAMILY:succeed-all => bar & baz => qux
+   [scheduling]
+       [[dependencies]]
+           graph = """
+               # Main workflow:
+               FAMILY:succeed-all => bar & baz => qux
 
-                  # Housekeeping:
-                  qux => rose_arch => rose_prune"""
+               # Housekeeping:
+               qux => rose_arch => rose_prune"""
 
 Both styles are acceptable; choose one and use it consistently.
 
@@ -202,16 +202,16 @@ Jinja2 as if it were part of the suite.rc syntax (which to the Jinja2 processor
 is just arbitrary text), so it should be indented from the left margin on
 its own terms:
 
-   .. code-block:: cylc
+.. code-block:: cylc
 
-      [runtime]
-          [[OPS]]
-      {% for T in OPS_TASKS %}
-          {% for M in range(M_MAX) %}
-          [[ops_{{T}}_{{M}}]]
-              inherit = OPS
-          {% endfor %}
-      {% endfor %}
+   [runtime]
+       [[OPS]]
+   {% for T in OPS_TASKS %}
+       {% for M in range(M_MAX) %}
+       [[ops_{{T}}_{{M}}]]
+           inherit = OPS
+       {% endfor %}
+   {% endfor %}
 
 
 Comments

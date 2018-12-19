@@ -31,7 +31,6 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'cylc_lang',
-    'sub_lang',
 ]
 
 # Add any paths that contain templates.
