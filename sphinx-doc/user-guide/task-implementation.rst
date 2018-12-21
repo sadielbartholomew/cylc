@@ -165,10 +165,7 @@ If this is not possible - perhaps you don't have control over the script
 or can't work out how to fix it - one alternative approach is to use another
 task to repeatedly poll for the results of the detached processes:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]

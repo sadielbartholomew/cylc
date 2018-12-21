@@ -49,10 +49,7 @@ The following suite, registered as ``suitex``, is used to illustrate
 our current SSH-based remote job management. It submits two jobs to a remote,
 and a local task views a remote job log then polls and kills the remote jobs.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
 	# suite.rc
 	[scheduling]
@@ -87,10 +84,7 @@ submission, for clarity when watching the job host (e.g. with
 Global config specifies the path to the remote Cylc executable, says
 to retrieve job logs, and not to use a remote login shell:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
 	# global.rc
 	[hosts]
@@ -118,9 +112,12 @@ migrated to Cylc soon though).
     (indicates a shared filesystem)
 
 - uses ``rsync`` for suite source file installation
-- (note the same directory structure is used on suite and job hosts, for
-  consistency and simplicity, and because the suite host can also be a job
-  host)
+
+.. note::
+
+   The same directory structure is used on suite and job hosts, for
+   consistency and simplicity, and because the suite host can also be a job
+   host.
 
 .. code-block:: bash
 
@@ -140,23 +137,18 @@ migrated to Cylc soon though).
 Result:
 
 .. todo::
-   Convert dirtree into sphinx - is this possible non-manually?
+   Nicer dirtree display via sphinx or custom extension?
 
-.. code-block:: none
+.. code-block:: bash
 
-	\lstset{language=sh}
-	{\scriptsize
-	\dirtree{%
-	.1 \textasciitilde/cylc-run/suitex.
-	.2 log->log.20180418T025047Z\DTcomment{\textbf{LOG DIRECTORIES}}.
-	.2 log.20180418T025047Z\DTcomment{log directory for current suite run}.
-	.2 suiter.rc.
-	.2 xxx\DTcomment{(any suite source sub-dirs or file)}.
-	.2 work\DTcomment{\textbf{JOB WORK DIRECTORIES}}.
-	.2 share\DTcomment{\textbf{SUITE SHARE DIRECTORY}}.
-	.3 cycle.
-	}
-	}
+    ~/cylc-run/suitex
+   |__log->log.20180418T025047Z  # LOG DIRECTORIES
+   |__log.20180418T025047Z  # log directory for current suite run
+   |__suiter.rc
+   |__xxx  # any suite source sub-dirs or file
+   |__work  # JOB WORK DIRECTORIES
+   |__share  #  SUITE SHARE DIRECTORY
+      |__cycle
 
 
 Server installs service directory
@@ -180,26 +172,22 @@ Server installs service directory
 Result:
 
 .. todo::
-   Convert dirtree into sphinx - is this possible non-manually?
+   Nicer dirtree display via sphinx or custom extension?
 
-.. code-block:: none
+.. code-block:: bash
 
-	{\scriptsize
-	\dirtree{%
-	.1 \textasciitilde/cylc-run/suitex.
-	.2 .service\DTcomment{\textbf{SUITE SERVICE DIRECTORY}}. 
-	.3 contact\DTcomment{{\color{blue} server address information}}.
-	.3 passphrase\DTcomment{{\color{blue} suite passphrase}}.
-	.3 ssl.cert\DTcomment{{\color{blue} suite SSL certificate}}.
-	.2 log->log.20180418T025047Z\DTcomment{\textbf{LOG DIRECTORIES}}.
-	.2 log.20180418T025047Z\DTcomment{log directory for current suite run}.
-	.2 suiter.rc.
-	.2 xxx\DTcomment{(any suite source sub-dirs or file)}.
-	.2 work\DTcomment{\textbf{JOB WORK DIRECTORIES}}.
-	.2 share\DTcomment{\textbf{SUITE SHARE DIRECTORY}}.
-	.3 cycle.
-	}
-	}
+    ~/cylc-run/suitex
+   |__.service  # SUITE SERVICE DIRECTORY
+   |  |__contact  # server address information
+   |  |__passphrase  # suite passphrase
+   |  |__ssl.cert  # suite SSL certificate
+   |__log->log.20180418T025047Z  # LOG DIRECTORIES
+   |__log.20180418T025047Z  # log directory for current suite run
+   |__suiter.rc
+   |__xxx  # any suite source sub-dirs or file
+   |__work  # JOB WORK DIRECTORIES
+   |__share  #  SUITE SHARE DIRECTORY
+      |__cycle
 
 
 Server submits jobs
@@ -217,48 +205,44 @@ Server submits jobs
 Result:
 
 .. todo::
-   Convert dirtree into sphinx - is this possible non-manually?
+   Nicer dirtree display via sphinx or custom extension?
 
-.. code-block:: none
+.. code-block:: bash
 
-	{\scriptsize
-	\dirtree{%
-	.1 \textasciitilde/cylc-run/suitex.
-	.2 .service\DTcomment{\textbf{SUITE SERVICE DIRECTORY}}. 
-	.3 contact\DTcomment{{\color{blue} server address information}}.
-	.3 passphrase\DTcomment{{\color{blue} suite passphrase}}.
-	.3 ssl.cert\DTcomment{{\color{blue} suite SSL certificate}}.
-	.2 log->log.20180418T025047Z\DTcomment{\textbf{LOG DIRECTORIES}}.
-	.2 log.20180418T025047Z\DTcomment{log directory for current suite run}.
-	.3 job\DTcomment{job logs (to be distinguished from \lstinline=log/suite/= on the suite host)}.
-	.4 1\DTcomment{cycle point}.
-	.5 remote-a\DTcomment{task name}.
-	.6 01\DTcomment{job submit number}.
-	.7 job\DTcomment{{\color{blue}job script}}.
-	.7 job.out\DTcomment{{\color{blue} job stdout}}.
-	.7 job.err\DTcomment{{\color{blue} job stderr}}.
-	.7 job.status\DTcomment{{\color{blue} job status}}.
-	.6 NN->0l\DTcomment{symlink to latest submit number}.
-	.5 remote-b\DTcomment{task name}.
-	.6 01\DTcomment{job submit number}.
-	.7 job\DTcomment{{\color{blue}job script}}.
-	.7 job.out\DTcomment{{\color{blue} job stdout}}.
-	.7 job.err\DTcomment{{\color{blue} job stderr}}.
-	.7 job.status\DTcomment{{\color{blue} job status}}.
-	.6 NN->0l\DTcomment{symlink to latest submit number}.
-	.2 suiter.rc.
-	.2 xxx\DTcomment{(any suite source sub-dirs or file)}.
-	.2 work\DTcomment{\textbf{JOB WORK DIRECTORIES}}.
-	.3 1\DTcomment{cycle point}.
-	.4 remote-a\DTcomment{task name}.
-	.5 xxx\DTcomment{(any files written by job to PWD)}.
-	.4 remote-b\DTcomment{task name}.
-	.5 xxx\DTcomment{(any files written by job to PWD)}.
-	.2 share\DTcomment{\textbf{SUITE SHARE DIRECTORY}}.
-	.3 cycle.
-	.3 xxx\DTcomment{(any job-created sub-dirs and files)}.
-	}
-	}
+    ~/cylc-run/suitex
+   |__.service  # SUITE SERVICE DIRECTORY
+   |  |__contact  # server address information
+   |  |__passphrase  # suite passphrase
+   |  |__ssl.cert  # suite SSL certificate
+   |__log->log.20180418T025047Z  # LOG DIRECTORIES
+   |__log.20180418T025047Z  # log directory for current suite run
+   |  |__ job  # job logs (to be distinguished from log/suite/ on the suite host)
+   |     |__1  # cycle point
+   |        |__remote-a  # task name
+   |        |  |__01  # job submit number
+   |        |  |  |__job  # job script
+   |        |  |  |__job.out  # job stdout
+   |        |  |  |__job.err  # job stderr
+   |        |  |  |__job.status  # job status
+   |        |  |__NN->0l  # symlink to latest submit number
+   |        |__remote-b  # task name
+   |           |__01  # job submit number
+   |           |  |__job  # job script
+   |           |  |__job.out  # job stdout
+   |           |  |__job.err  # job stderr
+   |           |  |__job.status  # job status
+   |           |__NN->0l  # symlink to latest submit number
+   |__suiter.rc
+   |__xxx  # any suite source sub-dirs or file
+   |__work  # JOB WORK DIRECTORIES
+   |  |__1  # cycle point
+   |     |__remote-a  # task name
+   |     |  |__xxx  # (any files written by job to PWD)
+   |     |__remote-b  # task name
+   |        |__xxx  # (any files written by job to PWD)
+   |__share  #  SUITE SHARE DIRECTORY
+      |__cycle
+      |__xxx  # (any job-created sub-dirs and files)
 
 
 Server tracks job progress

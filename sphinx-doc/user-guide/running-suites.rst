@@ -150,10 +150,12 @@ for the moment you have to interrogate the suite DB, e.g.:
    3|2013|model|0|waiting|
    3|2013|upload|0|waiting|
 
-Note that a checkpoint captures the instantaneous state of every task in the
-suite, including any tasks that are currently active, so you may want to be
-careful where you do it. Tasks recorded as active are polled automatically on
-restart to determine what happened to them. 
+.. note::
+
+   A checkpoint captures the instantaneous state of every task in the
+   suite, including any tasks that are currently active, so you may want
+   to be careful where you do it. Tasks recorded as active are polled
+   automatically on restart to determine what happened to them.
 
 The checkpoint ID 0 (zero) is always used for latest state of the suite, which
 is updated continuously as the suite progresses. The checkpoint IDs of earlier
@@ -177,10 +179,7 @@ Checkpointing With A Task
 Checkpoints can be generated automatically at particular points in the
 workflow by coding tasks that run the ``cylc checkpoint`` command:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	  [[dependencies]]
@@ -194,14 +193,16 @@ workflow by coding tasks that run the ``cylc checkpoint`` command:
    cylc checkpoint ${CYLC_SUITE_NAME} CP-${CYLC_TASK_CYCLE_POINT}
 				  """
 
-Note that we need to "wait" on the "task started" message - which
-is sent in the background to avoid holding tasks up in a network outage - to
-ensure that the checkpointer task is correctly recorded as running in the
-checkpoint (at restart the suite server program will poll to determine that
-that task job finished successfully). Otherwise it may be recorded in the
-waiting state and, if its upstream dependencies have already been cleaned up,
-it will need to be manually reset from waiting to succeeded after the restart
-to avoid stalling the suite.
+.. note::
+
+   We need to "wait" on the "task started" message - which
+   is sent in the background to avoid holding tasks up in a network
+   outage - to ensure that the checkpointer task is correctly recorded
+   as running in the checkpoint (at restart the suite server program will
+   poll to determine that that task job finished successfully). Otherwise
+   it may be recorded in the waiting state and, if its upstream dependencies
+   have already been cleaned up, it will need to be manually reset from waiting
+   to succeeded after the restart to avoid stalling the suite.
 
 
 Behaviour of Tasks on Restart
@@ -416,10 +417,7 @@ minutes initially, and then every minute toward the end of its run.
 Interval values are used in turn until the last value, which is used
 repeatedly until finished:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[foo]]
@@ -639,8 +637,10 @@ is the suite name. Client commands should then be invoked with the
 .. todo::
   refs:
 
-Note remote suite auth files do not need to be installed for read-only access -
-see~\ref{PublicAccess} - via the GUI or monitor.
+.. note::
+
+   Remote suite auth files do not need to be installed for read-only
+   access - see~\ref{PublicAccess} - via the GUI or monitor.
 
 .. todo::
   refs:
@@ -653,12 +653,14 @@ directory note that the port number will need to be updated if the suite gets
 restarted on a different port. Otherwise use ``cylc scan`` to determine
 the suite port number and use the ``--port`` client command option.
 
-*WARNING: possession of a suite passphrase gives full control over the
-target suite, including edit run functionality - which lets you run
-arbitrary scripting on job hosts as the suite owner. Further,
-non-interactive ssh gives full access to the target user account, so we
-recommended that this is only used to interact with suites running on
-accounts to which you already have full access.*
+.. warning::
+
+   Possession of a suite passphrase gives full control over the
+   target suite, including edit run functionality - which lets you run
+   arbitrary scripting on job hosts as the suite owner. Further,
+   non-interactive ssh gives full access to the target user account, so we
+   recommended that this is only used to interact with suites running on
+   accounts to which you already have full access.
 
 
 .. _Scan And Gscan:
@@ -805,10 +807,7 @@ By default every task is assigned to the *default* queue, which by default
 has a zero limit (interpreted by cylc as no limit). To use a single queue for
 the whole suite just set the default queue limit:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[ queues]]
@@ -819,10 +818,7 @@ the whole suite just set the default queue limit:
 To use additional queues just name each one, set their limits, and assign
 members:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[ queues]]
@@ -887,10 +883,7 @@ to specify a list of events for which notifications should be sent. (The
 name of a registered task output can also be used as an event name in
 this case.) E.g. to send an email on (submission) failed and retry:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[foo]]
@@ -976,8 +969,11 @@ will be used:
 
    <task-event-handler> %(event)s %(suite)s %(id)s %(message)s
 
-*Note: substitution patterns should not be quoted in the template strings.
-This is done automatically where required.*
+
+.. note::
+
+   Substitution patterns should not be quoted in the template strings.
+   This is done automatically where required.
 
 For an explanation of the substitution syntax, see
 `String Formatting Operations
@@ -992,17 +988,16 @@ configured (see~\ref{TaskRetries}).
 The event handler will be called as soon as the task fails, not after
 the retry delay period when it is resubmitted.
 
-*Note that event handlers are called by the suite server program, not by
-task jobs.* If you wish to pass additional information to them use
-``[cylc] -> [[environment]]``, not task runtime environment.
+.. note::
+
+   Event handlers are called by the suite server program, not by
+   task jobs. If you wish to pass additional information to them use
+   ``[cylc] -> [[environment]]``, not task runtime environment.
 
 The following two ``suite.rc`` snippets are examples on how to specify
 event handlers using the alternate methods:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[foo]]
@@ -1013,10 +1008,7 @@ event handlers using the alternate methods:
 		   [[[job]]]
 			   execution retry delays = PT0S, PT30S
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[foo]]
@@ -1058,10 +1050,7 @@ you can configure Cylc to emit a *late event* if it has not triggered by
 that time. For example, if a task ``forecast`` normally triggers by 30
 minutes after its cycle point, configure late notification for it like this:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	  [[forecast]]
@@ -1073,11 +1062,13 @@ minutes after its cycle point, configure late notification for it like this:
 *Late offset intervals are not computed automatically so be careful
 to update them after any change that affects triggering times.*
 
-Note that Cylc can only check for lateness in tasks that it is currently aware
-of. If a suite gets delayed over many cycles the next tasks coming up can be
-identified as late immediately, and subsequent tasks can be identified as late
-as the suite progresses to subsequent cycle points, until it catches up to the
-clock.
+.. note::
+
+   Cylc can only check for lateness in tasks that it is currently aware
+   of. If a suite gets delayed over many cycles the next tasks coming up
+   can be identified as late immediately, and subsequent tasks can be
+   identified as late as the suite progresses to subsequent cycle points,
+   until it catches up to the clock.
 
 
 .. _Managing External Command Execution:
@@ -1173,19 +1164,13 @@ When a suite is started with the ``cylc run`` command (cold or
 warm start) the cycle point at which it starts can be given on the command
 line or hardwired into the suite.rc file:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    cylc run foo 20120808T06Z
 
 or:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = 20100808T06Z
@@ -1271,10 +1256,13 @@ directives in your live suite, or else use a custom live mode test suite.
 .. todo::
    refs:
 
-Note that the dummy modes ignore all configured task ``script`` items
-including ``init-script``. If your ``init-script`` is required
-to run even dummy tasks on a job host, note that host environment setup should
-be done elsewhere - see~\ref{Configure Site Environment on Job Hosts}.
+.. note::
+
+   The dummy modes ignore all configured task ``script`` items
+   including ``init-script``. If your ``init-script`` is required
+   to run even dummy tasks on a job host, note that host environment
+   setup should be done
+   elsewhere - see~\ref{Configure Site Environment on Job Hosts}.
 
 
 Restarting Suites With A Different Run Mode?
@@ -1324,10 +1312,7 @@ proper task host by the proper batch system.
 
 Reference tests can be configured with the following settings:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   [[reference test]]
@@ -1348,10 +1333,7 @@ secondly that the ``--reference-test`` option is merely a short
 cut to the following suite.rc settings which can also be set manually if
 you wish:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   abort if any task fails = True
@@ -1370,8 +1352,10 @@ Triggering Off Of Tasks In Other Suites
 .. todo::
    refs:
 
-*NOTE: please read External Triggers (\ref{External Triggers}) before
-using the older inter-suite triggering mechanism described in this section.*
+.. note::
+
+   Please read External Triggers (\ref{External Triggers}) before using
+   the older inter-suite triggering mechanism described in this section.
 
 The ``cylc suite-state`` command interrogates suite run databases. It
 has a polling mode that waits for a given task in the target suite to achieve a
@@ -1386,10 +1370,7 @@ tasks).
 Here's how to trigger a task ``bar`` off a task ``foo`` in
 a remote suite called ``other.suite``:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -1400,10 +1381,7 @@ Local task ``my-foo`` will poll for the success of ``foo``
 in suite ``other.suite``, at the same cycle point, succeeding only when
 or if it succeeds. Other task states can also be polled:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "my-foo<other.suite::foo:fail> => bar"
 
@@ -1411,10 +1389,7 @@ The default polling parameters (e.g. maximum number of polls and the interval
 between them) are printed by ``cylc suite-state --help`` and can be
 configured if necessary under the local polling task runtime section:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[ dependencies]]
@@ -1430,10 +1405,7 @@ To poll for the target task to receive a message rather than achieve a state,
 give the message in the runtime configuration (in which case the task status
 inferred from the graph syntax will be ignored):
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[my-foo]]
@@ -1443,10 +1415,7 @@ inferred from the graph syntax will be ignored):
 For suites owned by others, or those with run databases in non-standard
 locations, use the ``--run-dir`` option, or in-suite:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[my-foo]]
@@ -1459,10 +1428,7 @@ represents. For instance, if local task ``cat`` cycles 6-hourly at
 ``0,6,12,18`` but needs to trigger off a remote task ``dog``
 at ``3,9,15,21``:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -1477,28 +1443,27 @@ cycle point format of the target suite.
 The remote suite does not have to be running when polling commences because the
 command interrogates the suite run database, not the suite server program.
 
-Note that the graph syntax for suite polling tasks cannot be combined with 
-cycle point offsets, family triggers, or parameterized task notation. This does
-not present a problem because suite polling tasks can be put on the same
-cycling sequence as the remote-suite target task (as recommended above), and
-there is no point in having multiple tasks (family members or parameterized
-tasks) performing the same polling operation. Task state triggers can be used
-with suite polling, e.g. to trigger another task if polling fails after 10
-tries at 10 second intervals:
+.. note::
 
-.. todo::
-   cylc lang.
+   The graph syntax for suite polling tasks cannot be combined with
+   cycle point offsets, family triggers, or parameterized task notation.
+   This does not present a problem because suite polling tasks can be put on
+   the same cycling sequence as the remote-suite target task (as recommended
+   above), and there is no point in having multiple tasks (family members or
+   parameterized tasks) performing the same polling operation. Task state
+   triggers can be used with suite polling, e.g. to trigger another task if
+   polling fails after 10 tries at 10 second intervals:
 
-.. code-block:: none
+   .. code-block:: cylc
 
-   [scheduling]
-	   [[dependencies]]
-		   graph = "poller<other-suite::foo:succeed>:fail => another-task"
-   [runtime]
-	   [[my-foo]]
-		   [[[suite state polling]]]
-			   max-polls = 10
-			   interval = PT10S
+	  [scheduling]
+		  [[dependencies]]
+			  graph = "poller<other-suite::foo:succeed>:fail => another-task"
+	  [runtime]
+		  [[my-foo]]
+			  [[[suite state polling]]]
+				  max-polls = 10
+				  interval = PT10S
 
 
 .. _Suite Server Logs:
@@ -1518,10 +1483,7 @@ cylc-7.2.0) by a small suite that runs two 30-second dummy tasks
 ``foo`` and ``bar`` for a single cycle point
 ``2017-01-01T00Z`` before shutting down:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   cycle point format = %Y-%m-%dT%HZ
@@ -1586,10 +1548,12 @@ The information logged here includes:
 .. todo::
    refs:
 
-Note that suite log files are primarily intended for human eyes. If you need
-to have an external system to monitor suite events automatically, interrogate
-the sqlite *suite run database* (see~\ref{Suite Run
-Databases}) rather than parse the log files.
+.. note::
+
+   Suite log files are primarily intended for human eyes. If you need
+   to have an external system to monitor suite events automatically,
+   interrogate the sqlite *suite run database*
+   (see~\ref{Suite Run Databases}) rather than parse the log files.
 
 
 .. _Suite Run Databases:
@@ -1666,9 +1630,11 @@ To restart the suite, the critical Cylc files that must be restored are:
    ~/cylc-run/SUITE-NAME/
 	   log/job/CYCLE-POINT/TASK-NAME/SUBMIT-NUM/job.status
 
-*Note this discussion does not address restoration of files generated and
-consumed by task jobs at run time*. How suite data is stored and recovered in
-your environment is a matter of suite and system design.
+.. note::
+
+   This discussion does not address restoration of files generated and
+   consumed by task jobs at run time. How suite data is stored and recovered
+   in your environment is a matter of suite and system design.
 
 In short, you can simply restore the suite service directory, the log
 directory, and the suite.rc file that is the target of the symlink in the
@@ -1690,10 +1656,12 @@ contains active tasks that need to be polled to determine what happened to them
 while the suite was down.  Without them, polling will fail and those tasks will
 need to be manually set to the correct state.
 
-*WARNING: it is not safe to copy or rsync a potentially-active sqlite DB -
-the copy might end up corrupted. It is best to stop the suite before copying
-a DB, or else write a back-up utility using the
-`official sqlite backup API <http://www.sqlite.org/backup.html>`_.*
+.. warning::
+
+   It is not safe to copy or rsync a potentially-active sqlite DB - the copy
+   might end up corrupted. It is best to stop the suite before copying
+   a DB, or else write a back-up utility using the
+   `official sqlite backup API <http://www.sqlite.org/backup.html>`_.
 
 
 .. _auto-stop-restart:
@@ -1734,10 +1702,7 @@ For example in the following configuration any suites running on
 ``foo`` will attempt to restart on ``pub`` whereas any suites
 running on ``bar`` will stop immediately, making no attempt to restart.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [suite servers]
 	   run hosts = pub

@@ -22,3 +22,23 @@ mitigate any jumping layout problems:
 - Task filtering is the ultimate quick route to focusing on just
   the tasks you're interested in, but this will destroy the graph
   structure.
+
+
+.. insert vertical whitespace else sidebar menu overhangs short page (ugly)
+
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|

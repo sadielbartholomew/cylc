@@ -23,26 +23,17 @@ and explicit.
 
 Nearly all timeouts and delays in cylc were in minutes, except for:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime][[my_task]][[[suite state polling]]]interval
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime][[my_task]][[[simulation mode]]]run time range
 
 which were in seconds, and
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]runahead limit
 
@@ -160,10 +151,7 @@ For repeating tasks with hour-based cycling the syntax has only minor changes:
 
 Pre-cylc-6:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
 	[scheduling]
 		...
@@ -173,10 +161,7 @@ Pre-cylc-6:
 
 Cylc-6+:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
 	[scheduling]
 		...
@@ -228,10 +213,7 @@ the offset cycle points. For example, this pre cylc-6 suite automatically
 creates instances of task ``foo`` at the offset hours
 ``3,9,15,21`` each day, for task ``bar`` to trigger off at ``0,6,12,18``:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
 	# Pre cylc-6 implicit cycling.
 	[scheduling]
@@ -243,10 +225,7 @@ creates instances of task ``foo`` at the offset hours
 
 Here's the direct translation to cylc-6+ format:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
 	# In cylc-6+ this suite will stall.
 	[scheduling]
@@ -266,10 +245,7 @@ appear as ghost nodes in graph visualisations).
 To fix this, explicitly define the cycling of with an offset cycling sequence
 ``foo``:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
 	# Cylc-6+ requires explicit task instance creation.
 	[scheduling]

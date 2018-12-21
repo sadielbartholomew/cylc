@@ -6,9 +6,11 @@ External Triggers
 .. todo::
   refs:
 
-*WARNING: this is a new capability and its suite configuration
-interface may change somewhat in future releases - see Current
-Limitations below in~\ref{Current Trigger Function Limitations}.*
+.. warning::
+
+   This is a new capability and its suite configuration
+   interface may change somewhat in future releases - see Current
+   Limitations below in~\ref{Current Trigger Function Limitations}.
 
 .. todo::
   refs:
@@ -84,10 +86,7 @@ In the following suite, task ``foo`` has a daily cycle point sequence,
 and each task instance can trigger once the wall clock time has passed its
 cycle point value by one hour:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = 2018-01-01
@@ -108,10 +107,7 @@ often the suite server program checks the clock, is optional.  Here it is
 Argument keywords can be omitted if called in the right order, so the
 ``clock_1`` trigger can also be declared like this:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [[xtriggers]]
        clock_1 = wall_clock(PT1H)
@@ -119,10 +115,7 @@ Argument keywords can be omitted if called in the right order, so the
 Finally, a zero-offset clock trigger does not need to be declared under
 the ``[xtriggers]`` section:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = 2018-01-01
@@ -242,10 +235,12 @@ To see this, take a look at the job script for one of the downstream tasks:
 	   upstream_task="foo"}
    ...
 
-Note that the task has to know the name (label) of the external trigger that it
-depends on - "upstream" in this case - in order to use this information.
-However the name could be given to the task environment in the suite
-configuration.
+.. note::
+
+   The task has to know the name (label) of the external trigger that it
+   depends on - "upstream" in this case - in order to use this information.
+   However the name could be given to the task environment in the suite
+   configuration.
 
 
 .. _Custom Trigger Functions:
@@ -270,9 +265,11 @@ properties:
   that might not exist when the function is first called, just return
   unsatisified until everything required does exist.
 
-Note that trigger functions cannot store data Pythonically between invocations
-because each call is executed in an independent process in the process pool. If
-necessary the filesystem can be used for this purpose.
+.. note::
+
+   Trigger functions cannot store data Pythonically between invocations
+   because each call is executed in an independent process in the process
+   pool. If necessary the filesystem can be used for this purpose.
 
 The following string templates are available for use, if the trigger function
 needs any of this information, in function arguments in the suite configuration:
@@ -349,10 +346,7 @@ satisfied). Here it is in its entirety.
 
 Here's an example echo trigger suite:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = now
@@ -442,10 +436,12 @@ Old-Style External Triggers (Deprecated)
 .. todo::
   refs:
 
-*NOTE: This mechanism is now technically deprecated by the newer external
-trigger functions (\ref{External Triggers}). (However we don't recommend
-wholesale conversion to the new method yet, until its interface has
-stabilized - see~\ref{Current Trigger Function Limitations}.)*
+.. note::
+
+   This mechanism is now technically deprecated by the newer external
+   trigger functions (\ref{External Triggers}). (However we don't recommend
+   wholesale conversion to the new method yet, until its interface has
+   stabilized - see~\ref{Current Trigger Function Limitations}.)
 
 .. todo::
   refs:
@@ -470,10 +466,7 @@ they happen to arrive in quick succession.
 An externally-triggered task must register the event it waits on in the suite
 scheduling section:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    # suite "sat-proc"
    [scheduling]
@@ -495,9 +488,11 @@ notify the suite like this:
 where "sat-proc" is the suite name and "passX12334a" is the ID string for
 the new event. The suite passphrase must be installed on triggering account.
 
-Note that only one task in a suite can trigger off a particular external
-message. Other tasks can trigger off the externally triggered task as required,
-of course.
+.. note::
+
+   Only one task in a suite can trigger off a particular external message.
+   Other tasks can trigger off the externally triggered task as required,
+   of course.
 
 ``<cylc-dir>/etc/examples/satellite/ext-triggers/suite.rc`` is a working
 example of a simulated satellite processing suite.
@@ -510,10 +505,7 @@ However, if the arrival time of the cycle-point-specific data is highly
 variable, external triggering may be used with the cycle point embedded in the
 message:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    # suite "data-proc"
    [scheduling]

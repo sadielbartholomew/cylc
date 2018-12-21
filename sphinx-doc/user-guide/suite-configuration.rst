@@ -147,10 +147,7 @@ multiple times in the same file, and even nested. Include-file paths
 can be specified portably relative to the suite configuration directory,
 e.g.:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    # include the file $CYLC_SUITE_DEF_PATH/inc/foo.rc:
    %include inc/foo.rc
@@ -275,10 +272,7 @@ sections of the graph that repeat at different hours of the day, say,
 only have to be defined once. Here's an example with dependencies that
 vary depending on the particular cycle point:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = 20200401
@@ -300,16 +294,14 @@ the suite graph. This is a complete, valid, runnable suite (it will
 use default task runtime properties such as ``script``).
 
 .. _fig-dep-eg-1:
+
 .. figure:: ../graphics/png/orig/dep-eg-1.png
     :align: center
     :figclass: align-center
 
     Example Suite
 
-    .. todo::
-       cylc lang.
-
-    .. code-block:: none
+    .. code-block:: cylc
 
 	   [meta]
 		   title = "Dependency Example 1"
@@ -363,10 +355,7 @@ In the case of cycling tasks, the triggers defined by a graph string are
 valid for cycle points matching the list of hours specified for the
 graph section. For example this graph:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -379,10 +368,7 @@ or ``12``.
 To define inter-cycle dependencies, attach an offset indicator to the
 left side of a pair:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -403,10 +389,7 @@ illegal, can be reformulated as a *future trigger*
 ``A[+PT6H] => B`` (see~\ref{InterCyclePointTriggers}). It is also
 possible to combine multiple offsets within a cycle point offset e.g.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -418,20 +401,14 @@ before).
 
 Triggers can be chained together. This graph:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = """A => B  # B triggers off A
 			  B => C  # C triggers off B"""
 
 is equivalent to this:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "A => B => C"
 
@@ -439,20 +416,14 @@ is equivalent to this:
 can appear in multiple pairs or chains*. Separately defined triggers
 for the same task have an AND relationship. So this:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = """A => X  # X triggers off A
               B => X  # X also triggers off B"""
 
 is equivalent to this:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "A & B => X"  # X triggers off A AND B
 
@@ -461,10 +432,7 @@ be partitioned into lines (in the suite.rc graph string) of pairs
 or chains, in any way you like, with liberal use of internal white space
 and comments to make the graph structure as clear as possible.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    # B triggers if A succeeds, then C and D trigger if B succeeds:
 	   graph = "A => B => C & D"
@@ -492,29 +460,20 @@ It is not necessary to use the general line continuation marker
 ``\`` to split long graph lines. Just break at dependency arrows,
 or split long chains into smaller ones. This graph:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "A => B => C"
 
 is equivalent to this:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = """A => B =>
               C"""
 
 and also to this:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = """A => B
               B => C"""
@@ -547,10 +506,7 @@ successors (once they're all finished the suite just exits). The integer
 
     One-off (Non-Cycling) Tasks.
 
-	.. todo::
-	   cylc lang.
-
-	.. code-block:: none
+	.. code-block:: cylc
 
 	   [meta]
 		   title = some one-off tasks
@@ -576,10 +532,7 @@ shows a small suite of cycling tasks.
 
     Cycling Tasks.
 
-	.. todo::
-	   cylc lang.
-
-	.. code-block:: none
+	.. code-block:: cylc
 
 	   [meta]
 		   title = some cycling tasks
@@ -597,10 +550,7 @@ Graph section headings define recurrence expressions, the graph within a graph
 section heading defines a workflow at each point of the recurrence. For
 example in the following scenario:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -658,8 +608,10 @@ with example graph headings for each form being:
    [[[ R1/20000101T00Z ]]]  # Run once at 00:00 1st Jan 2000
    [[[ P1Y ]]]              # Run every year
 
-Note that ``T00`` is an example of ``[date-time]``, with an
-inferred 1 day period and no limit.
+.. note::
+
+   ``T00`` is an example of ``[date-time]``, with an
+   inferred 1 day period and no limit.
 
 Where some or all *date-time* information is omitted, it is inferred to
 be relative to the initial date-time cycle point. For example, ``T00``
@@ -701,9 +653,6 @@ cylc with a collapsed form:
 
 So, for example, you can write:
 
-.. todo::
-   cylc lang.
-
 .. code-block:: none
 
    [[[ R1//+P0D ]]]  # Run once at the final cycle point
@@ -723,9 +672,6 @@ Referencing The Initial And Final Cycle Points
 For convenience the caret and dollar symbols may be used as shorthand for the
 initial and final cycle points. Using this shorthand you can write:
 
-.. todo::
-   cylc lang.
-
 .. code-block:: none
 
    [[[ R1/^+PT12H ]]]  # Repeat once 12 hours after the initial cycle point
@@ -738,17 +684,16 @@ initial and final cycle points. Using this shorthand you can write:
 					   # [date-time]/[interval]
 					   # final cycle point
 
-Note that there can be multiple ways to write the same headings, for instance
-the following all run once at the final cycle point:
+.. note::
 
-.. todo::
-   cylc lang.
+   There can be multiple ways to write the same headings, for instance
+   the following all run once at the final cycle point:
 
-.. code-block:: none
+   .. code-block:: none
 
-   [[[ R1/P0Y ]]]      # R[limit]/[interval]
-   [[[ R1/P0Y/$ ]]]    # R[limit]/[interval]/[date-time]
-   [[[ R1/$ ]]]        # R[limit]/[date-time]
+	  [[[ R1/P0Y ]]]      # R[limit]/[interval]
+	  [[[ R1/P0Y/$ ]]]    # R[limit]/[interval]/[date-time]
+	  [[[ R1/$ ]]]        # R[limit]/[date-time]
 
 
 .. _excluding-dates:
@@ -763,19 +708,19 @@ first of January 2000.
 This syntax can be used to exclude one or multiple date-times from a
 recurrence. Multiple date-times are excluded using the syntax
 ``[[[ PT1D!(20000101,20000102,...) ]]]``. All date-times listed within
-the parentheses after the exclamation mark will be excluded. Note that the
-``^`` and ``$`` symbols (shorthand for the initial
-and final cycle points) are both date-times so ``[[[ T12!$-PT1D ]]]``
-is valid.
+the parentheses after the exclamation mark will be excluded.
+
+.. note::
+
+   The ``^`` and ``$`` symbols (shorthand for the initial
+   and final cycle points) are both date-times so ``[[[ T12!$-PT1D ]]]``
+   is valid.
 
 If using a run limit in combination with an exclusion, the heading might not
 run the number of times specified in the limit. For example in the following
 suite ``foo`` will only run once as its second run has been excluded.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = 20000101T00Z
@@ -795,9 +740,6 @@ excluded from the main sequence.
 
 For example, partial date-times can be excluded using the syntax:
 
-.. todo::
-   cylc lang.
-
 .. code-block:: none
 
    [[[ PT1H ! T12 ]]]          # Run hourly but not at 12:00 from the initial
@@ -809,9 +751,6 @@ For example, partial date-times can be excluded using the syntax:
    [[[ T00 ! W-1T00 ]]]        # Run daily at 00:00 except on Mondays.
 
 It is also valid to use sequences for exclusions. For example:
-
-.. todo::
-   cylc lang.
 
 .. code-block:: none
 
@@ -835,9 +774,6 @@ It is also valid to use sequences for exclusions. For example:
 You can combine exclusion sequences and single point exclusions within a
 comma separated list enclosed in parentheses:
 
-.. todo::
-   cylc lang.
-
 .. code-block:: none
 
    [[[ T-00 ! (20000101T07, PT2H) ]]]      # Run hourly on the hour but not at 07:00
@@ -858,10 +794,7 @@ appear in multiple sections, but individual dependencies should be
 unique across the entire graph. For example, the following graph defines
 a duplicate prerequisite for task C:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -874,10 +807,7 @@ a duplicate prerequisite for task C:
 This does not affect scheduling, but for the sake of clarity and brevity
 the graph should be written like this:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -894,9 +824,6 @@ Advanced Examples
 """""""""""""""""
 
 The following examples show the various ways of writing graph headings in cylc.
-
-.. todo::
-   cylc lang.
 
 .. code-block:: none
 
@@ -938,10 +865,7 @@ Dependencies that are only valid at the initial cycle point can be written
 using the ``R1`` notation (e.g. as in~\ref{initial-non-repeating-r1-tasks}.
 For example:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   UTC mode = True
@@ -965,10 +889,7 @@ at ``T12``. What if they need to share an initial task?
 
 Let's suppose that we add the following section to the suite example above:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   UTC mode = True
@@ -1002,10 +923,7 @@ For example, we can write our suite like :ref:`Figure X <fig-test4>`.
 
     Staggered Start Suite
 
-    .. todo::
-       cylc lang.
-
-    .. code-block:: none
+    .. code-block:: cylc
 
 	   [cylc]
 		   UTC mode = True
@@ -1045,10 +963,7 @@ that has one-off dependencies with other task sets at different cycles.
 
    Restricted First Cycle Point Suite
 
-   .. todo::
-	  cylc lang.
-
-   .. code-block:: none
+   .. code-block:: cylc
 
 	   [cylc]
 		   UTC mode = True
@@ -1092,10 +1007,7 @@ data sources at different cycle points with different possible initial cycle
 points. To allow this cylc provides a ``min( )`` function that can be
 used as follows:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   UTC mode = True
@@ -1138,9 +1050,6 @@ The full integer recurrence expressions supported are:
 
 But, as for date-time cycling, sequence start and end points can be omitted
 where suite initial and final cycle points can be assumed. Some examples:
-
-.. todo::
-   cylc lang.
 
 .. code-block:: none
 
@@ -1201,9 +1110,6 @@ The same syntax used to reference the initial and final cycle points
 use with date-time cycling can also be used for integer cycling. For
 example you can write:
 
-.. todo::
-   cylc lang.
-
 .. code-block:: none
 
    [[[ R1/^ ]]]     # Run once at the initial cycle point
@@ -1217,9 +1123,6 @@ example you can write:
 Likewise the syntax introduced in~\ref{excluding-dates} for excluding
 a particular point from a recurrence also works for integer cycling. For
 example:
-
-.. todo::
-   cylc lang.
 
 .. code-block:: none
 
@@ -1236,9 +1139,6 @@ example:
 Multiple integer exclusions are also valid in the same way as the syntax
 in~\ref{excluding-dates}. Integer exclusions may be a list of single
 integer points, an integer sequence, or a combination of both:
-
-.. todo::
-   cylc lang.
 
 .. code-block:: none
 
@@ -1279,10 +1179,7 @@ Success Triggers
 The default, with no trigger type specified, is to trigger off the
 upstream task succeeding:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    # B triggers if A SUCCEEDS:
 	   graph = "A => B"
@@ -1290,10 +1187,7 @@ upstream task succeeding:
 For consistency and completeness, however, the success trigger can be
 explicit:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    # B triggers if A SUCCEEDS:
 	   graph = "A => B"
@@ -1306,10 +1200,7 @@ Failure Triggers
 
 To trigger off the upstream task reporting failure:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    # B triggers if A FAILS:
 	   graph = "A:fail => B"
@@ -1326,10 +1217,7 @@ Start Triggers
 
 To trigger off the upstream task starting to execute:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    # B triggers if A STARTS EXECUTING:
 	   graph = "A:start => B"
@@ -1360,10 +1248,7 @@ Finish Triggers
 To trigger off the upstream task succeeding or failing, i.e. finishing
 one way or the other:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    # B triggers if A either SUCCEEDS or FAILS:
 	   graph = "A | A:fail => B"
@@ -1384,9 +1269,6 @@ The example suite ``<cylc-dir>/etc/examples/message-triggers`` illustrates
 message triggering.
 
 .. todo::
-   cylc lang.
-
-.. todo::
    add-in:
 
 ADD-IN: \lstinputlisting{../../../etc/examples/message-triggers/suite.rc}
@@ -1397,10 +1279,7 @@ Job Submission Triggers
 
 It is also possible to trigger off a task submitting, or failing to submit:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    # B triggers if A submits successfully:
 	   graph = "A:submit => B"
@@ -1420,10 +1299,7 @@ Conditional Triggers
 AND operators (``&``) can appear on both sides of an arrow. They
 provide a concise alternative to defining multiple triggers separately:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    # 1/ this:
 	   graph = "A & B => C"
@@ -1446,10 +1322,7 @@ provide a concise alternative to defining multiple triggers separately:
 OR operators (``|``) which result in true conditional triggers,
 can only appear on the left [1]_ :
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    # C triggers when either A or B finishes:
 	   graph = "A | B => C"
@@ -1469,10 +1342,7 @@ used, as shown in :ref:`Figure X <fig-conditional>`
 
     Conditional triggers, which are plotted with open arrow heads.
 
-	.. todo::
-	   cylc lang.
-
-	.. code-block:: none
+	.. code-block:: cylc
 
 			   graph = """
 	   # D triggers if A or (B and C) succeed
@@ -1512,10 +1382,7 @@ you toggle them on with *View* ``->`` *Options* ``->``
 
     Automated failure recovery via suicide triggers.
 
-	.. todo::
-	   cylc lang.
-
-	.. code-block:: none
+	.. code-block:: cylc
 
 		[meta]
 			title = automated failure recovery
@@ -1539,64 +1406,57 @@ you toggle them on with *View* ``->`` *Options* ``->``
 				# UNCOMMENT TO TEST FAILURE:
 				# script = /bin/false
 
-Note that multiple suicide triggers combine in the same way as other
-triggers, so this:
+.. note::
 
-.. todo::
-   cylc lang.
+   Multiple suicide triggers combine in the same way as other
+   triggers, so this:
 
-.. code-block:: none
+   .. code-block:: cylc
 
-   foo => !baz
-   bar => !baz
+	  foo => !baz
+	  bar => !baz
 
-is equivalent to this:
+   is equivalent to this:
 
-.. todo::
-   cylc lang.
+   .. code-block:: cylc
 
-.. code-block:: none
+	  foo & bar => !baz
 
-   foo & bar => !baz
+   i.e. both ``foo`` and ``bar`` must succeed for
+   ``baz`` to be taken out of the suite. If you really want a task
+   to be taken out if any one of several events occurs then be careful to
+   write it that way:
 
-i.e. both ``foo`` and ``bar`` must succeed for
-``baz`` to be taken out of the suite. If you really want a task
-to be taken out if any one of several events occurs then be careful to
-write it that way:
+   .. code-block:: cylc
 
-.. todo::
-   cylc lang.
+	  foo | bar => !baz
 
-.. code-block:: none
+.. warning::
 
-   foo | bar => !baz
+   A word of warning on the meaning of "bare suicide triggers". Consider
+   the following suite:
 
-A word of warning on the meaning of "bare suicide triggers". Consider
-the following suite:
+   .. code-block:: cylc
 
-.. todo::
-   cylc lang.
+	  [scheduling]
+		  [[dependencies]]
+			  graph = "foo => !bar"
 
-.. code-block:: none
-
-   [scheduling]
-	   [[dependencies]]
-		   graph = "foo => !bar"
-   \end{lstlisting}
-   Task ``bar= has a suicide trigger but no normal prerequisites
+   Task ``bar`` has a suicide trigger but no normal prerequisites
    (a suicide trigger is not a task triggering prerequisite, it is a task
    removal prerequisite) so this is entirely equivalent to:
-   \lstset{language=suiterc}
-   \begin{lstlisting}
-   [scheduling]
-	   [[dependencies]]
-		   graph = """
-			   foo & bar
-			  foo => !bar
-				   """
 
-In other words both tasks will trigger immediately, at the same time,
-and then ``bar`` will be removed if ``foo`` succeeds.
+   .. code-block:: cylc
+
+	  [scheduling]
+		  [[dependencies]]
+			  graph = """
+				  foo & bar
+				 foo => !bar
+					  """
+
+   In other words both tasks will trigger immediately, at the same time,
+   and then ``bar`` will be removed if ``foo`` succeeds.
 
 If an active task proxy (currently in the submitted or running states)
 is removed from the suite by a suicide trigger, a warning will be logged.
@@ -1616,15 +1476,15 @@ tasks at the same time (e.g. forecast model ensembles and groups of
 tasks for processing different observation types at the same time) and
 for triggering downstream tasks off families as a whole. Higher level
 families, i.e. families of families, can also be used, and are reduced
-to the lowest level member tasks. Note that tasks can also trigger off
-individual family members if necessary.
+to the lowest level member tasks.
+
+.. note::
+
+   Tasks can also trigger off individual family members if necessary.
 
 To trigger an entire task family at once:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -1649,10 +1509,7 @@ to triggering off *all members* starting, succeeding, failing,
 or finishing, or off *any* members (doing the same). Legal family
 triggers are thus:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -1673,10 +1530,7 @@ Here's how to trigger downstream processing after if one or more family
 members succeed, but only after all members have finished (succeeded or
 failed):
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -1695,10 +1549,7 @@ consider the number of dependencies this will generate. In the following
 example, each member of ``FAM2`` has dependencies pointing at all the
 members of ``FAM1``.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -1718,10 +1569,7 @@ want to trigger off. For example, if ``FAM2`` should trigger off any
 member of ``FAM1`` succeeding you can create a dummy task
 ``FAM1_succeed_any_marker`` and place a dependency on it as follows:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -1750,10 +1598,7 @@ their own previous instances (see below); but other kinds of inter-cycle
 dependence are possible too [2]_ . Here's how to express this
 kind of relationship in cylc:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [dependencies]
 	   [[PT6H]]
@@ -1784,10 +1629,7 @@ start-up. They are illustrated in the Tutorial
 
 - ``R1`` tasks (recommended):
 
-  .. todo::
-	 cylc lang.
-
-  .. code-block:: none
+  .. code-block:: cylc
 
 	 [scheduling]
 		 [[dependencies]]
@@ -1833,10 +1675,7 @@ number of cycle points near the start of the suite, so you may want to write
 it in ``R1``-based cycling sections. Here's the example inter-cycle
 ``R1`` suite from above again.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -1855,10 +1694,7 @@ depends on its previous (12 hours ago) instance.
 Finally, it is also possible to have a dependency on a task at a specific cycle
 point.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -1871,10 +1707,7 @@ point) - as it can currently cause performance issue. In the following example,
 all instances of ``qux`` will depend on ``baz.20200101``, which
 will never be removed from the task pool:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = 2010
@@ -1892,10 +1725,7 @@ Special Sequential Tasks
 Tasks that depend on their own previous-cycle instance can be declared as
 *sequential*:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[special tasks]]
@@ -1909,10 +1739,7 @@ Tasks that depend on their own previous-cycle instance can be declared as
 inter-cycle triggers which clearly expose the same scheduling behaviour in the
 graph:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -1924,10 +1751,7 @@ The sequential declaration is arguably convenient in one unusual situation
 though: if a task has a non-uniform cycling sequence then multiple explicit
 triggers,
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -1942,10 +1766,7 @@ triggers,
 
 can be replaced by a single sequential declaration,
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[special tasks]]
@@ -1962,10 +1783,7 @@ Cylc also supports inter-cycle triggering off tasks "in the future" (with
 respect to cycle point - which has no bearing on wall-clock job submission time
 unless the task has a clock trigger):
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [[dependencies]]
 	   [[[T00,T06,T12,T18]]]
@@ -1991,8 +1809,10 @@ Clock Triggers
 .. todo::
    refs:
 
-*NOTE: please read External Triggers (\ref{External Triggers}) before
-using the older clock triggers described in this section.*
+.. note::
+
+   Please read External Triggers (\ref{External Triggers}) before
+   using the older clock triggers described in this section.
 
 By default, date-time cycle points are not connected to the real time "wall
 clock". They are just labels that are passed to task jobs (e.g. to
@@ -2004,10 +1824,7 @@ is equal to the real clock date-time.
 So *clock triggers* allow tasks to trigger at (or after, depending on other
 triggers) a wall clock time expressed as an offset from cycle point:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[special tasks]]
@@ -2051,10 +1868,7 @@ expired. Here a task called ``copy`` expires, and its downstream
 workflow is skipped, if it is more than one day behind the wall-clock (see also
 ``etc/examples/clock-expire``):
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	  cycle point format = %Y-%m-%dT%H
@@ -2087,10 +1901,7 @@ Warm-cycled forecast models generate *restart files*, e.g. model
 background fields, to initialize the next forecast. This kind of
 dependence requires an inter-cycle trigger:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -2106,10 +1917,7 @@ triggering off ``A[T-24]`` as a matter of course, instead of
 off ``A[T-6]``, because ``A[T-24]`` will always
 be finished first:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -2129,19 +1937,13 @@ does not say anything about the dependencies or existence of the upstream task
 will infer that ``bar`` must exist at the same cycle points as
 ``foo``. This is a convenience to allow this:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "foo => bar"
 
 to be written as shorthand for this:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = """foo
               foo => bar"""
@@ -2163,10 +1965,7 @@ As a result you need to be careful not to define inter-cycle dependencies that
 cannot be satisfied at run time. Suite validation catches this kind of error if
 the existence of the cycle offset task is not defined anywhere at all:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = 2020
@@ -2183,10 +1982,7 @@ the existence of the cycle offset task is not defined anywhere at all:
 To fix this, use another line in the graph to tell Cylc to define
 ``foo`` at each cycle point:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = 2020
@@ -2199,10 +1995,7 @@ To fix this, use another line in the graph to tell Cylc to define
 But validation does not catch this kind of error if the offset task
 is defined only on a different cycling sequence:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = 2020
@@ -2218,10 +2011,7 @@ exist. The offset ``[-P1Y]`` is presumably an error (it should be
 ``[-P2Y]``), or else another graph line is needed to generate
 ``foo`` instances on the yearly sequence:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = 2020
@@ -2236,10 +2026,7 @@ runtime with ``bar`` waiting on ``foo[-P1Y]`` in
 every cycle point, when only a single instance of it exists, at the initial
 cycle point:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = 2020
@@ -2253,10 +2040,12 @@ cycle point:
 .. todo::
    refs:
 
-Note that ``cylc graph`` will display un-satisfiable inter-cycle
-dependencies as "ghost nodes". :ref:`Figure X <ghost-node-screenshot>` is a
-screenshot of cylc graph displaying the above example with the un-satisfiable
-task (foo) displayed as a "ghost node".
+.. note::
+
+   ``cylc graph`` will display un-satisfiable inter-cycle
+   dependencies as "ghost nodes". :ref:`Figure X <ghost-node-screenshot>`
+   is a screenshot of cylc graph displaying the above example with the
+   un-satisfiable task (foo) displayed as a "ghost node".
 
 .. _ghost-node-screenshot:
 
@@ -2308,11 +2097,14 @@ Namespace names may contain letters, digits, underscores, and hyphens.
 .. todo::
    refs:
 
-Note that *task names need not be hardwired into task implementations*
-because task and suite identity can be extracted portably from the task
-execution environment supplied by the suite server program
-(\ref{TaskExecutionEnvironment}) - then to rename a task you can just change
-its name in the suite configuration.
+
+.. note::
+
+   *Task names need not be hardwired into task implementations*
+   because task and suite identity can be extracted portably from the task
+   execution environment supplied by the suite server program
+   (\ref{TaskExecutionEnvironment}) - then to rename a task you can just change
+   its name in the suite configuration.
 
 
 Root - Runtime Defaults
@@ -2346,10 +2138,7 @@ As an example, consider a suite containing an ensemble of closely
 related tasks that each invokes the same script but with a unique
 argument that identifies the calling task name:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[ENSEMBLE]]
@@ -2428,10 +2217,7 @@ collapsible family group when visualizing the suite. If this is not what
 you want, you can demote the first parent for visualization purposes,
 without affecting the order of inheritance of runtime properties:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[BAR]]
@@ -2477,10 +2263,7 @@ Additionally, access to cylc itself is configured prior to the user-defined
 environment, so that variable assignment expressions can make use of
 cylc utility commands:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[foo]]
@@ -2494,10 +2277,7 @@ User Environment Variables
 A task's user-defined environment results from its inherited
 ``[[[environment]]]`` sections:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[root]]
@@ -2524,10 +2304,7 @@ written, post inheritance processing, to the task job script that
 executes the associated task. Consequently, if you override an
 environment variable you cannot also access the original parent value:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[FOO]]
@@ -2543,10 +2320,7 @@ The compressed variant of this, ``COLOR = dark-$COLOR``, is
 also in error for the same reason. To achieve the desired result you
 must use a different name for the parent variable:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[FOO]]
@@ -2674,8 +2448,6 @@ The top level work and share directory (above) location can be changed
 (e.g. to a large data area) by a global config setting
 (see~\ref{workdirectory}).
 
-\lstset{language=transcript}
-
 
 Environment Variable Evaluation
 """""""""""""""""""""""""""""""
@@ -2713,10 +2485,7 @@ a host other than the suite host, cylc will use non-interactive ssh to
 execute the task on the ``owner@host`` account by the configured
 batch system:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[foo]]
@@ -2797,10 +2566,7 @@ applying common style attributes. See~\ref{SuiteRCReference} for details.
 Collapsible Families In Suite Graphs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [visualization]
 	   collapsed families = family1, family2
@@ -2876,9 +2642,11 @@ include:
 .. todo::
    refs:
 
-*Note that this can be done with Jinja2 loops too (Section~\ref{Jinja2})
-but parameterization is much cleaner (nested loops can seriously reduce
-the clarity of a suite configuration).*
+.. note::
+
+   This can be done with Jinja2 loops too (Section~\ref{Jinja2})
+   but parameterization is much cleaner (nested loops can seriously reduce
+   the clarity of a suite configuration).*
 
 
 Parameter Expansion
@@ -2890,10 +2658,7 @@ considered strings. It is not possible to mix strings with integer ranges.
 
 For example:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   [[parameters]]
@@ -2955,10 +2720,7 @@ task names for integer values, but not for string values. For example,
 ``obs = ship``. However, the default expansion templates can be
 overridden if need be:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   [[parameters]]
@@ -2987,10 +2749,7 @@ expands to these tasks names:
 
 Here's a simple but complete example suite:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   [[parameters]]
@@ -3004,10 +2763,7 @@ Here's a simple but complete example suite:
 
 The result, post parameter expansion, is this:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -3020,10 +2776,7 @@ The result, post parameter expansion, is this:
 
 Here's a more complex graph using two parameters (``[runtime]`` omitted):
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   [[parameters]]
@@ -3038,7 +2791,7 @@ Here's a more complex graph using two parameters (``[runtime]`` omitted):
    original TODO:
 
    %which expands to:
-   %\begin{lstlisting}
+
    %[scheduling]
    %    [[dependencies]]
    %        graph = """
@@ -3046,7 +2799,6 @@ Here's a more complex graph using two parameters (``[runtime]`` omitted):
    %                init_run1 => model_run1_dog => post_run2_dog => wrap_run1
    %            prep => init_run2 => model_run2_cat => post_run2_cat => wrap_run2 => done
    %                init_run2 => model_run2_dog => post_run2_dog => wrap_run2"""
-   %\end{lstlisting}
 
 .. todo::
    fig refs:
@@ -3078,10 +2830,7 @@ For example, the default template for ``p = -1..1`` would be
 
 To get thicker padding and/or alternate suffixes, use a template. E.g.:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   [[parameters]]
@@ -3099,10 +2848,7 @@ Parameters as Full Task Names
 Parameter values can be used as full task names, but the default template
 should be overridden to remove the initial underscore. For example:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   [[parameters]]
@@ -3125,10 +2871,7 @@ Passing Parameter Values To Tasks
 Parameter values are passed as environment variables to tasks generated by
 parameter expansion. For example, if we have:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   [[parameters]]
@@ -3153,10 +2896,7 @@ group they are, and so to vary their behaviour accordingly.
 You can also define custom variables and string templates for parameter value
 substitution. For example, if we add this to the above configuration:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[model<run,obs>]]
@@ -3182,10 +2922,7 @@ Specific parameter values can be singled out in the graph and under
 Here's how to make a special task trigger off just the first of a
 set of model runs:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   [[parameters]]
@@ -3210,10 +2947,7 @@ as ``foo<p=5..10>``, but you can achieve the same result by defining a
 second parameter that covers the partial range and giving it the same expansion
 template as the full-range parameter. For example:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   [[parameters]]
@@ -3240,20 +2974,14 @@ value in the ordered list of parameter values, while a positive offset is
 interpreted as the next value. For example, to split a model run into multiple
 steps with each step depending on the previous one, either of these graphs:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "model<run-1> => model<run>"  # for run = 1, 2, 3
    graph = "model<run> => model<run+1>"  # for run = 1, 2, 3
 
 expands to:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = """model_run1 => model_run2
               model_run2 => model_run3"""
@@ -3264,19 +2992,13 @@ expands to:
 
 And this graph:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "proc<size-1> => proc<size>"  # for size = small, big, huge
 
 expands to:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = """proc_small => proc_big
               proc_big => proc_huge"""
@@ -3289,19 +3011,13 @@ However, a quirk in the current system means that you should avoid mixing
 conditional logic in these statements. For example, the following will do the
 unexpected:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = foo<m-1> & baz => foo<m>  # for m = cat, dog
 
 currently expands to:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = foo_cat & baz => foo_dog
 
@@ -3312,10 +3028,7 @@ currently expands to:
 For the time being, writing out the logic explicitly will give you the correct
 graph.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = """foo<m-1> => foo<m>  # for m = cat, dog
               baz => foo<m>"""
@@ -3326,10 +3039,7 @@ Task Families And Parameterization
 
 Task family members can be generated by parameter expansion:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[FAM]]
@@ -3340,10 +3050,7 @@ Task family members can be generated by parameter expansion:
 
 Family names can be parameterized too, just like task names:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[RUN<r>]]
@@ -3360,47 +3067,32 @@ Family names can be parameterized too, just like task names:
 As described in Section~\ref{FamilyTriggers} family names can be used to
 trigger all members at once:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "foo => FAMILY"
 
 or to trigger off all members:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "FAMILY:succeed-all => bar"
 
 or to trigger off any members:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "FAMILY:succeed-any => bar"
 
 If the members of ``FAMILY`` were generated with parameters, you can
 also trigger them all at once with parameter notation:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "foo => member<m>"
 
 Similarly, to trigger off all members:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "member<m> => bar"
    # (member<m>:fail etc., for other trigger types)
@@ -3408,10 +3100,7 @@ Similarly, to trigger off all members:
 Family names are still needed in the graph, however, to succinctly express
 "succeed-any" triggering semantics, and all-to-all or any-to-all triggering:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "FAM1:succeed-any => FAM2"
 
@@ -3425,19 +3114,13 @@ For family *member-to-member* triggering use parameterized members.
 For example, if family ``OBS_GET`` has members ``get<obs>`` and
 family ``OBS_PROC`` has members ``proc<obs>`` then this graph:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "get<obs> => proc<obs>"  # for obs = ship, buoy, plane
 
 expands to:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    get_ship => proc_ship
    get_buoy => proc_buoy
@@ -3462,10 +3145,7 @@ can be used to generate a sequence of pre-defined tasks as a proxy for cycling.
 Here's a cycling workflow of two-monthly model runs for one year,
 with previous-instance model dependence (e.g. for model restart files):
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = 2020-01
@@ -3481,10 +3161,7 @@ with previous-instance model dependence (e.g. for model restart files):
 
 And here's how to do the same thing with parameterized tasks:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   [[parameters]]
@@ -3535,10 +3212,7 @@ workflow will be visible at all times as the suite runs.
 Here's a yearly-cycling suite with four parameterized chunks in each cycle
 point:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [cylc]
 	   [[parameters]]
@@ -3550,14 +3224,13 @@ point:
 			   graph = """model<chunk-1> => model<chunk>
 					   model<chunk=4>[-P1Y] => model<chunk=1>"""
 
-Note the inter-cycle trigger that connects the first chunk in each cycle point
+.. note::
+
+The inter-cycle trigger connects the first chunk in each cycle point
 to the last chunk in the previous cycle point. Of course it would be simpler
 to just use 3-monthly cycling:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   initial cycle point = 2020-01
@@ -3578,49 +3251,39 @@ Cycle Point And Parameter Offsets At Start-Up
 In cycling workflows cylc ignores anything earlier than the suite initial
 cycle point. So this graph:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "model[-P1D] => model"
 
 simplifies at the initial cycle point to this:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "model"
 
 Similarly, parameter offsets are ignored if they extend beyond the start
 of the parameter value list. So this graph:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "model<chunk-1> => model<chunk>"
 
 simplifies for ``chunk=1`` to this:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    graph = "model_chunk1"
 
-Note however that the initial cut-off applies to every parameter list, but only
-to cycle point sequences that start at the suite initial cycle point. Therefore
-it may be somewhat easier to use parameterized cycling if you need multiple
-date-time sequences *with different start points* in the same suite. We
-plan to allow this sequence-start simplification for any date-time sequence in
-the future, not just at the suite initial point, but it needs to be optional
-because delayed-start cycling tasks sometimes need to trigger off earlier
-cycling tasks.
+.. note::
+
+   The initial cut-off applies to every parameter list, but only
+   to cycle point sequences that start at the suite initial cycle point.
+   Therefore it may be somewhat easier to use parameterized cycling if you
+   need multiple date-time sequences *with different start points* in the
+   same suite. We plan to allow this sequence-start simplification for any
+   date-time sequence in the future, not just at the suite initial point,
+   but it needs to be optional because delayed-start cycling tasks
+   sometimes need to trigger off earlier cycling tasks.
 
 
 .. _Jinja2-subsec:
@@ -3643,10 +3306,7 @@ generate the final suite configuration seen by cylc.
 The need for Jinja2 processing must be declared with a hash-bang
 comment as the first line of the suite.rc file:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    #!jinja2
    # ...
@@ -3686,10 +3346,7 @@ The ``jinja2.ensemble`` example, graphed in
 :ref:`Figure X <fig-jinja2-ensemble>`, shows an ensemble of similar tasks
 generated using Jinja2:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    #!jinja2
    {% set N_MEMBERS = 5 %}
@@ -3702,10 +3359,7 @@ generated using Jinja2:
 
 Here is the generated suite configuration, after Jinja2 processing:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    #!jinja2
    [scheduling]
@@ -3756,10 +3410,7 @@ automatically imports the user environment to template's global namespace
 (see~\ref{CustomJinja2Filters}) in a dictionary structure called
 *environ*. A usage example:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    #!Jinja2
    #...
@@ -3788,10 +3439,7 @@ Filters can be used to modify variable values and are applied using pipe
 notation. For example, the built-in ``trim`` filter strips leading
 and trailing white space from a string:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    {% set MyString = "   dog   " %}
    {{ MyString | trim() }}  # "dog"
@@ -3825,10 +3473,7 @@ The "pad" filter is for padding string values to some
 constant length with a fill character - useful for generating task names
 and related values in ensemble suites:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    {% for i in range(0,100) %}  # 0, 1, ..., 99
 	   {% set j = i | pad(2,'0') %}
@@ -3842,10 +3487,7 @@ strftime
 The "strftime" filter can be used to format ISO8601 date-time strings using
 an strftime string.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    {% set START_CYCLE = '10661004T08+01' %}
    {{ START_CYCLE | strftime('%H') }}  # 00
@@ -3882,10 +3524,7 @@ form:
 
 Within the suite, this becomes:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    {% set CYCLE_INTERVAL = 'PT1D' %}
    {{ CYCLE_INTERVAL | duration_as('h') }}  # 24.0
@@ -3912,10 +3551,7 @@ Associative Arrays In Jinja2
 Associative arrays (*dicts* in Python) can be very useful.
 Here's an example, from ``<cylc-dir>/etc/examples/jinja2/dict``:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    #!Jinja2
    {% set obs_types = ['airs', 'iasi'] %}
@@ -3950,10 +3586,7 @@ The values of Jinja2 variables can be passed in from the cylc command
 line rather than hardwired in the suite configuration.
 Here's an example, from ``<cylc-dir>/etc/examples/jinja2/defaults``:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    #!Jinja2
 
@@ -4025,10 +3658,12 @@ Here's the result:
 Note also that ``cylc view --set FIRST_TASK=bob --jinja2 SUITE``
 will show the suite with the Jinja2 variables as set.
 
-*Note*: suites started with template variables set on the command
-line will *restart* with the same settings. However, you can set
-them again on the ``cylc restart`` command line if they need to
-be overridden.
+.. note::
+
+   Suites started with template variables set on the command
+   line will *restart* with the same settings. However, you can set
+   them again on the ``cylc restart`` command line if they need to
+   be overridden.
 
 
 Jinja2 Variable Scope
@@ -4038,10 +3673,7 @@ Jinja2 variable scoping rules may be surprising. Variables set inside a
 *for loop* block, for instance, are not accessible outside of the block,
 so the following will print ``# FOO is 0``, not ``# FOO is 9``:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    {% set FOO = false %}
    {% for item in items %}
@@ -4056,10 +3688,7 @@ block or the special ``loop`` variable. More complex use cases can be
 handled using ``namespace`` objects which allow propagating of changes
 across scopes:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    {% set ns = namespace(foo=false) %}
    {% for item in items %}
@@ -4083,8 +3712,10 @@ Cylc provides two functions for raising exceptions using Jinja2. These
 exceptions are raised when the suite.rc file is loaded and will prevent a suite
 from running.
 
-Note: These functions must be contained within ``{{`` Jinja2
-blocks as opposed to ``{%`` blocks.
+.. note::
+
+   These functions must be contained within ``{{`` Jinja2
+   blocks as opposed to ``{%`` blocks.
 
 
 Raise
@@ -4092,10 +3723,7 @@ Raise
 
 The "raise" function will result in an error containing the provided text.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    {% if not VARIABLE is defined %}
 	   {{ raise('VARIABLE must be defined for this suite.') }}
@@ -4109,10 +3737,7 @@ The "assert" function will raise an exception containing the text provided in
 the second argument providing that the first argument evaluates as False. The
 following example is equivalent to the "raise" example above.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    {{ assert(VARIABLE is defined, 'VARIABLE must be defined for this suite.') }}
 
@@ -4123,10 +3748,7 @@ Importing additional Python modules
 Jinja2 allows to gather variable and macro definitions in a separate template
 that can be imported into (and thus shared among) other templates.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    {% import "suite-utils.rc" as utils %}
    {% from "suite-utils.rc" import VARIABLE as ALIAS %}
@@ -4134,10 +3756,7 @@ that can be imported into (and thus shared among) other templates.
 
 Cylc extends this functionality to allow import of arbitrary Python modules.
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    {% from "itertools" import product %}
    [runtime]
@@ -4148,10 +3767,7 @@ Cylc extends this functionality to allow import of arbitrary Python modules.
 For better clarity and disambiguation Python modules can be prefixed with
 ``__python__``:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    {% from "__python__.itertools" import product %}
 
@@ -4163,23 +3779,23 @@ EmPy
 
 In addition to Jinja2, Cylc supports EmPy template processor in suite
 configurations. Similarly to Jinja2, EmPy provides variables, mathematical
-expressions, loop control structures, conditional logic, etc., that are expanded
-to generate the final suite configuration seen by Cylc. See the
+expressions, loop control structures, conditional logic, etc., that are
+expanded to generate the final suite configuration seen by Cylc. See the
 `EmPy documentation <http://www.alcyone.com/software/empy>`_ for more
-details on its templating features and how to use them. Please note that EmPy is not
-bundled with Cylc and must be installed separately. It should be available to
-Python through standard ``import em``. Please also
-note that there is another Python package called "em" that provides
-a conflicting module of the same name. You can run
-``cylc check-software`` command to check your installation.
+details on its templating features and how to use them.
+
+.. note::
+
+   EmPy is not bundled with Cylc and must be installed separately. It
+   should be available to Python through standard ``import em``. Please also
+   note that there is another Python package called "em" that provides
+   a conflicting module of the same name. You can run
+   ``cylc check-software`` command to check your installation.
 
 The need for EmPy processing must be declared with a hash-bang comment as
 the first line of the suite.rc file:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    #!empy
    # ...

@@ -41,27 +41,17 @@ centralized alerting; and cryptographic suite security.
 
 -----------
 
-Contents:
+**Table of Contents**:
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 3
+   :numbered:
 
-   introduction
-
-   installation
-
-   background/background-master
-
-   tutorial
-  
+   introduction/introduction-master
+   getting-started/getting-started-master
    user-guide/user-guide-master
-
    suite-design-guide/suite-design-guide-master
-
-   file-references/file-references-master
-
-   command-reference
-
+   references/references-master
    miscellaneous/miscellaneous-master
 
 --------

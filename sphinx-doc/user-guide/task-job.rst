@@ -20,10 +20,7 @@ the task. Different tasks can use different batch systems.  Like
 other runtime properties, you can set a suite default batch system and
 override it for specific tasks or families:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	  [[root]] # suite defaults
@@ -69,10 +66,7 @@ loadleveler
 Submits task job scripts to loadleveler by the ``llsubmit`` command.
 Loadleveler directives can be provided in the suite.rc file:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[my_task]]
@@ -115,10 +109,7 @@ lsf
 Submits task job scripts to IBM Platform LSF by the ``bsub`` command.
 LSF directives can be provided in the suite.rc file:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[my_task]]
@@ -150,10 +141,7 @@ pbs
 Submits task job scripts to PBS (or Torque) by the ``qsub`` command.
 PBS directives can be provided in the suite.rc file:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[my_task]]
@@ -190,10 +178,7 @@ Submits task job scripts to the Moab workload manager by the ``msub``
 command.  Moab directives can be provided in the suite.rc file; the syntax is
 very similar to PBS:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[my_task]]
@@ -231,10 +216,7 @@ sge
 Submits task job scripts to Sun/Oracle Grid Engine by the ``qsub``
 command.  SGE directives can be provided in the suite.rc file:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[my_task]]
@@ -269,14 +251,9 @@ slurm
 ^^^^^
 
 Submits task job scripts to Simple Linux Utility for Resource Management by the
-``sbatch`` command. SLURM directives can be provided in the suite.rc
-file (note that since not all SLURM commands have a short form, cylc requires
-the long form directives):
+``sbatch`` command. SLURM directives can be provided in the suite.rc file:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[my_task]]
@@ -286,6 +263,11 @@ the long form directives):
 		   [[[directives]]]
 			   --nodes = 5
 			   --account = QXZ5W2
+
+.. note::
+
+   Since not all SLURM commands have a short form, cylc requires
+   the long form directives.
 
 These are written to the top of the task job script like this:
 
@@ -321,10 +303,7 @@ characters. If you have PBS 13 at your site, you should modify your site's
 global configuration file to allow the job name to be longer. (See also
 Section~\ref{JobNameLengthMaximum}.) For example:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [hosts]
 	   [[myhpc*]]
@@ -353,7 +332,7 @@ line:
 (Left hand side is ``-l``. A second ``-l=...`` line will
 override the first.)
 
-Or separate the items (note: no equal sign after ``-l``):
+Or separate the items:
 
 .. code-block:: bash
 
@@ -362,6 +341,10 @@ Or separate the items (note: no equal sign after ``-l``):
    -l mpiprocs=18
    -l ompthreads=2
    -l walltime=12:00:00
+
+.. note::
+
+   There is no equal sign after ``-l``.
 
 (Left hand sides are now ``-l select``, ``-l ncpus``, etc.)
 
@@ -376,10 +359,7 @@ for the task job script and log files. The filename containing the task
 name, cycle point, and a submit number that increments if the same task is
 re-triggered multiple times:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: bash
 
    # task job script:
    ~/cylc-run/tut/oneoff/basic/log/job/1/hello/01/job
@@ -411,10 +391,7 @@ cache areas. If this is the case at your site, you can configure cylc to make
 use of the provided commands by adding some settings to the global site/user
 config. E.g.:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [hosts]
 	   [[HOST]]  # <= replace this with a real host name
@@ -436,10 +413,7 @@ need to define a new batch system handler; just override the
 ``command template`` in the relevant job submission sections of
 your suite.rc file:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[root]]
@@ -512,12 +486,14 @@ see~\ref{SubmissionPollingIntervals} and~\ref{ExecutionPollingIntervals}).
 Note that regular polling is not as efficient as task messaging in updating
 task status, and it should be used sparingly in large suites.
 
-Note that for polling to work correctly, the batch queueing system must have a
-job listing command for listing your jobs, and that the job listing must
-display job IDs as they are returned by the batch queueing system submit
-command. For example, for pbs, moab and sge, the ``qstat`` command
-should list jobs with their IDs displayed in exactly the same format as they
-are returned by the ``qsub`` command.
+.. note::
+
+   For polling to work correctly, the batch queueing system must have a
+   job listing command for listing your jobs, and that the job listing must
+   display job IDs as they are returned by the batch queueing system submit
+   command. For example, for pbs, moab and sge, the ``qstat`` command
+   should list jobs with their IDs displayed in exactly the same format as they
+   are returned by the ``qsub`` command.
 
 
 Job Killing
@@ -537,10 +513,7 @@ Execution Time Limit
 You can specify an ``execution time limit`` for all supported job
 submission methods. E.g.:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [runtime]
 	   [[task-x]]
@@ -616,10 +589,7 @@ batch system handler to change the directive prefix from ``#PBS`` to
 If this is in the Python search path (see~\ref{Where To Put Batch System
 Handler Modules} below) you can use it by name in suite configurations:
 
-.. todo::
-   cylc lang.
-
-.. code-block:: none
+.. code-block:: cylc
 
    [scheduling]
 	   [[dependencies]]
@@ -665,5 +635,8 @@ hosts* in one of these locations:
 - under ``CYLC-PATH/lib/cylc/batch_sys_handlers/``
 - or anywhere in ``$PYTHONPATH``
 
-(A note for Rose users: ``rose suite-run`` automatically installs
-``SUITE-DEF-PATH/lib/python/`` to job hosts).
+
+.. note::
+
+   For Rose users: ``rose suite-run`` automatically installs
+   ``SUITE-DEF-PATH/lib/python/`` to job hosts).

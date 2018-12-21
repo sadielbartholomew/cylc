@@ -13,3 +13,23 @@ server) and either the Python requests library (if available) or
 the built-in Python libraries for the clients.
 
 All suites are entirely isolated from one another.
+
+
+.. insert vertical whitespace else sidebar menu overhangs short page (ugly)
+
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|

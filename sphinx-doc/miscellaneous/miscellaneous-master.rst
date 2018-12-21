@@ -2,9 +2,35 @@
 Miscellaneous
 *************
 
-.. include:: screenshots.rst
-.. include:: licensing.rst
-.. include:: links.rst
-.. include:: known-issues.rst
-.. include:: dev-history-major-changes.rst
-.. include:: cylc-6-mig-ref.rst
+.. toctree::
+   :maxdepth: 1
+   :numbered:
+
+   readme-info
+   install-info
+   screenshots
+   licensing
+   links
+   known-issues
+   dev-history-major-changes
+   cylc-6-mig-ref
+
+
+.. insert vertical whitespace else sidebar menu overhangs short page (ugly)
+
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
