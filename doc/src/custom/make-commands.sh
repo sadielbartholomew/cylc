@@ -23,6 +23,11 @@ COMMAND_REF_FILE="$(dirname $0)/../appendices/command-ref.rst"
 CYLC=$(dirname $0)/../../../bin/cylc
 
 $(cat > "$COMMAND_REF_FILE" <<END
+.. _CommandReference:
+
+Command Reference
+=================
+
 .. _help:
 
 Help
@@ -44,7 +49,7 @@ for CAT in $($CYLC categories); do
 ${CAT}
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. _${CAT}:
+.. _command-cat-${CAT}:
 
 .. code-block:: none
 
@@ -69,7 +74,7 @@ for COM in $($CYLC commands); do
 ${COM}
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. _${COM}:
+.. _command-${COM}:
 
 .. code-block:: none
 
