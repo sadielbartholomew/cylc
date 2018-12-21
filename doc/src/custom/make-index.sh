@@ -20,19 +20,15 @@
 
 set -e
 
+# All paths relative to the '$CYLC_HOME/doc/' directory.
 OUT=install
 rm -rf $OUT
 mkdir -p $OUT
-cp src/index.css $OUT
+cp src/custom/index.css $OUT
 cp -r src/graphics $OUT
-
-CYLC_VERSION=$($(dirname $0)/../../bin/cylc --version)
+CYLC_VERSION=$($(dirname $0)/../../../bin/cylc --version)
 INDEX=$OUT/index.html
 
-#CUG_PDF=src/cylc-user-guide/pdf/cug-pdf.pdf
-#CUG_HTML_SINGLE=src/cylc-user-guide/html/single/
-#CUG_HTML_MULTI=src/cylc-user-guide/html/multi/
-#SDG_PDF=src/suite-design-guide/document.pdf
 HTML_DOCS=built-sphinx/
 
 cat > $INDEX <<__END__
@@ -68,8 +64,9 @@ cylc COMMAND --help
 <ul>
 __END__
 
+mkdir -p $OUT/html/
 if [[ -f $HTML_DOCS/index.html ]]; then
-  cp -r $HTML_DOCS $OUT/html/built-sphinx
+  cp -r $HTML_DOCS $OUT/html/
   cat >> $INDEX <<__END__
   <li><a href="html/built-sphinx.html">HTML (multi page)</a></li>
 __END__
@@ -78,6 +75,10 @@ else
     <li>HTML Guides multi page <i>(not generated)</i></li>
 __END__
 fi
+
+cat >> $INDEX <<__END__
+</ul>
+</div>
 
 <div class="lbox">
 <h3 style="margin:10px">Online Resources</h3>
